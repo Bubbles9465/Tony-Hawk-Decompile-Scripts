@@ -1,0 +1,66 @@
+SCRIPT VN_Setup IF IsCareerMode ELSE ENDIF Create_Panel_Message style = panel_message_death text = " " ENDSCRIPT
+SCRIPT VN_startup LoadSound "Shared\\Hits\\HitGlassPane2x" LoadSound "Shared\\Auto\\LA_Skid_11" vol = 100 dropoff = 150 LoadSound "Shared\\Auto\\CarBrakeSqueal" vol = 100 dropoff = 150 LoadSound "Shared\\Auto\\CarLoop" vol = 100 dropoff = 150 PosUpdateWithDoppler LoadSound "Shared\\Auto\\CarHorn_11" vol = 100 dropoff = 150 LoadSound "Shared\\Hits\\HitMetalCan" vol = 100 dropoff = 150 PosUpdateWithDoppler LoadSound "Shared\\Hits\\BonkBush" vol = 100 dropoff = 0 LoadSound "Shared\\Water\\FallWater" vol = 100 dropoff = 50 LoadSound "Shared\\Hits\\Smashcake" vol = 100 LoadPedAnims = 1 SetTerrainGrindWire SetTerrainWood SetTerrainConcSmooth SetTerrainMetalSmooth ENDSCRIPT
+SCRIPT NJ_Drunk_Walking_Temp Ped_InitAI avoid Should_look_At_Skater = 0 stand standing_anims = Bum_Goal_Wait ENDSCRIPT
+SCRIPT VN_Goals IF InMultiplayerGame add_multiplayer_mode_goals ENDIF IF NOT InSplitScreenGame IF NOT GameModeEquals is_singlesession ENDIF ENDIF IF NOT InSplitScreenGame IF NOT GameModeEquals is_singlesession IF NOT InNetGame ENDIF ENDIF ENDIF ENDSCRIPT
+SCRIPT TOD_Script SWITCH <current_tod> CASE morning CASE day CASE evening CASE night DEFAULT printf "### no tod set ###" ENDSWITCH ENDSCRIPT
+SCRIPT VN_RoundHorn_GapStart StartGap GapID = Round1 flags = [ CANCEL_GROUND , CANCEL_MANUAL ] ENDSCRIPT
+SCRIPT VN_RoundHorn_GapEnd EndGap GapID = Round1 text = "Round The Horn!!!" score = 2500 ENDSCRIPT
+SCRIPT VN_BigDouble5_Gap StartGap flags = [ Pure_Air ] EndGap text = "Big Double 5 Set" score = 500 ENDSCRIPT
+SCRIPT VN_TightLanding_Gap StartGap flags = [ Pure_Air ] EndGap text = "Tight Landing Transfer" score = 500 ENDSCRIPT
+SCRIPT VN_HugeTransfer_Gapstart StartGap GapID = huge1 flags = [ Pure_Air ] ENDSCRIPT
+SCRIPT VN_HugeTransfer_Gapend EndGap GapID = huge1 text = "VB! Huge Transfer!!!" score = 1000 ENDSCRIPT
+SCRIPT VN_WestSideTransfer_Gap StartGap flags = [ Pure_Air ] EndGap text = "West Side Transfer" score = 250 ENDSCRIPT
+SCRIPT VN_PitTransfer_Gap StartGap flags = [ Pure_Air ] EndGap text = "VB! Pit Transfer" score = 500 ENDSCRIPT
+SCRIPT VN_BenchTrippin_GapStart StartGap GapID = Bench1 flags = [ CANCEL_GROUND ] ENDSCRIPT
+SCRIPT VN_BenchTrippin_GapEnd EndGap GapID = Bench1 text = "Bench Trippin\'" score = 500 ENDSCRIPT
+SCRIPT VN_BenchTrippin1_GapStart StartGap GapID = Bench2 flags = [ CANCEL_GROUND ] ENDSCRIPT
+SCRIPT VN_BenchTrippin1_GapEnd EndGap GapID = Bench2 text = "Bench Trippin\'" score = 500 ENDSCRIPT
+SCRIPT VN_Ledge2Ledge_GapStart StartGap GapID = Ledge1 flags = [ CANCEL_GROUND ] ENDSCRIPT
+SCRIPT VN_Ledge2Ledge_GapEnd EndGap GapID = Ledge1 text = "Ledge 2 Ledge" score = 500 ENDSCRIPT
+SCRIPT VN_Ledge2Ledge1_GapStart StartGap GapID = Ledge2 flags = [ CANCEL_GROUND ] ENDSCRIPT
+SCRIPT VN_Ledge2Ledge1_GapEnd EndGap GapID = Ledge2 text = "Ledge 2 Ledge" score = 500 ENDSCRIPT
+SCRIPT VN_LilVent_Gap StartGap flags = [ Pure_Air ] EndGap text = "Lil\' Vent Gap" score = 500 ENDSCRIPT
+SCRIPT VN_CandyManual_Gap StartGap flags = [ Cancel_Air , Require_Manual ] EndGap text = "Candy Cane Manual" score = 750 ENDSCRIPT
+SCRIPT VN_Skinny_Gap StartGap flags = [ Pure_Air ] EndGap text = "VB Skinny Transfer" score = 1000 ENDSCRIPT
+SCRIPT VN_Fatty_Gap StartGap flags = [ Pure_Air ] EndGap text = "Fatty Transfer" score = 1000 ENDSCRIPT
+SCRIPT VN_BigVent_Gap StartGap flags = [ Pure_Air ] EndGap text = "Big Vent Gap" score = 1000 ENDSCRIPT
+SCRIPT VN_Vent2Roof_Gap StartGap flags = [ Pure_Air ] EndGap text = "Vent 2 Roof Gap" score = 750 ENDSCRIPT
+SCRIPT VB_TablePop_Gap StartGap flags = [ Require_Air , Cancel_Walk , CANCEL_GROUND ] EndGap text = "TableTop" score = 200 ENDSCRIPT
+SCRIPT VN_Up_GapStart StartGap GapID = Up1 flags = [ Pure_Air ] ENDSCRIPT
+SCRIPT VN_Up_GapEnd EndGap GapID = Up1 text = "Up!" score = 100 ENDSCRIPT
+SCRIPT VN_Up1_GapStart StartGap GapID = Up11 flags = [ Pure_Air ] ENDSCRIPT
+SCRIPT VN_Up1_GapEnd EndGap GapID = Up11 text = "Up!!" score = 250 ENDSCRIPT
+SCRIPT VN_AndAway_GapStart StartGap GapID = Away1 flags = [ Pure_Air ] ENDSCRIPT
+SCRIPT VN_AndAway_GapEnd EndGap GapID = Away1 text = "And Away!!!" score = 500 ENDSCRIPT
+SCRIPT VN_HeCould_GapStart StartGap GapID = could1 flags = [ Cancel_Rail , Require_Manual ] ENDSCRIPT
+SCRIPT VN_HeCould_GapEnd EndGap GapID = could1 text = "He Could Go..." score = 250 ENDSCRIPT
+SCRIPT VN_AllTheWay_GapStart StartGap GapID = way1 flags = [ Cancel_Rail , Require_Manual ] ENDSCRIPT
+SCRIPT VN_AllTheWay_GapEnd EndGap GapID = way1 text = "All The Way" score = 500 ENDSCRIPT
+SCRIPT VN_Touchdown_GapStart StartGap GapID = touch1 flags = [ Cancel_Rail , Require_Manual ] ENDSCRIPT
+SCRIPT VN_Touchdown_GapEnd EndGap GapID = touch1 text = "Touchdown" score = 1000 ENDSCRIPT
+SCRIPT VN_Massive20_Gap StartGap flags = [ Pure_Air ] EndGap text = "Massive 20 Set" score = 1000 ENDSCRIPT
+SCRIPT VN_ShortyPlanter_Gap StartGap flags = [ Pure_Air ] EndGap text = "Shorty Planter Pop" score = 200 ENDSCRIPT
+SCRIPT VN_PlanterPop_Gap StartGap flags = [ Pure_Air ] EndGap text = "Planter Pop" score = 500 ENDSCRIPT
+SCRIPT VN_Cake_GapStart StartGap GapID = cake1 flags = [ Pure_Air ] ENDSCRIPT
+SCRIPT VN_Cake_GapEnd EndGap GapID = cake1 text = "Cake Transfer" score = 250 ENDSCRIPT
+SCRIPT VN_VBLedge_Gap StartGap flags = [ Pure_Air ] EndGap text = "VB! Ledge Transfer" score = 500 ENDSCRIPT
+SCRIPT VN_10Point_GapStart StartGap GapID = Point1 flags = [ CANCEL_GROUND ] ENDSCRIPT
+SCRIPT VN_10Point_GapEnd EndGap GapID = Point1 text = "10 Point landing!" score = 500 ENDSCRIPT
+SCRIPT VN_WeeLil_Gap StartGap flags = [ Pure_Air ] EndGap text = "Wee Lil\' Roof Gap" score = 250 ENDSCRIPT
+SCRIPT VN_MidSize_Gap StartGap flags = [ Pure_Air ] EndGap text = "Nice Mid Size Roof Gap" score = 500 ENDSCRIPT
+SCRIPT VN_SickRoof_Gap StartGap flags = [ Pure_Air ] EndGap text = "Sick Roof Gap!" score = 1000 ENDSCRIPT
+SCRIPT VN_SickRoof1_GapStart StartGap GapID = Sick2 flags = [ CANCEL_GROUND , Cancel_Wallride ] ENDSCRIPT
+SCRIPT VN_SickRoof1_GapEnd EndGap GapID = Sick2 text = "Sick Roof Gap!" score = 1000 ENDSCRIPT
+SCRIPT VN_CanyonJump_Gap StartGap flags = [ Pure_Air ] EndGap text = "Canyon Jump" score = 250 ENDSCRIPT
+SCRIPT VN_UphillCanyon_Gap StartGap flags = [ Pure_Air ] EndGap text = "Uphill Canyon Jump" score = 750 ENDSCRIPT
+SCRIPT VN_Muska_Gap StartGap flags = [ Pure_Air ] EndGap text = "Muska\'s Gap" score = 500 ENDSCRIPT
+SCRIPT VN_Seaside_Gap StartGap flags = [ Cancel_Air ] EndGap text = "Seaside Rail" score = 200 ENDSCRIPT
+SCRIPT VN_VeniceLedge_Gap StartGap flags = [ Cancel_Air ] EndGap text = "The Venice Ledge" score = 250 ENDSCRIPT
+SCRIPT VN_HighWire_GapStart StartGap GapID = High1 flags = [ CANCEL_GROUND ] ENDSCRIPT
+SCRIPT VN_Highwire_GapEnd EndGap GapID = High1 text = "High Wire!" score = 1000 ENDSCRIPT
+SCRIPT VN_HugeRoof2Ramp_Gap StartGap flags = [ Pure_Air ] EndGap text = "Huge Roof 2 Ramp" score = 1000 ENDSCRIPT
+SCRIPT VN_HugeRamp2Roof_Gap StartGap flags = [ Pure_Air ] EndGap text = "Huge Ramp 2 Roof" score = 1000 ENDSCRIPT
+SCRIPT VN_Roof2Ramp_Gap StartGap flags = [ Pure_Air ] EndGap text = "Roof 2 Ramp" score = 500 ENDSCRIPT
+SCRIPT VN_Ramp2Roof_Gap StartGap flags = [ Pure_Air ] EndGap text = "Ramp 2 Roof" score = 750 ENDSCRIPT
+SCRIPT VN_Ledge9Set_Gap StartGap flags = [ Pure_Air ] EndGap text = "Ledge 9 Set" score = 250 ENDSCRIPT
+

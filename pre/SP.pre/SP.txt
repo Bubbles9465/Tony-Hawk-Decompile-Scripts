@@ -1,0 +1,5 @@
+NodeArray = [ { Position = VECTOR(0, 0, 0) Angles = VECTOR(0, -1.5708, 0) Name = TRG_Restart_Player1 Class = Restart Type = Player1 CreatedAtStart RestartName = "P1: Main Restart" restart_types = [ Player1 ] } { Position = VECTOR(0, 0, 0) Angles = VECTOR(0, 0, 0) Name = Street02 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Position = VECTOR(0, 626.626, -2.7e-05) Angles = VECTOR(0, 0, 0) Name = Box02 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } ] TriggerScripts = [ LoadTerrain ] SCRIPT LoadTerrain SetTerrainDefault SetTerrainConcSmooth SetTerrainBrick SetTerrainAsphalt SetTerrainSidewalk ENDSCRIPT
+SCRIPT load_level_anims ENDSCRIPT
+SCRIPT LoadCameras ENDSCRIPT
+SCRIPT LoadObjectAnims ENDSCRIPT
+
