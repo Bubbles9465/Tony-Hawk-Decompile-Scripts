@@ -1,7 +1,706 @@
-NodeArray = [ { Pos = VECTOR(-3180.35, 5.88672, 872.275) Angles = VECTOR(0, 0.88345, 0) Name = counter_top Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3613.16, 93.0979, -2341.76) Angles = VECTOR(-2.30497, 1.42623, 2.30497) Name = ceiling_beam_4 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-5066.62, 162.205, -3027.47) Angles = VECTOR(0.610257, -1.08758, 0.610256) Name = upper_pipes_01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2985.18, 39.6858, 645.47) Angles = VECTOR(3.14159, -0, 3.14159) Name = table_main Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(7.95362, 28.8887, 1612.16) Angles = VECTOR(-3.14159, 1.13446, 1.5708) Name = banner_1 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3272.72, 148.037, 622.178) Angles = VECTOR(3.01428, 1.46717, 1.45283) Name = banner_2 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2947.7, 50.1108, 769.413) Angles = VECTOR(0.964127, 0, 0) Name = clothing_stand_1 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2947.71, 56.4486, 769.413) Angles = VECTOR(0.964127, 0, 0) Name = standshelf_3 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2900, 0, 914.665) Angles = VECTOR(0, 0, 0) Name = office_wall Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2900, 13.0794, 789.524) Angles = VECTOR(0, 0, 0) Name = bullatin_board Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3069.57, 0, 694.729) Angles = VECTOR(3.14159, -0, 3.14159) Name = shirt_stand_2 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3424.42, 0, 690.201) Angles = VECTOR(0, 0, 0) Name = peg_19 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3272.71, 138.984, 620.586) Angles = VECTOR(3.01428, 1.46717, 1.45283) Name = banner_shadow Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2933.5, 50.1108, 729.07) Angles = VECTOR(0.482064, -0.77141, 0.482064) Name = clothing_stand_02 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-0.106975, 46.1206, 7.84088) Angles = VECTOR(0, 0, 0) Name = backpack_2 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry ExportName = extra_backpack } { Pos = VECTOR(-3315, 13.4382, 640.316) Angles = VECTOR(0, 0, 0) Name = deck_strut_2 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3094.17, 20.7191, 870.654) Angles = VECTOR(0, 0.541145, 0) Name = skateshop_player_restart Class = Restart Type = Player1 CreatedAtStart RestartName = "P1: Restart" restart_types = [ Player1 Multiplayer Horse ] } { Pos = VECTOR(6.1001, 0, -11.2561) Angles = VECTOR(0, 0, 0) Name = phone Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(51.1583, 45.8512, 2e-06) Angles = VECTOR(1.5708, 0, 0) Name = booth_shell Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(150.339, 59.5954, -144.118) Angles = VECTOR(1.65806, 0, 0) Name = Plane01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3186.48, 97.2391, 4e-06) Angles = VECTOR(1.5708, 0, 0) Name = mag_2 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-105.247, 0, -22.2222) Angles = VECTOR(0, 0, 0) Name = cupt Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3198.66, 39.1602, 826.733) Angles = VECTOR(0, 0, 0) Name = videos_2 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3199.58, 53.6037, 678.792) Angles = VECTOR(1.5708, 0, 0) Name = stickers_2 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3528.42, 14.3204, 543.589) Angles = VECTOR(0, 0, 0) Name = TRG_LightController Class = GameObject Type = Ghost CreatedAtStart AbsentInNetGames Model = "none" SuspendDistance = 0 lod_dist1 = 400 lod_dist2 = 401 TriggerScript = TRG_LightControllerScript } { Pos = VECTOR(-3406.62, 407.19, 553.804) Angles = VECTOR(-2.31961, 1.46743, 2.3196) Name = cap_09 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-4.2e-05, 79.5437, 619.818) Angles = VECTOR(1.5708, -1.5708, 0) Name = hat_shadow_3 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-4.2e-05, 79.5437, 619.818) Angles = VECTOR(1.5708, -1.5708, 0) Name = hat_shadow_4 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2895.01, 21.2599, 778.716) Angles = VECTOR(0, 0.785398, 0) Name = Cylinder01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2914.94, 49.7253, 1001.95) Angles = VECTOR(0, 0, 0) Name = ts_Chair01 Class = CAS_SubMesh ExportName = board_default RemovalFlags = [ 1 2 3 ] } { Pos = VECTOR(-3123.49, 21.2599, 612.167) Angles = VECTOR(0, 0.785398, 0) Name = Cylinder02 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2905.78, 15.7964, 615.415) Angles = VECTOR(0, 0.477312, 0) Name = ts_Shoe01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2905.78, 4.09284, 615.415) Angles = VECTOR(0, 0.48068, 0) Name = ts_walz Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2713.92, 60.5377, -1411.38) Angles = VECTOR(1.5708, 0, -0) Name = Object02 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2827.04, 80.5352, 786.465) Angles = VECTOR(0, -1.5708, 0) Name = g_ports_floor_125 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry LightGroup = Indoor } { Pos = VECTOR(-2511.33, 149.525, 788.152) Angles = VECTOR(0, 0, 0) Name = g_ports_floor_139 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3613.16, 93.0979, -2341.76) Angles = VECTOR(-2.30497, 1.42623, 2.30497) Name = LiteCoronas Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3139.07, 60.186, 370.979) Angles = VECTOR(0, 0, 0) Name = ts_soda01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3139.07, -17.7934, 370.979) Angles = VECTOR(0, 0, 0) Name = ts_soda02 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3180.55, 5.88672, 872.351) Angles = VECTOR(0, 0.88345, 0) Name = Object03 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2954.73, 54.0602, 778.059) Angles = VECTOR(-3.13318, -1.29004, -3.13284) Name = ts_flathats Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2981.35, 56.4486, 802.937) Angles = VECTOR(0.964127, 0, 0) Name = tsShelcve01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-0.106975, 46.1206, 7.84088) Angles = VECTOR(0, 0, 0) Name = tsbckPck2 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry ExportName = extra_backpack } { Pos = VECTOR(-2900, 13.0794, 789.524) Angles = VECTOR(0, 0, 0) Name = ts_forwall03 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3087.49, 63.3057, 841.694) Angles = VECTOR(1.5708, 1.5708, 0) Name = ts_shirtshiz Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3071.14, 50.2742, 734.745) Angles = VECTOR(1.5708, 1.5708, 0) Name = Object04 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3087.49, 63.3057, 831.242) Angles = VECTOR(1.5708, 1.5708, 0) Name = ts_shirtshiz01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3071.14, 48.2902, 718.548) Angles = VECTOR(1.5708, 1.5708, 0) Name = Object05 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3014.36, 0, 695.732) Angles = VECTOR(3.14159, -0, 3.14159) Name = shirt_stand_03 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-2993.78, 80.8223, 792.818) Angles = VECTOR(-0.283546, -0.294121, 2.92025) Name = glasses_shelf Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3246.93, 347.01, 529.281) Angles = VECTOR(0, 0, 0) Name = poleboard_2 Class = CAS_SubMesh ExportName = board_default RemovalFlags = [ 1 2 3 ] } { Pos = VECTOR(-2658.96, 0.385063, 655) Angles = VECTOR(0, 0, 0) Name = sunglasses_5 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3209.99, -1.33874, 537.162) Angles = VECTOR(0, 0.349066, 0) Name = tsBox_01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3274.43, 138.984, 792.007) Angles = VECTOR(-1.20251, 0.917495, -2.20837) Name = banner_shadow01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3270.98, 102.382, 606.617) Angles = VECTOR(-3.00228, 1.48978, 1.73697) Name = ts_element Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3246.35, 375.352, 529.281) Angles = VECTOR(0, 0, 0) Name = ts_mainWall01 Class = CAS_SubMesh ExportName = board_default RemovalFlags = [ 1 2 3 ] } { Pos = VECTOR(-3246.35, 375.352, 529.281) Angles = VECTOR(0, 0, 0) Name = tsbrd01 Class = CAS_SubMesh ExportName = board_default RemovalFlags = [ 1 2 3 ] } { Pos = VECTOR(-3246.35, 375.352, 529.281) Angles = VECTOR(0, 0, 0) Name = ts_brd Class = CAS_SubMesh ExportName = board_default RemovalFlags = [ 1 2 3 ] } { Pos = VECTOR(-3406.62, 407.19, 553.804) Angles = VECTOR(-2.31961, 1.46743, 2.31961) Name = tsHatShads01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3254.02, 99.662, 670.471) Angles = VECTOR(-0.964127, 0, -3.14159) Name = Object01 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3407.74, 407.19, 554.884) Angles = VECTOR(-2.31961, 1.46743, 2.3196) Name = ts_bckPck2 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3246.35, 375.352, 529.281) Angles = VECTOR(0, 0, 0) Name = ts_dckShad09 Class = CAS_SubMesh ExportName = board_default RemovalFlags = [ 1 2 3 ] } { Pos = VECTOR(-3407.74, 407.19, 554.884) Angles = VECTOR(-0.821984, 1.46743, -2.31961) Name = ts_bckPckdshad Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3315, 13.4382, 802.578) Angles = VECTOR(0, 0, 0) Name = deck_strut_03 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3424.42, 0, 852.151) Angles = VECTOR(0, 0, 0) Name = peg_20 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3246.35, 375.352, 691.231) Angles = VECTOR(0, 0, 0) Name = ts_mainWall02 Class = CAS_SubMesh ExportName = board_default RemovalFlags = [ 1 2 3 ] } { Pos = VECTOR(-3404.81, 373.703, 697.45) Angles = VECTOR(-2.31961, 1.46743, 2.3196) Name = cap_10 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3404.81, 373.703, 697.45) Angles = VECTOR(-2.31961, 1.46743, 2.31961) Name = tsHatShads02 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3404.81, 379.758, 711.494) Angles = VECTOR(-2.31961, 1.46743, 2.31961) Name = tsHatShads03 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3404.81, 402.047, 682.825) Angles = VECTOR(-2.31961, 1.46743, 2.31961) Name = tsHatShads04 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3404.81, 408.671, 697.281) Angles = VECTOR(-2.31961, 1.46743, 2.31961) Name = tsHatShads05 Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3195.64, 74.3539, 670.99) Angles = VECTOR(0.063757, -0.343429, -0.187382) Name = skateshop_deck_spot Class = Restart Type = Player1 CreatedAtStart RestartName = "P1: Restart" restart_types = [ Player1 Multiplayer Horse ] } { Pos = VECTOR(-3270.98, 102.382, 606.617) Angles = VECTOR(-3.00228, 1.48978, 1.73697) Name = ts_eleshadow Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3103.41, 23.8603, 867.209) Angles = VECTOR(0, 0, 0) Name = TRA_LevelLight_tv_1 Class = LevelLight CreatedAtStart Brightness = 3 InnerRadius = 10 OuterRadius = 45 Color = [ 211 , 237 , 246 ] } { Pos = VECTOR(-3198.66, 39.1602, 826.733) Angles = VECTOR(0, 0, 0) Name = InardsHIDE Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } { Pos = VECTOR(-3180.35, 5.88672, 872.275) Angles = VECTOR(0, 0.88345, 0) Name = Codys_cabinetHide Class = LevelGeometry CreatedAtStart CollisionMode = Geometry } ] TriggerScripts = [ LoadTerrain TRG_LightControllerScript ] SCRIPT LoadAllParticleTextures ENDSCRIPT
-SCRIPT TRG_LightControllerScript BEGIN wait 0.03999999911 second FakeLights percent = 40 prefix = TRG_LevelLight wait 0.30000001192 second FakeLights percent = 35 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 45 prefix = TRG_LevelLight wait 0.10000000149 second FakeLights percent = 30 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 40 prefix = TRG_LevelLight wait 0.02999999933 second FakeLights percent = 30 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 45 prefix = TRG_LevelLight wait 0.00999999978 second FakeLights percent = 70 prefix = TRG_LevelLight wait 0.05999999866 second FakeLights percent = 50 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 40 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 45 prefix = TRG_LevelLight wait 0.05000000075 second FakeLights percent = 30 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 40 prefix = TRG_LevelLight wait 0.10000000149 second FakeLights percent = 35 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 45 prefix = TRG_LevelLight wait 0.00999999978 second FakeLights percent = 40 prefix = TRG_LevelLight wait 0.02999999933 second FakeLights percent = 30 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 45 prefix = TRG_LevelLight wait 0.00999999978 second FakeLights percent = 70 prefix = TRG_LevelLight wait 0.05999999866 second FakeLights percent = 50 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 40 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 45 prefix = TRG_LevelLight wait 0.05000000075 second FakeLights percent = 30 prefix = TRG_LevelLight wait 0.05999999866 second FakeLights percent = 50 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 40 prefix = TRG_LevelLight wait 0.01999999955 second FakeLights percent = 45 prefix = TRG_LevelLight wait 0.05000000075 second FakeLights percent = 30 prefix = TRG_LevelLight REPEAT ENDSCRIPT
-SCRIPT LoadTerrain SetTerrainDefault ENDSCRIPT
-SCRIPT load_level_anims ENDSCRIPT
-SCRIPT LoadCameras LoadAsset "levels\\NJ_skateshop\\skateshop_startcam.ska" skateshop_startcam LoadAsset "levels\\NJ_skateshop\\skateshop_board_select_cam.ska" skateshop_board_select_cam ENDSCRIPT
-SCRIPT LoadObjectAnims ENDSCRIPT
+NodeArray = 
+[ 
+	{ 
+		Pos = VECTOR(-3180.35, 5.88672, 872.275) 
+		Angles = VECTOR(0, 0.88345, 0) 
+		Name = counter_top 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3613.16, 93.0979, -2341.76) 
+		Angles = VECTOR(-2.30497, 1.42623, 2.30497) 
+		Name = ceiling_beam_4 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-5066.62, 162.205, -3027.47) 
+		Angles = VECTOR(0.610257, -1.08758, 0.610256) 
+		Name = upper_pipes_01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2985.18, 39.6858, 645.47) 
+		Angles = VECTOR(3.14159, -0, 3.14159) 
+		Name = table_main 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(7.95362, 28.8887, 1612.16) 
+		Angles = VECTOR(-3.14159, 1.13446, 1.5708) 
+		Name = banner_1 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3272.72, 148.037, 622.178) 
+		Angles = VECTOR(3.01428, 1.46717, 1.45283) 
+		Name = banner_2 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2947.7, 50.1108, 769.413) 
+		Angles = VECTOR(0.964127, 0, 0) 
+		Name = clothing_stand_1 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2947.71, 56.4486, 769.413) 
+		Angles = VECTOR(0.964127, 0, 0) 
+		Name = standshelf_3 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2900, 0, 914.665) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = office_wall 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2900, 13.0794, 789.524) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = bullatin_board 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3069.57, 0, 694.729) 
+		Angles = VECTOR(3.14159, -0, 3.14159) 
+		Name = shirt_stand_2 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3424.42, 0, 690.201) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = peg_19 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3272.71, 138.984, 620.586) 
+		Angles = VECTOR(3.01428, 1.46717, 1.45283) 
+		Name = banner_shadow 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	}
+	{ 
+		Pos = VECTOR(-2933.5, 50.1108, 729.07) 
+		Angles = VECTOR(0.482064, -0.77141, 0.482064) 
+		Name = clothing_stand_02 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-0.106975, 46.1206, 7.84088) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = backpack_2 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+		ExportName = extra_backpack 
+	} 
+	{ 
+		Pos = VECTOR(-3315, 13.4382, 640.316) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = deck_strut_2 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3094.17, 20.7191, 870.654) 
+		Angles = VECTOR(0, 0.541145, 0) 
+		Name = skateshop_player_restart
+		Class = Restart 
+		Type = Player1
+		CreatedAtStart 
+		RestartName = "P1: Restart" 
+		restart_types = [ Player1 Multiplayer Horse ] 
+	} 
+	{ 
+		Pos = VECTOR(6.1001, 0, -11.2561) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = phone 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(51.1583, 45.8512, 2e-06) 
+		Angles = VECTOR(1.5708, 0, 0) 
+		Name = booth_shell 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(150.339, 59.5954, -144.118) 
+		Angles = VECTOR(1.65806, 0, 0) 
+		Name = Plane01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3186.48, 97.2391, 4e-06) 
+		Angles = VECTOR(1.5708, 0, 0) 
+		Name = mag_2 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-105.247, 0, -22.2222) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = cupt 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3198.66, 39.1602, 826.733) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = videos_2 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3199.58, 53.6037, 678.792) 
+		Angles = VECTOR(1.5708, 0, 0) 
+		Name = stickers_2 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3528.42, 14.3204, 543.589) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = TRG_LightController 
+		Class = GameObject 
+		Type = Ghost 
+		CreatedAtStart 
+		AbsentInNetGames Model = "none" SuspendDistance = 0 
+		lod_dist1 = 400 
+		lod_dist2 = 401 
+		TriggerScript = TRG_LightControllerScript 
+	} 
+	{ 
+		Pos = VECTOR(-3406.62, 407.19, 553.804) 
+		Angles = VECTOR(-2.31961, 1.46743, 2.3196) 
+		Name = cap_09 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-4.2e-05, 79.5437, 619.818) 
+		Angles = VECTOR(1.5708, -1.5708, 0) 
+		Name = hat_shadow_3 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-4.2e-05, 79.5437, 619.818) 
+		Angles = VECTOR(1.5708, -1.5708, 0) 
+		Name = hat_shadow_4 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2895.01, 21.2599, 778.716) 
+		Angles = VECTOR(0, 0.785398, 0) 
+		Name = Cylinder01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2914.94, 49.7253, 1001.95) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = ts_Chair01 
+		Class = CAS_SubMesh 
+		ExportName = board_default 
+		RemovalFlags = [ 1 2 3 ] 
+	} 
+	{ 
+		Pos = VECTOR(-3123.49, 21.2599, 612.167) 
+		Angles = VECTOR(0, 0.785398, 0) 
+		Name = Cylinder02 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2905.78, 15.7964, 615.415) 
+		Angles = VECTOR(0, 0.477312, 0) 
+		Name = ts_Shoe01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2905.78, 4.09284, 615.415) 
+		Angles = VECTOR(0, 0.48068, 0) 
+		Name = ts_walz 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2713.92, 60.5377, -1411.38) 
+		Angles = VECTOR(1.5708, 0, -0) 
+		Name = Object02 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2827.04, 80.5352, 786.465) 
+		Angles = VECTOR(0, -1.5708, 0) 
+		Name = g_ports_floor_125 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+		LightGroup = Indoor 
+	} 
+	{ 
+		Pos = VECTOR(-2511.33, 149.525, 788.152) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = g_ports_floor_139 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3613.16, 93.0979, -2341.76) 
+		Angles = VECTOR(-2.30497, 1.42623, 2.30497) 
+		Name = LiteCoronas 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3139.07, 60.186, 370.979) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = ts_soda01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3139.07, -17.7934, 370.979) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = ts_soda02 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3180.55, 5.88672, 872.351) 
+		Angles = VECTOR(0, 0.88345, 0) 
+		Name = Object03 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2954.73, 54.0602, 778.059) 
+		Angles = VECTOR(-3.13318, -1.29004, -3.13284) 
+		Name = ts_flathats 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2981.35, 56.4486, 802.937) 
+		Angles = VECTOR(0.964127, 0, 0) 
+		Name = tsShelcve01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-0.106975, 46.1206, 7.84088) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = tsbckPck2 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+		ExportName = extra_backpack 
+	} 
+	{ 
+		Pos = VECTOR(-2900, 13.0794, 789.524) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = ts_forwall03 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3087.49, 63.3057, 841.694) 
+		Angles = VECTOR(1.5708, 1.5708, 0) 
+		Name = ts_shirtshiz 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3071.14, 50.2742, 734.745) 
+		Angles = VECTOR(1.5708, 1.5708, 0) 
+		Name = Object04 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3087.49, 63.3057, 831.242) 
+		Angles = VECTOR(1.5708, 1.5708, 0) 
+		Name = ts_shirtshiz01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3071.14, 48.2902, 718.548) 
+		Angles = VECTOR(1.5708, 1.5708, 0) 
+		Name = Object05 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3014.36, 0, 695.732) 
+		Angles = VECTOR(3.14159, -0, 3.14159) 
+		Name = shirt_stand_03 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-2993.78, 80.8223, 792.818) 
+		Angles = VECTOR(-0.283546, -0.294121, 2.92025) 
+		Name = glasses_shelf 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3246.93, 347.01, 529.281) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = poleboard_2 
+		Class = CAS_SubMesh 
+		ExportName = board_default 
+		RemovalFlags = [ 1 2 3 ] 
+	} 
+	{ 
+		Pos = VECTOR(-2658.96, 0.385063, 655) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = sunglasses_5 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3209.99, -1.33874, 537.162) 
+		Angles = VECTOR(0, 0.349066, 0) 
+		Name = tsBox_01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3274.43, 138.984, 792.007) 
+		Angles = VECTOR(-1.20251, 0.917495, -2.20837) 
+		Name = banner_shadow01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3270.98, 102.382, 606.617) 
+		Angles = VECTOR(-3.00228, 1.48978, 1.73697) 
+		Name = ts_element 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3246.35, 375.352, 529.281) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = ts_mainWall01 
+		Class = CAS_SubMesh 
+		ExportName = board_default 
+		RemovalFlags = [ 1 2 3 ] 
+	} 
+	{ 
+		Pos = VECTOR(-3246.35, 375.352, 529.281) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = tsbrd01 
+		Class = CAS_SubMesh 
+		ExportName = board_default 
+		RemovalFlags = [ 1 2 3 ] 
+	} 
+	{ 
+		Pos = VECTOR(-3246.35, 375.352, 529.281) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = ts_brd 
+		Class = CAS_SubMesh 
+		ExportName = board_default 
+		RemovalFlags = [ 1 2 3 ] 
+	} 
+	{ 
+		Pos = VECTOR(-3406.62, 407.19, 553.804) 
+		Angles = VECTOR(-2.31961, 1.46743, 2.31961) 
+		Name = tsHatShads01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3254.02, 99.662, 670.471) 
+		Angles = VECTOR(-0.964127, 0, -3.14159) 
+		Name = Object01 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3407.74, 407.19, 554.884) 
+		Angles = VECTOR(-2.31961, 1.46743, 2.3196) 
+		Name = ts_bckPck2 
+		Class = LevelGeometry 
+		CreatedAtStart
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3246.35, 375.352, 529.281) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = ts_dckShad09 
+		Class = CAS_SubMesh 
+		ExportName = board_default 
+		RemovalFlags = [ 1 2 3 ] 
+	} 
+	{ 
+		Pos = VECTOR(-3407.74, 407.19, 554.884) 
+		Angles = VECTOR(-0.821984, 1.46743, -2.31961) 
+		Name = ts_bckPckdshad 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3315, 13.4382, 802.578) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = deck_strut_03 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3424.42, 0, 852.151) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = peg_20 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3246.35, 375.352, 691.231) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = ts_mainWall02 
+		Class = CAS_SubMesh 
+		ExportName = board_default 
+		RemovalFlags = [ 1 2 3 ] 
+	} 
+	{ 
+		Pos = VECTOR(-3404.81, 373.703, 697.45) 
+		Angles = VECTOR(-2.31961, 1.46743, 2.3196) 
+		Name = cap_10 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3404.81, 373.703, 697.45) 
+		Angles = VECTOR(-2.31961, 1.46743, 2.31961) 
+		Name = tsHatShads02 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3404.81, 379.758, 711.494) 
+		Angles = VECTOR(-2.31961, 1.46743, 2.31961) 
+		Name = tsHatShads03 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3404.81, 402.047, 682.825) 
+		Angles = VECTOR(-2.31961, 1.46743, 2.31961) 
+		Name = tsHatShads04 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3404.81, 408.671, 697.281) 
+		Angles = VECTOR(-2.31961, 1.46743, 2.31961) 
+		Name = tsHatShads05 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3195.64, 74.3539, 670.99) 
+		Angles = VECTOR(0.063757, -0.343429, -0.187382) 
+		Name = skateshop_deck_spot 
+		Class = Restart 
+		Type = Player1 
+		CreatedAtStart 
+		RestartName = "P1: Restart" 
+		restart_types = [ Player1 Multiplayer Horse ] 
+	} 
+	{ 
+		Pos = VECTOR(-3270.98, 102.382, 606.617) 
+		Angles = VECTOR(-3.00228, 1.48978, 1.73697) 
+		Name = ts_eleshadow 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3103.41, 23.8603, 867.209) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = TRA_LevelLight_tv_1 
+		Class = LevelLight 
+		CreatedAtStart Brightness = 3 
+		InnerRadius = 10 
+		OuterRadius = 45 
+		Color = [ 211 , 237 , 246 ] 
+	} 
+	{ 
+		Pos = VECTOR(-3198.66, 39.1602, 826.733) 
+		Angles = VECTOR(0, 0, 0) 
+		Name = InardsHIDE 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+	{ 
+		Pos = VECTOR(-3180.35, 5.88672, 872.275) 
+		Angles = VECTOR(0, 0.88345, 0) 
+		Name = Codys_cabinetHide 
+		Class = LevelGeometry 
+		CreatedAtStart 
+		CollisionMode = Geometry 
+	} 
+] 
+TriggerScripts = 
+[ 
+	LoadTerrain 
+	TRG_LightControllerScript 
+] 
+SCRIPT LoadAllParticleTextures 
+ENDSCRIPT
+
+SCRIPT TRG_LightControllerScript 
+	BEGIN 
+		wait 0.03999999911 second 
+		FakeLights percent = 40 prefix = TRG_LevelLight 
+		wait 0.30000001192 second 
+		FakeLights percent = 35 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 45 prefix = TRG_LevelLight 
+		wait 0.10000000149 second 
+		FakeLights percent = 30 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 40 prefix = TRG_LevelLight 
+		wait 0.02999999933 second 
+		FakeLights percent = 30 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 45 prefix = TRG_LevelLight 
+		wait 0.00999999978 second 
+		FakeLights percent = 70 prefix = TRG_LevelLight 
+		wait 0.05999999866 second 
+		FakeLights percent = 50 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 40 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 45 prefix = TRG_LevelLight 
+		wait 0.05000000075 second 
+		FakeLights percent = 30 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 40 prefix = TRG_LevelLight 
+		wait 0.10000000149 second 
+		FakeLights percent = 35 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 45 prefix = TRG_LevelLight 
+		wait 0.00999999978 second 
+		FakeLights percent = 40 prefix = TRG_LevelLight 
+		wait 0.02999999933 second 
+		FakeLights percent = 30 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 45 prefix = TRG_LevelLight 
+		wait 0.00999999978 second 
+		FakeLights percent = 70 prefix = TRG_LevelLight 
+		wait 0.05999999866 second 
+		FakeLights percent = 50 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 40 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 45 prefix = TRG_LevelLight 
+		wait 0.05000000075 second 
+		FakeLights percent = 30 prefix = TRG_LevelLight 
+		wait 0.05999999866 second 
+		FakeLights percent = 50 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 40 prefix = TRG_LevelLight 
+		wait 0.01999999955 second 
+		FakeLights percent = 45 prefix = TRG_LevelLight 
+		wait 0.05000000075 second 
+		FakeLights percent = 30 prefix = TRG_LevelLight 
+	REPEAT 
+ENDSCRIPT
+
+SCRIPT LoadTerrain 
+	SetTerrainDefault 
+ENDSCRIPT
+
+SCRIPT load_level_anims 
+ENDSCRIPT
+
+SCRIPT LoadCameras 
+	LoadAsset "levels\\NJ_skateshop\\skateshop_startcam.ska" skateshop_startcam 
+	LoadAsset "levels\\NJ_skateshop\\skateshop_board_select_cam.ska" skateshop_board_select_cam 
+ENDSCRIPT
+
+SCRIPT LoadObjectAnims 
+ENDSCRIPT
 
