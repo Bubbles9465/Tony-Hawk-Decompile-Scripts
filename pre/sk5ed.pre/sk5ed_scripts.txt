@@ -1,70 +1,1518 @@
-SCRIPT Sk5Ed_Startup do_unload_unloadable do_load_unloadable load_peds = 0 SetParkEditorState state = edit command = initialize SetParkEditorPauseMode unpause CalibrateMemoryGauge Fresh SwitchToParkEditorCamera load_parked_sounds ENDSCRIPT
-SCRIPT DestroyMemStatsScreenElements IF ScreenElementExists id = parked_mem_stats_container_l DestroyScreenElement id = parked_mem_stats_container_l DestroyScreenElement id = parked_mem_stats_container_r ENDIF ENDSCRIPT
-SCRIPT load_parked_sounds LoadPreFile "parked_sounds.pre" LoadSound "ParkEd\\GUI_placeblock1" LoadSound "ParkEd\\GUI_removeblock1" LoadSound "ParkEd\\select1" LoadSound "Shared\\Menu\\GUI_buzzer01" LoadSound "Shared\\Menu\\menu03" LoadSound "Shared\\Menu\\select2b" LoadSound "Shared\\Auto\\CarLoop" LoadSound "Vehicles\\Vehicle_Tire_Loop" LoadSound "Terrains\\BonkMetal_11" LoadSound "Shared\\Hits\\FallPungee_11" LoadSound "Shared\\Water\\FallWater" LoadSound "Weather\\Weather_Rain_Light01" LoadSound "Weather\\Weather_Rain_Medium01" UnloadPreFile "parked_sounds.pre" ENDSCRIPT
-SCRIPT CreateMemStatsScreenElements IF NOT ScreenElementExists id = parked_mem_stats_container_l SetScreenElementLock id = root_window off CreateScreenElement { id = parked_mem_stats_container_l parent = root_window type = ContainerElement just = [ left top ] pos = PAIR(23, 300) dims = PAIR(100, 100) } CreateScreenElement { id = parked_mem_stats_park_free parent = parked_mem_stats_container_l type = TextElement just = [ left top ] pos = PAIR(0, 0) font = small scale = 1 text = "oog1" } CreateScreenElement { id = parked_mem_stats_main_free parent = parked_mem_stats_container_l type = TextElement just = [ left top ] pos = PAIR(0, 19) font = small scale = 1 text = "oog2" } CreateScreenElement { id = parked_mem_stats_last_op parent = parked_mem_stats_container_l type = TextElement just = [ left top ] pos = PAIR(0, 38) font = small scale = 1 text = "oog3" } CreateScreenElement { id = parked_mem_stats_other parent = parked_mem_stats_container_l type = TextElement just = [ left top ] pos = PAIR(0, 57) font = small scale = 1 text = "oog4" } CreateScreenElement { id = parked_mem_stats_container_r parent = root_window type = ContainerElement just = [ left top ] pos = PAIR(323, 300) dims = PAIR(100, 100) } CreateScreenElement { id = parked_mem_stats_pct parent = parked_mem_stats_container_r type = TextElement just = [ left top ] pos = PAIR(0, 0) font = small scale = 1 text = "oog5" } CreateScreenElement { id = parked_mem_pieces_remaining parent = parked_mem_stats_container_r type = TextElement just = [ left top ] pos = PAIR(0, 19) font = small scale = 1 text = "oog6" } CreateScreenElement { id = parked_mem_stats_main_used parent = parked_mem_stats_container_r type = TextElement just = [ left top ] pos = PAIR(0, 38) font = small scale = 1 text = "oog6" } ENDIF ENDSCRIPT
-SCRIPT Sk5Ed_Startup_Gameplay do_unload_unloadable SetParkEditorState state = edit command = initialize SetParkEditorState state = regular_play command = build_floor SetParkEditorPauseMode pause FreeUpMemoryForPlayingPark do_load_unloadable load_peds = 0 RunScriptOnComponentType component = animation target = InvalidateCache params = { } load_parked_sounds ENDSCRIPT
-SCRIPT Sk5ed_Goals IF InMultiplayerGame add_multiplayer_mode_goals ENDIF ENDSCRIPT
-SCRIPT parked_setup_main_menu SetParkEditorPauseMode pause dialog_box_exit no_pad_start destroy_onscreen_keyboard set_theme_icons FormatText ChecksumName = load_icon "%i_load" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = back_icon "%i_back" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = test_play_icon "%i_test_play" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = nuke_icon "%i_nuke" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = theme_icon "%i_theme" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = resize_icon "%i_resize" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = set_players_icon "%i_set_players" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = time_icon "%i_time" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_new_pause_menu { menu_id = pause_menu vmenu_id = pause_vmenu pad_back_script = parked_continue_editing pos = PAIR(320, 540) } kill_start_key_binding create_helper_text generic_helper_text make_sprite_menu_item text = "Continue" id = menu_continue pad_choose_script = parked_continue_editing make_text_sprite texture = <continue_icon> parent = menu_continue make_sprite_menu_item text = "Test Play" id = menu_test_park pad_choose_script = parked_test_play make_text_sprite texture = <test_play_icon> parent = menu_test_park make_sprite_menu_item text = "Create A Goal" id = menu_create_a_goal pad_choose_script = parked_create_a_goal make_text_sprite texture = <new_icon> parent = menu_create_a_goal make_sprite_menu_item text = "Set Time Of Day" id = menu_set_time_of_day pad_choose_script = parked_setup_tod_menu make_text_sprite texture = <time_icon> parent = menu_set_time_of_day make_sprite_menu_item text = "Switch Theme" id = menu_switch_theme pad_choose_script = parked_setup_switch_theme_menu make_text_sprite texture = <theme_icon> parent = menu_switch_theme make_sprite_menu_item text = "Resize park" id = menu_resize_park pad_choose_script = parked_setup_new_resize_screen make_text_sprite texture = <resize_icon> parent = menu_resize_park make_sprite_menu_item text = "Nuke park" id = menu_clear_park pad_choose_script = menu_confirm_quit pad_choose_params = { yes_script = parked_clear_park title = "CLEAR PARK?" } make_text_sprite texture = <nuke_icon> parent = menu_clear_park IF NOT isNGC make_sprite_menu_item text = "Set max players" id = menu_set_max_players pad_choose_script = parked_setup_max_players_menu make_text_sprite texture = <set_players_icon> parent = menu_set_max_players ENDIF IF NOT IsTrue Bootstrap_Build make_sprite_menu_item text = "Save Park" id = menu_save_park_mem pad_choose_script = launch_pause_menu_save_park_sequence make_text_sprite texture = <save_icon> parent = menu_save_park_mem make_sprite_menu_item text = "Load Park" id = menu_load_park_mem pad_choose_script = parked_confirm_load_park make_text_sprite texture = <load_icon> parent = menu_load_park_mem IF NOT CD make_sprite_menu_item text = "Save Pre-made Park" id = menu_save_park pad_choose_script = parked_setup_disk_save_menu make_text_sprite texture = <save_icon> parent = menu_save_park ENDIF make_sprite_menu_item text = "Load Pre-made Park" id = menu_load_park pad_choose_script = parked_confirm_disk_load_park make_text_sprite texture = <load_icon> parent = menu_load_park ENDIF make_sprite_menu_item text = "Quit" id = menu_skateshop pad_choose_script = parked_quit_chosen make_text_sprite texture = <quit_icon> parent = menu_skateshop ENDSCRIPT
-SCRIPT parked_setup_tod_menu IF ObjectExists id = current_menu_anchor DestroyScreenElement id = current_menu_anchor ENDIF FormatText ChecksumName = title_icon "%i_time" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_new_themed_sub_menu { title = "TIME OF DAY" title_icon = <title_icon> } SetScreenElementProps id = sub_menu event_handlers = [ { pad_back generic_menu_pad_back params = { callback = create_pause_menu } } ] theme_menu_add_item text = "Day" id = tod_day pad_choose_script = parked_change_tod pad_choose_params = { tod_script = set_tod_day } centered = 1 theme_menu_add_item text = "Morning" id = tod_morn pad_choose_script = parked_change_tod pad_choose_params = { tod_script = set_tod_morning } centered = 1 theme_menu_add_item text = "Evening" id = tod_even pad_choose_script = parked_change_tod pad_choose_params = { tod_script = set_tod_evening } centered = 1 theme_menu_add_item text = "Night" id = tod_night pad_choose_script = parked_change_tod pad_choose_params = { tod_script = set_tod_night } centered = 1 last_menu_item = 1 finish_themed_sub_menu ENDSCRIPT
-SCRIPT parked_change_tod SetParkEditorTimeOfDay tod_script = <tod_script> exit_pause_menu ENDSCRIPT
-SCRIPT parked_confirm_load_park IF IsParkUnsaved menu_confirm_quit yes_script = launch_pause_menu_load_park_sequence title = "Replace unsaved park?" text_dims = PAIR(330, 0) ELSE launch_pause_menu_load_park_sequence ENDIF ENDSCRIPT
-SCRIPT parked_quit_chosen root_window : GetTags IF GotParam pause_controller IF NOT ( <pause_controller> = <device_num> ) RETURN ENDIF ENDIF menu_confirm_quit yes_script = menu_confirm_quit_park_editor ENDSCRIPT
-SCRIPT parked_quit SwitchOffRailEditor KillSpawnedScript name = parked_show_wait_message switch_off_poly_count_refresh SetParkEditorPauseMode pause kill_start_key_binding level_select_change_level_quit <...> ENDSCRIPT
-SCRIPT parked_setup_test_play_menu SetParkEditorPauseMode pause set_theme_icons make_new_pause_menu menu_id = pause_menu vmenu_id = pause_vmenu pad_back_script = parked_continue_test_play kill_start_key_binding create_helper_text generic_helper_text make_sprite_menu_item text = "Continue" id = menu_continue pad_choose_script = parked_continue_test_play make_text_sprite texture = <continue_icon> parent = menu_continue IF GoalManager_CanRetryGoal IF GoalManager_GetLastGoalId IF NOT GoalManager_HasWonGoal name = <goal_id> make_sprite_menu_item text = "Retry Last Goal" id = menu_retry_goal pad_choose_script = menu_select pad_choose_params = { stop_streams menu_select_script = RetryCurrentGoal } make_text_sprite texture = <retry_icon> parent = menu_retry_goal ENDIF ENDIF ENDIF IF GoalManager_HasActiveGoals make_sprite_menu_item text = "End Current Goal" id = menu_end_current_goal pad_choose_script = menu_select pad_choose_params = { menu_select_script = end_current_goal_run } make_text_sprite texture = <end_icon> parent = menu_end_current_goal ENDIF make_sprite_menu_item text = "View Goals" id = menu_view_goals pad_choose_script = create_view_goals_menu make_text_sprite texture = <view_icon> parent = menu_view_goals IF NOT CD make_sprite_menu_item text = "Debug Menu" id = debug_menu pad_choose_script = create_debug_menu make_text_sprite texture = <options_icon> parent = debug_menu make_sprite_menu_item text = "Goto Restart" id = menu_skip_to_restart pad_choose_script = generic_menu_pad_choose pad_choose_params = { callback = launch_restart_menu } make_text_sprite texture = <options_icon> parent = menu_skip_to_restart ENDIF make_sprite_menu_item text = "View Gaps" id = menu_skip_to_gap pad_choose_script = launch_gap_menu make_text_sprite texture = <gap_icon> parent = menu_skip_to_gap make_sprite_menu_item text = "Back to editor" id = menu_skateshop pad_choose_script = parked_test_play_back_to_editor make_text_sprite texture = <back_icon> parent = menu_skateshop RunScriptOnScreenElement id = pause_menu menu_onscreen ENDSCRIPT
-SCRIPT parked_set_tod GetParkEditorTimeOfDayScript IF GotParam tod_script script_change_tod tod_action = <tod_script> ENDIF ENDSCRIPT
-SCRIPT parked_test_play SwitchOffRailEditor SetParkEditorState state = test_play command = build_floor SetParkEditorPauseMode pause DisassociateFromObject exit_pause_menu ResetLevel ResetSkaters SetViewMode 0 spawnscript post_parked_test_play NotSessionSpecific = 1 ENDSCRIPT
-SCRIPT post_parked_test_play InitialiseCreatedGoals create_menu_camera GoalManager_InitializeAllGoals MakeSkaterGoto SkaterInit parked_set_tod ENDSCRIPT
-SCRIPT parked_continue_editing root_window : GetTags IF GotParam pause_controller IF GotParam device_num IF NOT ( <pause_controller> = <device_num> ) RETURN ENDIF ENDIF ENDIF DisassociateFromObject pulse_blur IF ObjectExists id = current_menu_anchor DestroyScreenElement id = current_menu_anchor ENDIF exit_pause_menu SetParkEditorState state = edit SetParkEditorPauseMode unpause ENDSCRIPT
-SCRIPT parked_continue_test_play root_window : GetTags IF GotParam pause_controller IF NOT ( <pause_controller> = <device_num> ) RETURN ENDIF ENDIF exit_pause_menu ENDSCRIPT
-SCRIPT parked_exit_test_play GoalManager_DeactivateAllGoals HideSkaterAndMiscSkaterEffects ResetScore ResetScorePot Skater : Vibrate off destroy_goal_panel_messages all SetParkEditorState state = edit SetParkEditorPauseMode unpause dialog_box_exit exit_pause_menu end_current_goal_run SwitchToParkEditorCamera speech_box_exit script_change_tod tod_action = set_tod_rainoff script_change_tod tod_action = set_tod_day ENDSCRIPT
-SCRIPT parked_test_play_back_to_editor destroy_goal_panel_messages root_window : GetTags IF GotParam pause_controller IF NOT ( <pause_controller> = <device_num> ) RETURN ENDIF ENDIF menu_confirm_quit yes_script = parked_exit_test_play ENDSCRIPT
-SCRIPT reload_park exit_pause_menu SetScreenElementLock id = root_window off IF ObjectExists id = defrag_wait_message DestroyScreenElement id = defrag_wait_message ENDIF CreateScreenElement { type = TextBlockElement id = defrag_wait_message parent = root_window just = [ center center ] pos = PAIR(320, 200) dims = PAIR(400, 100) internal_just = [ center center ] text = "Please Wait\\nReloading park to free up memory ..." font = small scale = PAIR(1, 1) alpha = 1.00000000000 } SetScreenElementLock id = root_window change check_for_unplugged_controllers = 0 SetParkEditorPauseMode pause SetButtonEventMappings block_menu_input wait 1 seconds SetButtonEventMappings unblock_menu_input change check_for_unplugged_controllers = 1 GetEditorTheme parked_set_theme theme = <theme> ENDSCRIPT
-SCRIPT parked_clear_park change check_for_unplugged_controllers = 0 SwitchOffRailEditor dialog_box_exit create_pause_menu no_sound SetButtonEventMappings block_menu_input wait 4 frames SetParkName "" parked_continue_editing spawnscript parked_show_wait_message WaitForEvent type = showed_wait_message SetParkEditorState state = edit command = clear SetParkEditorPauseMode unpause GoalEditor : NukeAllGoals OnlyParkEditorGoals GoalManager_UninitializeAllGoals GoalManager_RemoveAllGoals IF ScreenElementExists id = goal_start_dialog DestroyScreenElement id = goal_start_dialog ENDIF RailEditor : ClearRailEditor SetButtonEventMappings unblock_menu_input CalibrateMemoryGauge Fresh change check_for_unplugged_controllers = 1 IF isNGC GetEditorTheme parked_set_theme theme = <theme> ENDIF ENDSCRIPT
-SCRIPT parked_setup_max_players_menu IF ObjectExists id = current_menu_anchor DestroyScreenElement id = current_menu_anchor ENDIF FormatText ChecksumName = title_icon "%i_set_players" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_new_themed_sub_menu title = "MAX PLAYERS" title_icon = <title_icon> SetScreenElementProps { id = sub_menu event_handlers = [ { pad_back generic_menu_pad_back params = { callback = create_pause_menu } } ] replace_handlers } create_helper_text generic_helper_text GetParkEditorMaxPlayers FormatText TextName = text "Current max players = %d" d = <MaxPlayers> CreateScreenElement { type = ContainerElement parent = sub_menu id = curmax_players_box pos = PAIR(307.00000000000, 90.00000000000) internal_just = [ left top ] } CreateScreenElement { type = SpriteElement parent = curmax_players_box id = item_bg_box padding_scale = 0.50000000000 texture = black z_priority = 3 scale = PAIR(73.50000000000, 7.30000019073) just = [ left top ] pos = PAIR(-150.00000000000, -2.00000000000) rgba = [ 0 0 0 255 ] } CreateScreenElement { type = TextElement parent = curmax_players_box text = <text> font = Dialog just = [ center center ] rgba = [ 128 , 128 , 128 , 90 ] pos = PAIR(-5.00000000000, 13.00000000000) } FormatText ChecksumName = on_rgba "%i_HIGHLIGHTED_TEXT_COLOR" i = ( THEME_COLOR_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = off_rgba "%i_UNHIGHLIGHTED_TEXT_COLOR" i = ( THEME_COLOR_PREFIXES [ current_theme_prefix ] ) CreateScreenElement { type = SpriteElement parent = curmax_players_box texture = white2 scale = PAIR(37.00000000000, 0.10000000149) pos = PAIR(-1.00000000000, 26.00000000000) just = [ center top ] rgba = <on_rgba> } CreateScreenElement { type = SpriteElement parent = curmax_players_box texture = white2 scale = PAIR(37.00000000000, 0.10000000149) pos = PAIR(-1.00000000000, -3.00000000000) just = [ center top ] rgba = <on_rgba> } theme_menu_add_item text = " " not_focusable GetParkEditorMaxPlayersPossible FormatText ChecksumName = my_icon "%i_options" i = ( THEME_PREFIXES [ current_theme_prefix ] ) i = 2 BEGIN FormatText TextName = text "Set max players to %d" d = <i> FormatText ChecksumName = id "menu_max_players_%d" d = <i> IF NOT ( <i> = 8 ) IF ( <i> > <MaxPlayersPossible> ) theme_menu_add_item not_focusable = not_focusable text = <text> id = <id> pad_choose_script = parked_set_max_players pad_choose_params = { max_players = <i> } centered = 1 ELSE theme_menu_add_item text = <text> id = <id> pad_choose_script = parked_set_max_players pad_choose_params = { max_players = <i> } centered = 1 ENDIF ELSE IF ( <i> > <MaxPlayersPossible> ) theme_menu_add_item not_focusable = not_focusable text = <text> id = <id> pad_choose_script = parked_set_max_players pad_choose_params = { max_players = <i> } centered = 1 last_menu_item = 1 ELSE theme_menu_add_item text = <text> id = <id> pad_choose_script = parked_set_max_players pad_choose_params = { max_players = <i> } centered = 1 last_menu_item = 1 ENDIF ENDIF make_text_sprite texture = <my_icon> parent = <id> i = ( <i> + 1 ) REPEAT 7 finish_themed_sub_menu ENDSCRIPT
-SCRIPT parked_set_max_players SetParkEditorMaxPlayers <max_players> parked_continue_editing ENDSCRIPT
-SCRIPT parked_setup_switch_theme_menu IF ObjectExists id = current_menu_anchor DestroyScreenElement id = current_menu_anchor ENDIF FormatText ChecksumName = title_icon "%i_theme" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_new_themed_sub_menu title = "SWITCH THEME" title_icon = <title_icon> SetScreenElementProps { id = sub_menu event_handlers = [ { pad_back generic_menu_pad_back params = { callback = create_pause_menu } } ] replace_handlers } create_helper_text generic_helper_text GetEditorTheme GenerateLevelStructureNameFromTheme theme = <theme> FormatText TextName = text "Current Theme: %d" d = ( <structure_name> . theme_name ) CreateScreenElement { type = ContainerElement parent = sub_menu id = cur_theme_box pos = PAIR(320.00000000000, 112.00000000000) } CreateScreenElement { type = SpriteElement parent = cur_theme_box id = item_bg_box padding_scale = 0.50000000000 texture = black z_priority = 4 scale = PAIR(82.00000000000, 7.50000000000) pos = PAIR(-178.00000000000, -24.00000000000) just = [ left top ] rgba = [ 0 0 0 255 ] } CreateScreenElement { type = TextElement parent = cur_theme_box text = <text> font = Dialog just = [ center center ] rgba = [ 128 , 128 , 128 , 90 ] z_priority = 5 pos = PAIR(-10.00000000000, -8.00000000000) } FormatText ChecksumName = on_rgba "%i_HIGHLIGHTED_TEXT_COLOR" i = ( THEME_COLOR_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = off_rgba "%i_UNHIGHLIGHTED_TEXT_COLOR" i = ( THEME_COLOR_PREFIXES [ current_theme_prefix ] ) CreateScreenElement { type = SpriteElement parent = cur_theme_box texture = white2 scale = PAIR(41.50000000000, 0.10000000149) pos = PAIR(-179.00000000000, 4.00000000000) z_priority = 5 just = [ left top ] rgba = <on_rgba> } CreateScreenElement { type = SpriteElement parent = cur_theme_box texture = white2 scale = PAIR(41.50000000000, 0.10000000149) pos = PAIR(-179.00000000000, -25.00000000000) z_priority = 5 just = [ left top ] rgba = <on_rgba> } theme_menu_add_item { text = "                             " font = Dialog just = [ center center ] rgba = [ 128 , 128 , 128 , 128 ] centered = 1 not_focusable } FormatText ChecksumName = my_icon "%i_options" i = ( THEME_PREFIXES [ current_theme_prefix ] ) GetEditorMaxThemes i = 0 BEGIN IF NOT ( <i> = ( <max_themes> -1 ) ) FormatText ChecksumName = id "menu_set_theme_%d" d = <i> GenerateLevelStructureNameFromTheme theme = <i> RemoveParameter not_focusable theme_menu_add_item { text = ( <structure_name> . theme_name ) id = <id> pad_choose_script = parked_set_theme pad_choose_params = { theme = <i> } not_focusable = <not_focusable> centered = 1 } make_text_sprite texture = <my_icon> parent = <id> i = ( <i> + 1 ) ELSE FormatText ChecksumName = id "menu_set_theme_%d" d = <i> GenerateLevelStructureNameFromTheme theme = <i> RemoveParameter not_focusable theme_menu_add_item { text = ( <structure_name> . theme_name ) id = <id> pad_choose_script = parked_set_theme pad_choose_params = { theme = <i> } not_focusable = <not_focusable> centered = 1 last_menu_item = 1 } i = ( <i> + 1 ) ENDIF REPEAT <max_themes> finish_themed_sub_menu ENDSCRIPT
-SCRIPT parked_set_theme SwitchOffRailEditor exit_pause_menu SetEditorTheme theme = <theme> RailEditor : DestroyEditedRailSectors change_level level = Load_Sk5Ed ENDSCRIPT
-SCRIPT cleanup_resize_arrows IF ScreenElementExists id = resize_arrow_a DestroyScreenElement id = resize_arrow_a ENDIF IF ScreenElementExists id = resize_arrow_b DestroyScreenElement id = resize_arrow_b ENDIF ENDSCRIPT
-SCRIPT cleanup_resize_cam IF ObjectExists id = park_resize_cam RailEditor : EditorCam_Initialise position = VECTOR(0.00000000000, 0.00000000000, 0.00000000000) cursor_height = 20 SwitchToParkEditorCamera park_resize_cam : Die ENDIF ENDSCRIPT
-SCRIPT quit_resize_screen cleanup_resize_arrows cleanup_resize_cam create_pause_menu ENDSCRIPT
-SCRIPT parked_setup_new_resize_screen IF ObjectExists id = current_menu_anchor DestroyScreenElement id = current_menu_anchor ENDIF pause_menu_gradient off kill_start_key_binding SetScreenElementLock id = root_window off CreateScreenElement { type = ContainerElement parent = root_window id = menu_parts_anchor dims = PAIR(640.00000000000, 480.00000000000) pos = PAIR(320.00000000000, 240.00000000000) } AssignAlias id = menu_parts_anchor alias = current_menu_anchor SetScreenElementProps { id = menu_parts_anchor event_handlers = [ { pad_back generic_menu_pad_back params = { callback = quit_resize_screen } } { pad_start generic_menu_pad_back params = { callback = quit_resize_screen } } { pad_left incremental_resize params = { button = left } } { pad_left blink_arrow params = { id = resize_arrow_a } } { pad_right incremental_resize params = { button = right } } { pad_right blink_arrow params = { id = resize_arrow_b } } { pad_up incremental_resize params = { button = up } } { pad_up blink_arrow params = { id = resize_arrow_a } } { pad_down incremental_resize params = { button = down } } { pad_down blink_arrow params = { id = resize_arrow_b } } { pad_circle incremental_resize params = { button = circle } } { pad_square incremental_resize params = { button = square } } { pad_choose cycle_side } { pad_expand incremental_resize params = { button = circle } } ] replace_handlers } IF NOT ObjectExists id = park_resize_cam CreateCompositeObject { Components = [ { component = camera } ] params = { name = park_resize_cam } } park_resize_cam : Obj_SetPosition position = VECTOR(0.00000000000, 5000.00000000000, 3500.00000000000) park_resize_cam : Obj_SetOrientation x = 62 SetActiveCamera id = park_resize_cam ENDIF refresh_parked_resize_arrows create_resize_helper_text lr FireEvent type = focus target = menu_parts_anchor ENDSCRIPT
-SCRIPT create_resize_helper_text IF GotParam lr IF IsXBox create_helper_text resize_park_helper_text_lr_xbox ELSE IF isNGC create_helper_text resize_park_helper_text_lr_ngc ELSE create_helper_text resize_park_helper_text_lr ENDIF ENDIF ELSE IF IsXBox create_helper_text resize_park_helper_text_ud_xbox ELSE IF isNGC create_helper_text resize_park_helper_text_ud_ngc ELSE create_helper_text resize_park_helper_text_ud ENDIF ENDIF ENDIF ENDSCRIPT
-SCRIPT incremental_resize IF ObjectExists id = parked_message PlayEdBuzzSound RETURN ENDIF GetCurrentParkBounds old_x = <x> old_z = <z> old_w = <w> old_l = <l> SWITCH <button> CASE circle x = ( <x> -4 ) w = ( <w> + 8 ) z = ( <z> -4 ) l = ( <l> + 8 ) IF ( <x> < 1 ) x = ( <x> + 4 ) w = ( <w> -4 ) ENDIF IF ( ( <x> + <w> ) > 57 ) w = ( <w> -4 ) ENDIF IF ( <z> < 1 ) z = ( <z> + 4 ) l = ( <l> -4 ) ENDIF IF ( ( <z> + <l> ) > 57 ) l = ( <l> -4 ) ENDIF CASE square x = ( <x> + 4 ) w = ( <w> -8 ) z = ( <z> + 4 ) l = ( <l> -8 ) IF ( <x> > 25 ) x = ( <x> -4 ) w = ( <w> + 4 ) ENDIF IF ( ( <x> + <w> ) < 33 ) w = ( <w> + 4 ) ENDIF IF ( <z> > 25 ) z = ( <z> -4 ) l = ( <l> + 4 ) ENDIF IF ( ( <z> + <l> ) < 33 ) l = ( <l> + 4 ) ENDIF CASE up CASE down CASE left CASE right SWITCH park_side_to_move CASE 0 SWITCH <button> CASE left x = ( <x> -4 ) w = ( <w> + 4 ) CASE right x = ( <x> + 4 ) w = ( <w> -4 ) DEFAULT RETURN ENDSWITCH CASE 1 SWITCH <button> CASE up z = ( <z> -4 ) l = ( <l> + 4 ) CASE down z = ( <z> + 4 ) l = ( <l> -4 ) DEFAULT RETURN ENDSWITCH CASE 2 SWITCH <button> CASE left w = ( <w> -4 ) CASE right w = ( <w> + 4 ) DEFAULT RETURN ENDSWITCH CASE 3 SWITCH <button> CASE up l = ( <l> -4 ) CASE down l = ( <l> + 4 ) DEFAULT RETURN ENDSWITCH ENDSWITCH ENDSWITCH IF ( <x> = <old_x> & <z> = <old_z> & <w> = <old_w> & <l> = <old_l> ) PlayEdBuzzSound RETURN ENDIF IF ( <x> < 1 | <x> > 25 | ( <x> + <w> ) > 57 | ( <x> + <w> ) < 33 | <z> < 1 | <z> > 25 | ( <z> + <l> ) > 57 | ( <z> + <l> ) < 33 ) PlayEdBuzzSound RETURN ENDIF IF isNGC IF ( <w> * <l> > <old_w> * <old_l> ) IF ( <w> * <l> > 48 * 40 ) PlayEdBuzzSound RETURN ENDIF ENDIF ENDIF IF CanCleanlyResizePark NewBounds = { x = <x> z = <z> w = <w> l = <l> } ResizePark NewBounds = { x = <x> z = <z> w = <w> l = <l> } PlayEdPlaceSound ELSE PlayEdBuzzSound cleanup_resize_arrows IF ObjectExists id = current_menu_anchor DestroyScreenElement id = current_menu_anchor ENDIF create_snazzy_dialog_box { title = #"Resize" text = #"Resize and lose pieces?" pad_back_script = do_not_resize_park buttons = [ { font = small text = #"No" pad_choose_script = do_not_resize_park } { font = small text = #"Yes" pad_choose_script = do_resize_park pad_choose_params = { NewBounds = { x = <x> z = <z> w = <w> l = <l> } } } ] } ENDIF ENDSCRIPT
-SCRIPT do_not_resize_park dialog_box_exit parked_setup_new_resize_screen ENDSCRIPT
-SCRIPT do_resize_park dialog_box_exit ResizePark NewBounds = <NewBounds> parked_setup_new_resize_screen ENDSCRIPT
-SCRIPT cycle_side change park_side_to_move = ( park_side_to_move + 1 ) IF ( park_side_to_move > 3 ) change park_side_to_move = 0 ENDIF IF ( park_side_to_move = 0 | park_side_to_move = 2 ) create_resize_helper_text lr ELSE create_resize_helper_text ud ENDIF PlayRotatePieceSound refresh_parked_resize_arrows ENDSCRIPT
-SCRIPT refresh_parked_resize_arrows IF ScreenElementExists id = resize_arrow_a DestroyScreenElement id = resize_arrow_a ENDIF IF ScreenElementExists id = resize_arrow_b DestroyScreenElement id = resize_arrow_b ENDIF SWITCH park_side_to_move CASE 0 rot_angle = 0 pos_a = PAIR(20.00000000000, 220.00000000000) pos_b = PAIR(60.00000000000, 220.00000000000) SetScreenElementProps { id = menu_parts_anchor event_handlers = [ { pad_left incremental_resize params = { button = left } } { pad_left blink_arrow params = { id = resize_arrow_a } } { pad_right incremental_resize params = { button = right } } { pad_right blink_arrow params = { id = resize_arrow_b } } { pad_up incremental_resize params = { button = up } } { pad_down incremental_resize params = { button = down } } ] replace_handlers } CASE 1 rot_angle = 90 pos_a = PAIR(320.00000000000, 10.00000000000) pos_b = PAIR(320.00000000000, 50.00000000000) SetScreenElementProps { id = menu_parts_anchor event_handlers = [ { pad_left incremental_resize params = { button = left } } { pad_right incremental_resize params = { button = right } } { pad_up incremental_resize params = { button = up } } { pad_up blink_arrow params = { id = resize_arrow_a } } { pad_down incremental_resize params = { button = down } } { pad_down blink_arrow params = { id = resize_arrow_b } } ] replace_handlers } CASE 2 rot_angle = 180 pos_a = PAIR(620.00000000000, 220.00000000000) pos_b = PAIR(580.00000000000, 220.00000000000) SetScreenElementProps { id = menu_parts_anchor event_handlers = [ { pad_left incremental_resize params = { button = left } } { pad_left blink_arrow params = { id = resize_arrow_b } } { pad_right incremental_resize params = { button = right } } { pad_right blink_arrow params = { id = resize_arrow_a } } { pad_up incremental_resize params = { button = up } } { pad_down incremental_resize params = { button = down } } ] replace_handlers } CASE 3 rot_angle = 270 pos_a = PAIR(320.00000000000, 390.00000000000) pos_b = PAIR(320.00000000000, 350.00000000000) SetScreenElementProps { id = menu_parts_anchor event_handlers = [ { pad_left incremental_resize params = { button = left } } { pad_right incremental_resize params = { button = right } } { pad_up incremental_resize params = { button = up } } { pad_up blink_arrow params = { id = resize_arrow_b } } { pad_down incremental_resize params = { button = down } } { pad_down blink_arrow params = { id = resize_arrow_a } } ] replace_handlers } ENDSWITCH SetScreenElementLock id = root_window off params = { type = SpriteElement parent = root_window alpha = 1 just = [ left middle ] rgba = [ 118 , 110 , 14 , 128 ] z_priority = 5 scale = 2 } CreateScreenElement <params> id = resize_arrow_a texture = left_arrow rot_angle = <rot_angle> pos = <pos_a> CreateScreenElement <params> id = resize_arrow_b texture = right_arrow rot_angle = <rot_angle> pos = <pos_b> ENDSCRIPT
-SCRIPT parked_setup_disk_save_menu IF ObjectExists id = current_menu_anchor DestroyScreenElement id = current_menu_anchor ENDIF make_new_menu { menu_id = set_menu_container type = VScrollingMenu scrolling_menu_id = disk_save_menu_scrolling scrolling_menu_offset = PAIR(0.00000000000, 0.00000000000) just = [ left top ] internal_just = [ center center ] pos = PAIR(100.00000000000, 100.00000000000) dims = PAIR(200.00000000000, 200.00000000000) vmenu_id = pause_vmenu regular_space_amount = <item_spacing> internal_scale = 0.50000000000 num_items_to_show = 10 } SetScreenElementLock id = pause_vmenu off make_text_sub_menu_item text = "done" scale = 0.75000000000 pad_choose_script = parked_continue_editing make_text_sub_menu_item text = "slot 1" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 1 } make_text_sub_menu_item text = "slot 2" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 2 } make_text_sub_menu_item text = "slot 3" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 3 } make_text_sub_menu_item text = "slot 4" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 4 } make_text_sub_menu_item text = "slot 5" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 5 } make_text_sub_menu_item text = "slot 6" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 6 } make_text_sub_menu_item text = "slot 7" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 7 } make_text_sub_menu_item text = "slot 8" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 8 } make_text_sub_menu_item text = "slot 9" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 9 } make_text_sub_menu_item text = "slot 10" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 10 } make_text_sub_menu_item text = "slot 11" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 11 } make_text_sub_menu_item text = "slot 12" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 12 } make_text_sub_menu_item text = "slot 13" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 13 } make_text_sub_menu_item text = "slot 14" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 14 } make_text_sub_menu_item text = "slot 15" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 15 } make_text_sub_menu_item text = "slot 16" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 16 } make_text_sub_menu_item text = "slot 17" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 17 } make_text_sub_menu_item text = "slot 18" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 18 } make_text_sub_menu_item text = "slot 19" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 19 } make_text_sub_menu_item text = "slot 20" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 20 } make_text_sub_menu_item text = "slot 21" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 21 } make_text_sub_menu_item text = "slot 22" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 22 } make_text_sub_menu_item text = "slot 23" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 23 } make_text_sub_menu_item text = "slot 24" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 24 } make_text_sub_menu_item text = "slot 25" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 25 } SetScreenElementLock id = pause_vmenu on SetScreenElementLock id = disk_save_menu_scrolling on FireEvent type = focus target = disk_save_menu_scrolling FireEvent type = focus target = pause_vmenu ENDSCRIPT
-SCRIPT parked_save_to_disk SaveParkToDisk slot = <slot> parked_continue_editing ENDSCRIPT
-SCRIPT parked_confirm_disk_load_park IF IsParkUnsaved menu_confirm_quit yes_script = parked_setup_disk_load_menu title = "Replace unsaved park?" text_dims = PAIR(330.00000000000, 0.00000000000) ELSE parked_setup_disk_load_menu ENDIF ENDSCRIPT
-SCRIPT parked_setup_disk_load_menu level_select_created_park_list in_park_editor ENDSCRIPT
-SCRIPT parked_load_from_disk parked_continue_editing spawnscript parked_show_wait_message SetButtonEventMappings block_menu_input WaitForEvent type = showed_wait_message SetButtonEventMappings unblock_menu_input LoadParkFromDisk slot = <slot> IF CustomParkMode editing InitialiseCreatedGoals ENDIF FormatText TextName = text "Slot %d" d = <slot> SetParkName <text> ENDSCRIPT
-SCRIPT parked_show_wait_message { text = "Please Wait" stay_time = 0.00000000000 } SetScreenElementLock id = root_window off IF ObjectExists id = parked_message FireEvent type = showed_wait_message target = system RETURN ENDIF CreateScreenElement { type = TextBlockElement id = parked_message parent = root_window just = [ center center ] pos = PAIR(320.00000000000, 200.00000000000) dims = PAIR(400.00000000000, 100.00000000000) internal_just = [ center center ] text = <text> font = small scale = PAIR(0.00000000000, 0.00000000000) alpha = 0.00000000000 } SetScreenElementLock id = root_window DoScreenElementMorph id = parked_message scale = PAIR(1.00000000000, 1.00000000000) alpha = 1.00000000000 time = 0.40000000596 wait 0.40000000596 seconds FireEvent type = showed_wait_message target = system wait <stay_time> seconds wait 1 frame DoScreenElementMorph id = parked_message scale = PAIR(2.00000000000, 2.00000000000) alpha = 0.00000000000 time = 0.40000000596 wait 0.40000000596 seconds SetScreenElementLock id = root_window off DestroyScreenElement id = parked_message SetScreenElementLock id = root_window ENDSCRIPT
-SCRIPT parked_kill_wait_message IF NOT ObjectExists id = parked_message RETURN ENDIF FireEvent type = showed_wait_message target = system SetScreenElementLock id = root_window off DestroyScreenElement id = parked_message SetScreenElementLock id = root_window KillSpawnedScript name = parked_show_wait_message ENDSCRIPT
-SCRIPT parked_show_out_of_memory_message spawnscript parked_show_wait_message params = { text = "Not enough memory to resize. Remove some pieces." stay_time = 2.00000000000 } ENDSCRIPT
-SCRIPT parked_setup_gap_menu pause_menu_gradient on SetParkEditorPauseMode pause set_theme_icons FormatText ChecksumName = load_icon "%i_load" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = back_icon "%i_back" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = test_play_icon "%i_test_play" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = nuke_icon "%i_nuke" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = theme_icon "%i_theme" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = resize_icon "%i_resize" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = set_players_icon "%i_set_players" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = continue_icon "%i_continue" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = name_cat_icon "%i_name_cat" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = career_ops_icon "%i_career_ops" i = ( THEME_PREFIXES [ current_theme_prefix ] ) FormatText ChecksumName = gap_icon "%i_gap" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_new_pause_menu { menu_id = pause_menu vmenu_id = pause_vmenu pad_back_script = parked_continue_editing pos = PAIR(320.00000000000, 240.00000000000) } kill_start_key_binding create_helper_text generic_helper_text make_sprite_menu_item text = "Continue" id = menu_continue pad_choose_script = parked_continue_editing make_text_sprite texture = <continue_icon> parent = menu_continue make_sprite_menu_item text = "Name Gap" id = menu_name_gap pad_choose_script = parked_name_gap make_text_sprite texture = <name_cat_icon> parent = menu_name_gap make_sprite_menu_item text = "Set Score" id = menu_set_score pad_choose_script = parked_setup_gap_score_menu make_text_sprite texture = <career_ops_icon> parent = menu_set_score make_sprite_menu_item text = "Set Gap Type" id = menu_set_gap_type pad_choose_script = parked_setup_gap_type_menu make_text_sprite texture = <gap_icon> parent = menu_set_gap_type RunScriptOnScreenElement id = pause_menu menu_onscreen build_pause_menu_parts ENDSCRIPT
-SCRIPT parked_name_gap exit_pause_menu SetParkEditorPauseMode pause GetEditedParkGapName create_onscreen_keyboard { keyboard_title = "NAME GAP" keyboard_done_script = parked_gap_is_named text = <name> min_length = 1 allow_cancel allowed_characters = [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "." "," "-" "!" "?" ":" "+" "\'" "#" "$" "@" "&" "=" "(" ")" "\xA8" "\xA9" "\xDF" "\xC4" "\xDC" "\xD6" "\xE0" "\xE2" "\xEA" "\xE8" "\xE9" "\xEB" "\xEC" "\xEE" "\xEF" "\xF4" "\xF2" "\xF9" "\xFB" "\xE7" "\x9C" "\xFC" "\xE4" "\xF6" "\\v" " " ] } ENDSCRIPT
-SCRIPT parked_gap_is_named GetTextElementString id = keyboard_current_string SetEditedParkGapInfo name = <string> destroy_onscreen_keyboard pause_menu_gradient off SetParkEditorPauseMode unpause ENDSCRIPT
-SCRIPT parked_setup_gap_score_menu IF ObjectExists id = current_menu_anchor DestroyScreenElement id = current_menu_anchor ENDIF FormatText ChecksumName = title_icon "%i_career_ops" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_new_themed_sub_menu title = "SET SCORE" title_icon = <title_icon> SetScreenElementProps { id = sub_menu event_handlers = [ { pad_back generic_menu_pad_back params = { callback = parked_continue_editing } } ] } theme_menu_add_item text = "100 pts" id = menu_score1 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 100 } centered = 1 theme_menu_add_item text = "200 pts" id = menu_score2 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 200 } centered = 1 theme_menu_add_item text = "300 pts" id = menu_score3 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 300 } centered = 1 theme_menu_add_item text = "400 pts" id = menu_score4 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 400 } centered = 1 theme_menu_add_item text = "500 pts" id = menu_score5 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 500 } centered = 1 theme_menu_add_item text = "600 pts" id = menu_score6 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 600 } centered = 1 theme_menu_add_item text = "700 pts" id = menu_score7 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 700 } centered = 1 last_menu_item = 1 finish_themed_sub_menu ENDSCRIPT
-SCRIPT parked_set_gap_score SetEditedParkGapInfo score = <score> parked_continue_editing ENDSCRIPT
-SCRIPT parked_setup_gap_type_menu IF ObjectExists id = current_menu_anchor DestroyScreenElement id = current_menu_anchor ENDIF FormatText ChecksumName = title_icon "%i_gap" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_new_themed_sub_menu title = "GAP TYPE" title_icon = <title_icon> SetScreenElementProps { id = sub_menu event_handlers = [ { pad_back generic_menu_pad_back params = { callback = parked_continue_editing } } ] } theme_menu_add_item text = "Default (Skating)" id = menu_default pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { CANCEL_GROUND } } centered = 1 theme_menu_add_item text = "Only Air" id = menu_air pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { PURE_AIR } } centered = 1 theme_menu_add_item text = "Only Rail" id = menu_rail pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { CANCEL_GROUND CANCEL_WALL CANCEL_LIP CANCEL_WALLPLANT CANCEL_MANUAL CANCEL_HANG CANCEL_LADDER } } centered = 1 theme_menu_add_item text = "Only Manual" id = menu_manual pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { CANCEL_GROUND CANCEL_RAIL CANCEL_WALL CANCEL_LIP CANCEL_WALLPLANT CANCEL_HANG CANCEL_LADDER REQUIRE_MANUAL } } centered = 1 theme_menu_add_item text = "Only Car" id = menu_car pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { CANCEL_WALK CANCEL_SKATE } } centered = 1 last_menu_item = 1 finish_themed_sub_menu ENDSCRIPT
-SCRIPT parked_set_gap_type SetEditedParkGapInfo cancel_flags = <cancel_flags> parked_continue_editing ENDSCRIPT
-SCRIPT parked_setup_area_select_menu SetParkEditorPauseMode pause pause_menu_gradient on set_theme_icons make_new_pause_menu { menu_id = pause_menu vmenu_id = pause_vmenu pos = PAIR(320.00000000000, 240.00000000000) } kill_start_key_binding create_helper_text generic_helper_text SetScreenElementProps id = pause_menu event_handlers = [ { pad_back generic_menu_pad_back params = { callback = parked_area_select_continue } } ] make_sprite_menu_item text = "Continue" id = menu_continue pad_choose_script = parked_area_select_continue FormatText ChecksumName = texture "%i_continue" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_text_sprite texture = <texture> parent = menu_continue IF ParkEditorSelectionAreaTooBigToCopy not_focusable = not_focusable ENDIF make_sprite_menu_item text = "Copy" id = menu_name_copy pad_choose_script = parked_copy_to_clipboard not_focusable = <not_focusable> FormatText ChecksumName = texture "%i_grab" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_text_sprite texture = <texture> parent = menu_name_copy make_sprite_menu_item text = "Cut" id = menu_name_cut pad_choose_script = parked_cut_to_clipboard FormatText ChecksumName = texture "%i_career_ops" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_text_sprite texture = <texture> parent = menu_name_cut make_sprite_menu_item text = "Delete pieces" id = menu_name_delete pad_choose_script = parked_delete_selected_pieces FormatText ChecksumName = texture "%i_end" i = ( THEME_PREFIXES [ current_theme_prefix ] ) make_text_sprite texture = <texture> parent = menu_name_delete RunScriptOnScreenElement id = pause_menu menu_onscreen build_pause_menu_parts ENDSCRIPT
-SCRIPT parked_area_select_continue ContinueParkEditorAreaSelection parked_continue_editing ENDSCRIPT
-SCRIPT parked_copy_to_clipboard IF CopyParkEditorSelectionToClipboard parked_continue_editing SwitchParkEditorMenuPieceToMostRecentClipboard ELSE PlayEdBuzzSound parked_continue_editing ENDIF ENDSCRIPT
-SCRIPT parked_cut_to_clipboard IF CutParkEditorAreaSelection parked_continue_editing SwitchParkEditorMenuPieceToMostRecentClipboard ELSE PlayEdBuzzSound parked_continue_editing ENDIF ENDSCRIPT
-SCRIPT parked_delete_selected_pieces ParkEditorAreaSelectionDeletePieces parked_continue_editing ENDSCRIPT
-SCRIPT parked_defragment_memory IF isNGC PauseMusic 1 ENDIF SetParkEditorPauseMode pause spawnscript parked_show_wait_message WaitForEvent type = showed_wait_message IF isNGC WriteCompressedMapBuffer ENDIF SetParkEditorState state = edit command = regenerate_from_map SetParkEditorPauseMode unpause IF isNGC PauseMusic 0 ENDIF ENDSCRIPT
-SCRIPT ReExportParks array = ThemeIndicesA GetArraySize <array> i = 0 BEGIN LoadParkFromDisk slot = ( <array> [ <i> ] ) SaveParkToDisk slot = ( <array> [ <i> ] ) i = ( <i> + 1 ) REPEAT <array_size> ENDSCRIPT
-SCRIPT TRG_Flag_BlueScript_Parked Team_Flag blue ENDSCRIPT
-SCRIPT TRG_Flag_GreenScript_Parked Team_Flag green ENDSCRIPT
-SCRIPT TRG_Flag_RedScript_Parked Team_Flag red ENDSCRIPT
-SCRIPT TRG_Flag_YellowScript_Parked Team_Flag yellow ENDSCRIPT
-RailEditorHighlightColourR = 255 RailEditorHighlightColourG = 255 RailEditorHighlightColourB = 255 RailEditorBadAngleHighlightColourR = 255 RailEditorBadAngleHighlightColourG = 0 RailEditorBadAngleHighlightColourB = 0 RailEditorHighlightFlashRate = 20 RailEditorRedLineFlashRate = 4 RailEditorMinimumPointSeparation = 20 RailEditorMaxSlope = 80 RailEditorMaxJoinAngle = 120 SCRIPT RailEditorEveryFrame UnHighlightAllRails GetEditingMode GetCursorPosition IF ObjectExists id = RailEditorCursor RailEditorCursor : Obj_SetPosition position = <pos> RailEditorCursor : Obj_SetOrientation y = <angle> ENDIF SWITCH <mode> CASE FreeRoaming IF FindNearestRailPoint pos = <pos> HighlightRailPoint rail_id = <rail_id> rail_point_index = <rail_point_index> Flash IncludeEndPosts ENDIF CASE RailLayout DrawDottedLine pos = <pos> CASE Grab GetTags UpdateRailPointPosition rail_id = <rail_id> rail_point_index = <rail_point_index> pos = <pos> HighlightRailPoint rail_id = <rail_id> rail_point_index = <rail_point_index> ENDSWITCH ENDSCRIPT
-SCRIPT rail_editor_destroy_cursor IF ObjectExists id = RailEditorCursor RailEditorCursor : Die ENDIF ENDSCRIPT
-SCRIPT rail_editor_create_cursor rail_editor_destroy_cursor Model = Sk4Ed_Team_Green RailEditor : GetEditingMode SWITCH <mode> CASE FreeRoaming Model = "ed_cursors\\ed_cursor_freerail\\ed_cursor_freerail.mdl" CASE RailLayout Model = "ed_cursors\\ed_cursor_rail\\ed_cursor_rail.mdl" CASE Grab Model = "ed_cursors\\ed_cursor_editrail\\ed_cursor_editrail.mdl" ENDSWITCH CreateCompositeObject { Components = [ { component = motion } { component = Model Model = <Model> } ] params = { name = RailEditorCursor } } RailEditor : GetCursorPosition RailEditorCursor : Obj_SetPosition position = <pos> RailEditorCursor : Obj_SetOrientation y = <angle> ENDSCRIPT
-SCRIPT RailEditorX GetEditingMode GetCursorPosition SWITCH <mode> CASE FreeRoaming IF NewRail IF AddNewPosition pos = <pos> AddPost SetEditingMode mode = RailLayout rail_editor_create_cursor ELSE IF GetEditedRailInfo CurrentRail IF ( <num_points> < 2 ) DeleteRail rail_id = <rail_id> ENDIF ENDIF ENDIF ENDIF CASE RailLayout IF NOT AddNewPosition pos = <pos> AddPost IF GetEditedRailInfo CurrentRail IF ( <num_points> < 2 ) DeleteRail rail_id = <rail_id> ENDIF ENDIF DeleteDottedLine SetEditingMode mode = FreeRoaming rail_editor_create_cursor ENDIF CASE Grab GetTags IF NOT UpdateRailPointPosition rail_id = <rail_id> rail_point_index = <rail_point_index> pos = <pos> UpdateSuperSectors ELSE SetEditingMode mode = FreeRoaming rail_editor_create_cursor ENDIF DEFAULT printf "X does nothing in editor mode \'%s\'" s = <mode> ENDSWITCH ENDSCRIPT
-SCRIPT RailEditorCircle GetEditingMode GetCursorPosition SWITCH <mode> CASE FreeRoaming IF FindNearestRailPoint pos = <pos> SetTags rail_id = <rail_id> rail_point_index = <rail_point_index> OriginalPos = <NearestPos> EditorCam_SetCursorPos position = <NearestPos> SetEditingMode mode = Grab rail_editor_create_cursor ENDIF DEFAULT printf "Circle does nothing in editor mode \'%s\'" s = <mode> ENDSWITCH ENDSCRIPT
-SCRIPT RailEditorTriangle GetEditingMode GetCursorPosition SWITCH <mode> CASE FreeRoaming IF FindNearestRailPoint pos = <pos> DeleteRailPoint rail_id = <rail_id> rail_point_index = <rail_point_index> ENDIF CASE RailLayout IF GetEditedRailInfo CurrentRail IF ( <num_points> < 2 ) DeleteRail rail_id = <rail_id> ENDIF ENDIF DeleteDottedLine SetEditingMode mode = FreeRoaming rail_editor_create_cursor CASE Grab GetTags UpdateRailPointPosition rail_id = <rail_id> rail_point_index = <rail_point_index> pos = <OriginalPos> UpdateSuperSectors EditorCam_SetCursorPos position = <OriginalPos> SetEditingMode mode = FreeRoaming rail_editor_create_cursor DEFAULT printf "Triangle does nothing in editor mode \'%s\'" s = <mode> ENDSWITCH ENDSCRIPT
-SCRIPT RailEditorSquare GetEditingMode GetCursorPosition SWITCH <mode> CASE FreeRoaming CASE RailLayout IF FindNearestRailPoint pos = <pos> CheckLevelGeometry EditorCam_SetCursorPos position = <NearestPos> ELSE ENDIF CASE Grab GetTags IF FindNearestRailPoint { pos = <pos> CheckLevelGeometry IgnoreRailId = <rail_id> IgnoreRailPointIndex = <rail_point_index> } EditorCam_SetCursorPos position = <NearestPos> ELSE ENDIF DEFAULT printf "Square does nothing in editor mode \'%s\'" s = <mode> ENDSWITCH ENDSCRIPT
+SCRIPT Sk5Ed_Startup 
+	do_unload_unloadable 
+	do_load_unloadable load_peds = 0 
+	SetParkEditorState state = edit command = initialize 
+	SetParkEditorPauseMode unpause 
+	CalibrateMemoryGauge Fresh 
+	SwitchToParkEditorCamera 
+	load_parked_sounds 
+ENDSCRIPT
+
+SCRIPT DestroyMemStatsScreenElements 
+	IF ScreenElementExists id = parked_mem_stats_container_l 
+		DestroyScreenElement id = parked_mem_stats_container_l 
+		DestroyScreenElement id = parked_mem_stats_container_r 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT load_parked_sounds 
+	LoadPreFile "parked_sounds.pre" 
+	LoadSound "ParkEd\\GUI_placeblock1" 
+	LoadSound "ParkEd\\GUI_removeblock1" 
+	LoadSound "ParkEd\\select1" 
+	LoadSound "Shared\\Menu\\GUI_buzzer01" 
+	LoadSound "Shared\\Menu\\menu03" 
+	LoadSound "Shared\\Menu\\select2b" 
+	LoadSound "Shared\\Auto\\CarLoop" 
+	LoadSound "Vehicles\\Vehicle_Tire_Loop" 
+	LoadSound "Terrains\\BonkMetal_11" 
+	LoadSound "Shared\\Hits\\FallPungee_11" 
+	LoadSound "Shared\\Water\\FallWater" 
+	LoadSound "Weather\\Weather_Rain_Light01" 
+	LoadSound "Weather\\Weather_Rain_Medium01" 
+	UnloadPreFile "parked_sounds.pre" 
+ENDSCRIPT
+
+SCRIPT CreateMemStatsScreenElements 
+	IF NOT ScreenElementExists id = parked_mem_stats_container_l 
+		SetScreenElementLock id = root_window off 
+		CreateScreenElement { 
+			id = parked_mem_stats_container_l 
+			parent = root_window 
+			type = ContainerElement 
+			just = [ left top ] 
+			pos = PAIR(23, 300) 
+			dims = PAIR(100, 100) 
+		} 
+		CreateScreenElement { 
+			id = parked_mem_stats_park_free 
+			parent = parked_mem_stats_container_l 
+			type = TextElement 
+			just = [ left top ] 
+			pos = PAIR(0, 0) 
+			font = small 
+			scale = 1 
+			text = "oog1" 
+		} 
+		CreateScreenElement { 
+			id = parked_mem_stats_main_free 
+			parent = parked_mem_stats_container_l 
+			type = TextElement 
+			just = [ left top ] 
+			pos = PAIR(0, 19) 
+			font = small 
+			scale = 1 
+			text = "oog2" 
+		} 
+		CreateScreenElement { 
+			id = parked_mem_stats_last_op 
+			parent = parked_mem_stats_container_l 
+			type = TextElement 
+			just = [ left top ] 
+			pos = PAIR(0, 38) 
+			font = small 
+			scale = 1 
+			text = "oog3" 
+		} 
+		CreateScreenElement { 
+			id = parked_mem_stats_other 
+			parent = parked_mem_stats_container_l 
+			type = TextElement 
+			just = [ left top ] 
+			pos = PAIR(0, 57) 
+			font = small 
+			scale = 1 
+			text = "oog4" 
+		} 
+		CreateScreenElement { 
+			id = parked_mem_stats_container_r 
+			parent = root_window 
+			type = ContainerElement 
+			just = [ left top ] 
+			pos = PAIR(323, 300) 
+			dims = PAIR(100, 100) 
+		} 
+		CreateScreenElement { 
+			id = parked_mem_stats_pct 
+			parent = parked_mem_stats_container_r 
+			type = TextElement 
+			just = [ left top ] 
+			pos = PAIR(0, 0) 
+			font = small 
+			scale = 1 
+			text = "oog5" 
+		} 
+		CreateScreenElement { 
+			id = parked_mem_pieces_remaining 
+			parent = parked_mem_stats_container_r 
+			type = TextElement 
+			ust = [ left top ] 
+			pos = PAIR(0, 19) 
+			font = small 
+			scale = 1 
+			text = "oog6" 
+		} 
+		CreateScreenElement { 
+			id = parked_mem_stats_main_used 
+			parent = parked_mem_stats_container_r 
+			type = TextElement 
+			just = [ left top ] 
+			pos = PAIR(0, 38) 
+			font = small 
+			scale = 1 
+			text = "oog6" 
+		} 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT Sk5Ed_Startup_Gameplay 
+	do_unload_unloadable 
+	SetParkEditorState state = edit command = initialize 
+	SetParkEditorState state = regular_play command = build_floor 
+	SetParkEditorPauseMode pause 
+	FreeUpMemoryForPlayingPark 
+	do_load_unloadable load_peds = 0 
+	RunScriptOnComponentType component = animation target = InvalidateCache params = { } 
+	load_parked_sounds 
+ENDSCRIPT
+
+SCRIPT Sk5ed_Goals 
+	IF InMultiplayerGame 
+		add_multiplayer_mode_goals 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT parked_setup_main_menu 
+	SetParkEditorPauseMode pause 
+	dialog_box_exit no_pad_start 
+	destroy_onscreen_keyboard 
+	set_theme_icons FormatText 
+	ChecksumName = load_icon "%i_load" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = back_icon "%i_back" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = test_play_icon "%i_test_play" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = nuke_icon "%i_nuke" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = theme_icon "%i_theme" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = resize_icon "%i_resize" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = set_players_icon "%i_set_players" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = time_icon "%i_time" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	make_new_pause_menu { 
+		menu_id = pause_menu 
+		vmenu_id = pause_vmenu 
+		pad_back_script = parked_continue_editing 
+		pos = PAIR(320, 540) 
+	} 
+	kill_start_key_binding 
+	create_helper_text generic_helper_text 
+	make_sprite_menu_item text = "Continue" id = menu_continue pad_choose_script = parked_continue_editing 
+	make_text_sprite texture = <continue_icon> parent = menu_continue 
+	make_sprite_menu_item text = "Test Play" id = menu_test_park pad_choose_script = parked_test_play 
+	make_text_sprite texture = <test_play_icon> parent = menu_test_park 
+	make_sprite_menu_item text = "Create A Goal" id = menu_create_a_goal pad_choose_script = parked_create_a_goal 
+	make_text_sprite texture = <new_icon> parent = menu_create_a_goal 
+	make_sprite_menu_item text = "Set Time Of Day" id = menu_set_time_of_day pad_choose_script = parked_setup_tod_menu 
+	make_text_sprite texture = <time_icon> parent = menu_set_time_of_day 
+	make_sprite_menu_item text = "Switch Theme" id = menu_switch_theme pad_choose_script = parked_setup_switch_theme_menu 
+	make_text_sprite texture = <theme_icon> parent = menu_switch_theme 
+	make_sprite_menu_item text = "Resize park" id = menu_resize_park pad_choose_script = parked_setup_new_resize_screen 
+	make_text_sprite texture = <resize_icon> parent = menu_resize_park 
+	make_sprite_menu_item text = "Nuke park" id = menu_clear_park pad_choose_script = menu_confirm_quit pad_choose_params = { yes_script = parked_clear_park title = "CLEAR PARK?" } 
+	make_text_sprite texture = <nuke_icon> parent = menu_clear_park 
+	IF NOT isNGC 
+		make_sprite_menu_item text = "Set max players" id = menu_set_max_players pad_choose_script = parked_setup_max_players_menu 
+		make_text_sprite texture = <set_players_icon> parent = menu_set_max_players 
+	ENDIF 
+	IF NOT IsTrue Bootstrap_Build 
+		make_sprite_menu_item text = "Save Park" id = menu_save_park_mem pad_choose_script = launch_pause_menu_save_park_sequence 
+		make_text_sprite texture = <save_icon> parent = menu_save_park_mem 
+		make_sprite_menu_item text = "Load Park" id = menu_load_park_mem pad_choose_script = parked_confirm_load_park 
+		make_text_sprite texture = <load_icon> parent = menu_load_park_mem 
+		IF NOT CD 
+			make_sprite_menu_item text = "Save Pre-made Park" id = menu_save_park pad_choose_script = parked_setup_disk_save_menu 
+			make_text_sprite texture = <save_icon> parent = menu_save_park 
+		ENDIF 
+		make_sprite_menu_item text = "Load Pre-made Park" id = menu_load_park pad_choose_script = parked_confirm_disk_load_park 
+		make_text_sprite texture = <load_icon> parent = menu_load_park 
+	ENDIF 
+	make_sprite_menu_item text = "Quit" id = menu_skateshop pad_choose_script = parked_quit_chosen 
+	make_text_sprite texture = <quit_icon> parent = menu_skateshop 
+ENDSCRIPT
+
+SCRIPT parked_setup_tod_menu 
+	IF ObjectExists id = current_menu_anchor 
+		DestroyScreenElement id = current_menu_anchor 
+	ENDIF 
+	FormatText ChecksumName = title_icon "%i_time" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	make_new_themed_sub_menu { 
+		title = "TIME OF DAY" 
+		title_icon = <title_icon> 
+	} 
+	SetScreenElementProps id = sub_menu event_handlers = [ { pad_back generic_menu_pad_back params = { callback = create_pause_menu } } ] 
+	theme_menu_add_item text = "Day" id = tod_day pad_choose_script = parked_change_tod pad_choose_params = { tod_script = set_tod_day } centered = 1 
+	theme_menu_add_item text = "Morning" id = tod_morn pad_choose_script = parked_change_tod pad_choose_params = { tod_script = set_tod_morning } centered = 1 
+	theme_menu_add_item text = "Evening" id = tod_even pad_choose_script = parked_change_tod pad_choose_params = { tod_script = set_tod_evening } centered = 1 
+	theme_menu_add_item text = "Night" id = tod_night pad_choose_script = parked_change_tod pad_choose_params = { tod_script = set_tod_night } centered = 1 last_menu_item = 1 
+	finish_themed_sub_menu 
+ENDSCRIPT
+
+SCRIPT parked_change_tod 
+	SetParkEditorTimeOfDay tod_script = <tod_script> 
+	exit_pause_menu 
+ENDSCRIPT
+
+SCRIPT parked_confirm_load_park 
+	IF IsParkUnsaved 
+		menu_confirm_quit yes_script = launch_pause_menu_load_park_sequence title = "Replace unsaved park?" text_dims = PAIR(330, 0) 
+	ELSE 
+		launch_pause_menu_load_park_sequence 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT parked_quit_chosen 
+	root_window : GetTags 
+		IF GotParam pause_controller 
+			IF NOT ( <pause_controller> = <device_num> ) 
+				RETURN 
+			ENDIF 
+		ENDIF 
+		menu_confirm_quit yes_script = menu_confirm_quit_park_editor 
+ENDSCRIPT
+
+SCRIPT parked_quit 
+	SwitchOffRailEditor 
+	KillSpawnedScript name = parked_show_wait_message 
+	switch_off_poly_count_refresh 
+	SetParkEditorPauseMode pause 
+	kill_start_key_binding 
+	level_select_change_level_quit <...> 
+ENDSCRIPT
+
+SCRIPT parked_setup_test_play_menu 
+	SetParkEditorPauseMode pause 
+	set_theme_icons 
+	make_new_pause_menu menu_id = pause_menu vmenu_id = pause_vmenu pad_back_script = parked_continue_test_play 
+	kill_start_key_binding 
+	create_helper_text generic_helper_text 
+	make_sprite_menu_item text = "Continue" id = menu_continue pad_choose_script = parked_continue_test_play 
+	make_text_sprite texture = <continue_icon> parent = menu_continue 
+	IF GoalManager_CanRetryGoal 
+		IF GoalManager_GetLastGoalId 
+			IF NOT GoalManager_HasWonGoal name = <goal_id> 
+				make_sprite_menu_item text = "Retry Last Goal" id = menu_retry_goal pad_choose_script = menu_select pad_choose_params = { stop_streams menu_select_script = RetryCurrentGoal } 
+				make_text_sprite texture = <retry_icon> parent = menu_retry_goal 
+			ENDIF 
+		ENDIF 
+	ENDIF 
+	IF GoalManager_HasActiveGoals 
+		make_sprite_menu_item text = "End Current Goal" id = menu_end_current_goal pad_choose_script = menu_select pad_choose_params = { menu_select_script = end_current_goal_run } 
+		make_text_sprite texture = <end_icon> parent = menu_end_current_goal 
+	ENDIF 
+	make_sprite_menu_item text = "View Goals" id = menu_view_goals pad_choose_script = create_view_goals_menu 
+	make_text_sprite texture = <view_icon> parent = menu_view_goals 
+	IF NOT CD 
+		make_sprite_menu_item text = "Debug Menu" id = debug_menu pad_choose_script = create_debug_menu 
+		make_text_sprite texture = <options_icon> parent = debug_menu 
+		make_sprite_menu_item text = "Goto Restart" id = menu_skip_to_restart pad_choose_script = generic_menu_pad_choose pad_choose_params = { callback = launch_restart_menu } 
+		make_text_sprite texture = <options_icon> parent = menu_skip_to_restart 
+	ENDIF 
+	make_sprite_menu_item text = "View Gaps" id = menu_skip_to_gap pad_choose_script = launch_gap_menu 
+	make_text_sprite texture = <gap_icon> parent = menu_skip_to_gap 
+	make_sprite_menu_item text = "Back to editor" id = menu_skateshop pad_choose_script = parked_test_play_back_to_editor 
+	make_text_sprite texture = <back_icon> parent = menu_skateshop 
+	RunScriptOnScreenElement id = pause_menu menu_onscreen 
+ENDSCRIPT
+
+SCRIPT parked_set_tod 
+	GetParkEditorTimeOfDayScript 
+	IF GotParam tod_script 
+		script_change_tod tod_action = <tod_script> 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT parked_test_play 
+	SwitchOffRailEditor 
+	SetParkEditorState state = test_play command = build_floor 
+	SetParkEditorPauseMode pause 
+	DisassociateFromObject 
+	exit_pause_menu 
+	ResetLevel 
+	ResetSkaters 
+	SetViewMode 0 
+	spawnscript post_parked_test_play NotSessionSpecific = 1 
+ENDSCRIPT
+
+SCRIPT post_parked_test_play 
+	InitialiseCreatedGoals 
+	create_menu_camera 
+	GoalManager_InitializeAllGoals 
+	MakeSkaterGoto SkaterInit 
+	parked_set_tod 
+ENDSCRIPT
+
+SCRIPT parked_continue_editing 
+	root_window : GetTags 
+	IF GotParam pause_controller 
+		IF GotParam device_num 
+			IF NOT ( <pause_controller> = <device_num> ) 
+				RETURN 
+			ENDIF 
+		ENDIF 
+	ENDIF 
+	DisassociateFromObject 
+	pulse_blur 
+	IF ObjectExists id = current_menu_anchor 
+		DestroyScreenElement id = current_menu_anchor 
+	ENDIF 
+	exit_pause_menu 
+	SetParkEditorState state = edit 
+	SetParkEditorPauseMode unpause 
+ENDSCRIPT
+
+SCRIPT parked_continue_test_play 
+	root_window : GetTags 
+	IF GotParam pause_controller 
+		IF NOT ( <pause_controller> = <device_num> ) 
+			RETURN 
+		ENDIF 
+	ENDIF 
+	exit_pause_menu 
+ENDSCRIPT
+
+SCRIPT parked_exit_test_play 
+	GoalManager_DeactivateAllGoals 
+	HideSkaterAndMiscSkaterEffects 
+	ResetScore 
+	ResetScorePot 
+	Skater : Vibrate off 
+	destroy_goal_panel_messages all 
+	SetParkEditorState state = edit 
+	SetParkEditorPauseMode unpause 
+	dialog_box_exit 
+	exit_pause_menu 
+	end_current_goal_run 
+	SwitchToParkEditorCamera 
+	speech_box_exit 
+	script_change_tod tod_action = set_tod_rainoff 
+	script_change_tod tod_action = set_tod_day 
+ENDSCRIPT
+
+SCRIPT parked_test_play_back_to_editor 
+	destroy_goal_panel_messages 
+	root_window : GetTags 
+	IF GotParam pause_controller 
+		IF NOT ( <pause_controller> = <device_num> ) 
+			RETURN 
+		ENDIF 
+	ENDIF 
+	menu_confirm_quit yes_script = parked_exit_test_play 
+ENDSCRIPT
+
+SCRIPT reload_park 
+	exit_pause_menu 
+	SetScreenElementLock id = root_window off 
+	IF ObjectExists id = defrag_wait_message 
+		DestroyScreenElement id = defrag_wait_message 
+	ENDIF 
+	CreateScreenElement { 
+		type = TextBlockElement 
+		id = defrag_wait_message 
+		parent = root_window 
+		just = [ center center ] 
+		pos = PAIR(320, 200) 
+		dims = PAIR(400, 100) 
+		internal_just = [ center center ] 
+		text = "Please Wait\\nReloading park to free up memory ..." 
+		font = small 
+		scale = PAIR(1, 1) 
+		alpha = 1.00000000000 
+	} 
+	SetScreenElementLock id = root_window 
+	change check_for_unplugged_controllers = 0 
+	SetParkEditorPauseMode pause 
+	SetButtonEventMappings block_menu_input 
+	wait 1 seconds 
+	SetButtonEventMappings unblock_menu_input 
+	change check_for_unplugged_controllers = 1 
+	GetEditorTheme 
+	parked_set_theme theme = <theme> 
+ENDSCRIPT
+
+SCRIPT parked_clear_park 
+	change check_for_unplugged_controllers = 0 
+	SwitchOffRailEditor 
+	dialog_box_exit 
+	create_pause_menu no_sound 
+	SetButtonEventMappings block_menu_input 
+	wait 4 frames 
+	SetParkName "" 
+	parked_continue_editing 
+	spawnscript parked_show_wait_message 
+	WaitForEvent type = showed_wait_message 
+	SetParkEditorState state = edit command = clear 
+	SetParkEditorPauseMode unpause 
+	GoalEditor : NukeAllGoals OnlyParkEditorGoals 
+	GoalManager_UninitializeAllGoals 
+	GoalManager_RemoveAllGoals 
+	IF ScreenElementExists id = goal_start_dialog 
+		DestroyScreenElement id = goal_start_dialog 
+	ENDIF 
+	RailEditor : ClearRailEditor 
+	SetButtonEventMappings unblock_menu_input 
+	CalibrateMemoryGauge Fresh 
+	change check_for_unplugged_controllers = 1 
+	IF isNGC 
+		GetEditorTheme 
+		parked_set_theme theme = <theme> 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT parked_setup_max_players_menu 
+	IF ObjectExists id = current_menu_anchor 
+		DestroyScreenElement id = current_menu_anchor 
+	ENDIF 
+	FormatText ChecksumName = title_icon "%i_set_players" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	make_new_themed_sub_menu title = "MAX PLAYERS" title_icon = <title_icon> 
+	SetScreenElementProps { 
+		id = sub_menu 
+		event_handlers = [ { pad_back generic_menu_pad_back params = { callback = create_pause_menu } } ] 
+		replace_handlers 
+	} 
+	create_helper_text generic_helper_text 
+	GetParkEditorMaxPlayers 
+	FormatText TextName = text "Current max players = %d" d = <MaxPlayers> 
+	CreateScreenElement { 
+		type = ContainerElement 
+		parent = sub_menu 
+		id = curmax_players_box 
+		pos = PAIR(307.00000000000, 90.00000000000) 
+		internal_just = [ left top ] 
+	} 
+	CreateScreenElement { 
+		type = SpriteElement 
+		parent = curmax_players_box 
+		id = item_bg_box 
+		padding_scale = 0.50000000000 
+		texture = black 
+		z_priority = 3 
+		scale = PAIR(73.50000000000, 7.30000019073) 
+		just = [ left top ] 
+		pos = PAIR(-150.00000000000, -2.00000000000) 
+		rgba = [ 0 0 0 255 ] 
+	} 
+	CreateScreenElement { 
+		type = TextElement 
+		parent = curmax_players_box 
+		text = <text> 
+		font = Dialog 
+		just = [ center center ] 
+		rgba = [ 128 , 128 , 128 , 90 ] 
+		pos = PAIR(-5.00000000000, 13.00000000000) 
+	} 
+	FormatText ChecksumName = on_rgba "%i_HIGHLIGHTED_TEXT_COLOR" i = ( THEME_COLOR_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = off_rgba "%i_UNHIGHLIGHTED_TEXT_COLOR" i = ( THEME_COLOR_PREFIXES [ current_theme_prefix ] ) 
+	CreateScreenElement { 
+		type = SpriteElement 
+		parent = curmax_players_box 
+		texture = white2 
+		scale = PAIR(37.00000000000, 0.10000000149) 
+		pos = PAIR(-1.00000000000, 26.00000000000) 
+		just = [ center top ] 
+		rgba = <on_rgba> 
+	} 
+	CreateScreenElement { 
+		type = SpriteElement 
+		parent = curmax_players_box 
+		texture = white2 
+		scale = PAIR(37.00000000000, 0.10000000149) 
+		pos = PAIR(-1.00000000000, -3.00000000000) 
+		just = [ center top ] 
+		rgba = <on_rgba> 
+	} 
+	theme_menu_add_item text = " " not_focusable 
+	GetParkEditorMaxPlayersPossible 
+	FormatText ChecksumName = my_icon "%i_options" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	i = 2 
+	BEGIN 
+		FormatText TextName = text "Set max players to %d" d = <i> 
+		FormatText ChecksumName = id "menu_max_players_%d" d = <i> 
+		IF NOT ( <i> = 8 ) 
+			IF ( <i> > <MaxPlayersPossible> ) 
+				theme_menu_add_item not_focusable = not_focusable text = <text> id = <id> pad_choose_script = parked_set_max_players pad_choose_params = { max_players = <i> } centered = 1 
+			ELSE 
+				theme_menu_add_item text = <text> id = <id> pad_choose_script = parked_set_max_players pad_choose_params = { max_players = <i> } centered = 1 
+			ENDIF 
+		ELSE 
+			IF ( <i> > <MaxPlayersPossible> ) 
+				theme_menu_add_item not_focusable = not_focusable text = <text> id = <id> pad_choose_script = parked_set_max_players pad_choose_params = { max_players = <i> } centered = 1 last_menu_item = 1 
+			ELSE 
+				theme_menu_add_item text = <text> id = <id> pad_choose_script = parked_set_max_players pad_choose_params = { max_players = <i> } centered = 1 last_menu_item = 1 
+			ENDIF 
+		ENDIF 
+		make_text_sprite texture = <my_icon> parent = <id> 
+		i = ( <i> + 1 ) 
+	REPEAT 7 
+	finish_themed_sub_menu 
+ENDSCRIPT
+
+SCRIPT parked_set_max_players 
+	SetParkEditorMaxPlayers <max_players> 
+	parked_continue_editing 
+ENDSCRIPT
+
+SCRIPT parked_setup_switch_theme_menu 
+	IF ObjectExists id = current_menu_anchor 
+		DestroyScreenElement id = current_menu_anchor 
+	ENDIF 
+	FormatText ChecksumName = title_icon "%i_theme" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	make_new_themed_sub_menu title = "SWITCH THEME" title_icon = <title_icon> 
+	SetScreenElementProps { 
+		id = sub_menu 
+		event_handlers = [ { pad_back generic_menu_pad_back params = { callback = create_pause_menu } } ] 
+		replace_handlers 
+	} 
+	create_helper_text generic_helper_text 
+	GetEditorTheme 
+	GenerateLevelStructureNameFromTheme theme = <theme> 
+	FormatText TextName = text "Current Theme: %d" d = ( <structure_name> . theme_name ) 
+	CreateScreenElement { 
+		type = ContainerElement 
+		parent = sub_menu 
+		id = cur_theme_box 
+		pos = PAIR(320.00000000000, 112.00000000000) 
+	} 
+	CreateScreenElement { 
+		type = SpriteElement 
+		parent = cur_theme_box 
+		id = item_bg_box 
+		padding_scale = 0.50000000000 
+		texture = black 
+		z_priority = 4 
+		scale = PAIR(82.00000000000, 7.50000000000) 
+		pos = PAIR(-178.00000000000, -24.00000000000) 
+		just = [ left top ] 
+		rgba = [ 0 0 0 255 ] 
+	} 
+	CreateScreenElement { 
+		type = TextElement 
+		parent = cur_theme_box 
+		text = <text> 
+		font = Dialog 
+		just = [ center center ] 
+		rgba = [ 128 , 128 , 128 , 90 ] 
+		z_priority = 5 
+		pos = PAIR(-10.00000000000, -8.00000000000) 
+	} 
+	FormatText ChecksumName = on_rgba "%i_HIGHLIGHTED_TEXT_COLOR" i = ( THEME_COLOR_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = off_rgba "%i_UNHIGHLIGHTED_TEXT_COLOR" i = ( THEME_COLOR_PREFIXES [ current_theme_prefix ] ) 
+	CreateScreenElement { 
+		type = SpriteElement 
+		parent = cur_theme_box 
+		texture = white2 
+		scale = PAIR(41.50000000000, 0.10000000149) 
+		pos = PAIR(-179.00000000000, 4.00000000000) 
+		z_priority = 5 
+		just = [ left top ] 
+		rgba = <on_rgba> 
+	} 
+	CreateScreenElement { 
+		type = SpriteElement 
+		parent = cur_theme_box 
+		texture = white2 
+		scale = PAIR(41.50000000000, 0.10000000149) 
+		pos = PAIR(-179.00000000000, -25.00000000000) 
+		z_priority = 5 
+		just = [ left top ] 
+		rgba = <on_rgba> 
+	} 
+	theme_menu_add_item { 
+		text = "                             " 
+		font = Dialog 
+		just = [ center center ] 
+		rgba = [ 128 , 128 , 128 , 128 ] 
+		centered = 1 
+		not_focusable 
+	} 
+	FormatText ChecksumName = my_icon "%i_options" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	GetEditorMaxThemes 
+	i = 0 
+	BEGIN 
+		IF NOT ( <i> = ( <max_themes> -1 ) ) 
+			FormatText ChecksumName = id "menu_set_theme_%d" d = <i> 
+			GenerateLevelStructureNameFromTheme theme = <i> 
+			RemoveParameter not_focusable 
+			theme_menu_add_item { 
+				text = ( <structure_name> . theme_name ) 
+				id = <id> 
+				pad_choose_script = parked_set_theme 
+				pad_choose_params = { theme = <i> } 
+				not_focusable = <not_focusable> 
+				centered = 1 
+			} 
+			make_text_sprite texture = <my_icon> parent = <id> 
+			i = ( <i> + 1 ) 
+		ELSE 
+			FormatText ChecksumName = id "menu_set_theme_%d" d = <i> 
+			GenerateLevelStructureNameFromTheme theme = <i> 
+			RemoveParameter not_focusable 
+			theme_menu_add_item { 
+				text = ( <structure_name> . theme_name ) 
+				id = <id> 
+				pad_choose_script = parked_set_theme 
+				pad_choose_params = { theme = <i> } 
+				not_focusable = <not_focusable> 
+				centered = 1 
+				last_menu_item = 1 
+			} 
+			i = ( <i> + 1 ) 
+		ENDIF 
+	REPEAT <max_themes> 
+	finish_themed_sub_menu 
+ENDSCRIPT
+
+SCRIPT parked_set_theme 
+	SwitchOffRailEditor 
+	exit_pause_menu 
+	SetEditorTheme theme = <theme> 
+	RailEditor : DestroyEditedRailSectors 
+	change_level level = Load_Sk5Ed 
+ENDSCRIPT
+
+SCRIPT cleanup_resize_arrows 
+	IF ScreenElementExists id = resize_arrow_a 
+		DestroyScreenElement id = resize_arrow_a 
+	ENDIF 
+	IF ScreenElementExists id = resize_arrow_b 
+		DestroyScreenElement id = resize_arrow_b 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT cleanup_resize_cam 
+	IF ObjectExists id = park_resize_cam 
+		RailEditor : EditorCam_Initialise position = VECTOR(0.00000000000, 0.00000000000, 0.00000000000) cursor_height = 20 
+		SwitchToParkEditorCamera 
+		park_resize_cam : Die 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT quit_resize_screen 
+	cleanup_resize_arrows 
+	cleanup_resize_cam 
+	create_pause_menu 
+ENDSCRIPT
+
+SCRIPT parked_setup_new_resize_screen 
+	IF ObjectExists id = current_menu_anchor 
+		DestroyScreenElement id = current_menu_anchor 
+	ENDIF 
+	pause_menu_gradient off 
+	kill_start_key_binding 
+	SetScreenElementLock id = root_window off 
+	CreateScreenElement { 
+		type = ContainerElement 
+		parent = root_window 
+		id = menu_parts_anchor 
+		dims = PAIR(640.00000000000, 480.00000000000) 
+		pos = PAIR(320.00000000000, 240.00000000000) 
+	} 
+	AssignAlias id = menu_parts_anchor alias = current_menu_anchor 
+	SetScreenElementProps { 
+		id = menu_parts_anchor 
+		event_handlers = [ 
+			{ pad_back generic_menu_pad_back params = { callback = quit_resize_screen } } 
+			{ pad_start generic_menu_pad_back params = { callback = quit_resize_screen } } 
+			{ pad_left incremental_resize params = { button = left } } 
+			{ pad_left blink_arrow params = { id = resize_arrow_a } } 
+			{ pad_right incremental_resize params = { button = right } } 
+			{ pad_right blink_arrow params = { id = resize_arrow_b } } 
+			{ pad_up incremental_resize params = { button = up } } 
+			{ pad_up blink_arrow params = { id = resize_arrow_a } } 
+			{ pad_down incremental_resize params = { button = down } } 
+			{ pad_down blink_arrow params = { id = resize_arrow_b } } 
+			{ pad_circle incremental_resize params = { button = circle } } 
+			{ pad_square incremental_resize params = { button = square } } 
+			{ pad_choose cycle_side } 
+			{ pad_expand incremental_resize params = { button = circle } } 
+		] 
+		replace_handlers 
+	} 
+	IF NOT ObjectExists id = park_resize_cam 
+		CreateCompositeObject { 
+			Components = 
+			[ 
+				{ component = camera } 
+			] 
+			params = { name = park_resize_cam } 
+		} 
+		park_resize_cam : Obj_SetPosition position = VECTOR(0.00000000000, 5000.00000000000, 3500.00000000000) 
+		park_resize_cam : Obj_SetOrientation x = 62 
+		SetActiveCamera id = park_resize_cam 
+	ENDIF 
+	refresh_parked_resize_arrows 
+	create_resize_helper_text lr 
+	FireEvent type = focus target = menu_parts_anchor 
+ENDSCRIPT
+
+SCRIPT create_resize_helper_text 
+	IF GotParam lr 
+		IF IsXBox 
+			create_helper_text resize_park_helper_text_lr_xbox 
+		ELSE 
+			IF isNGC 
+				create_helper_text resize_park_helper_text_lr_ngc 
+			ELSE 
+				create_helper_text resize_park_helper_text_lr 
+			ENDIF 
+		ENDIF 
+	ELSE 
+		IF IsXBox 
+			create_helper_text resize_park_helper_text_ud_xbox 
+		ELSE 
+			IF isNGC 
+				create_helper_text resize_park_helper_text_ud_ngc 
+			ELSE 
+				create_helper_text resize_park_helper_text_ud 
+			ENDIF 
+		ENDIF 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT incremental_resize 
+	IF ObjectExists id = parked_message 
+		PlayEdBuzzSound 
+		RETURN 
+	ENDIF 
+	GetCurrentParkBounds 
+	old_x = <x> 
+	old_z = <z> 
+	old_w = <w> 
+	old_l = <l> 
+	SWITCH <button> 
+		CASE circle 
+			x = ( <x> -4 ) 
+			w = ( <w> + 8 ) 
+			z = ( <z> -4 ) 
+			l = ( <l> + 8 ) 
+			IF ( <x> < 1 ) 
+				x = ( <x> + 4 )
+				w = ( <w> -4 ) 
+			ENDIF 
+			IF ( ( <x> + <w> ) > 57 ) 
+				w = ( <w> -4 ) 
+			ENDIF 
+			IF ( <z> < 1 ) 
+				z = ( <z> + 4 ) 
+				l = ( <l> -4 ) 
+			ENDIF 
+			IF ( ( <z> + <l> ) > 57 ) 
+				l = ( <l> -4 ) 
+			ENDIF 
+		CASE square 
+			x = ( <x> + 4 ) 
+			w = ( <w> -8 ) 
+			z = ( <z> + 4 ) 
+			l = ( <l> -8 ) 
+			IF ( <x> > 25 ) 
+				x = ( <x> -4 ) 
+				w = ( <w> + 4 ) 
+			ENDIF 
+			IF ( ( <x> + <w> ) < 33 ) 
+				w = ( <w> + 4 ) 
+			ENDIF 
+			IF ( <z> > 25 ) 
+				z = ( <z> -4 ) 
+				l = ( <l> + 4 ) 
+			ENDIF 
+			IF ( ( <z> + <l> ) < 33 ) 
+				l = ( <l> + 4 ) 
+			ENDIF 
+		CASE up 
+		CASE down 
+		CASE left 
+		CASE right 
+			SWITCH park_side_to_move 
+				CASE 0 
+					SWITCH <button> 
+						CASE left 
+							x = ( <x> -4 ) 
+							w = ( <w> + 4 ) 
+						CASE right 
+							x = ( <x> + 4 ) 
+							w = ( <w> -4 ) 
+						DEFAULT 
+							RETURN 
+					ENDSWITCH 
+				CASE 1 
+					SWITCH <button> 
+						CASE up 
+							z = ( <z> -4 ) 
+							l = ( <l> + 4 ) 
+						CASE down 
+							z = ( <z> + 4 ) 
+							l = ( <l> -4 ) 
+						DEFAULT 
+							RETURN 
+					ENDSWITCH 
+				CASE 2 
+					SWITCH <button> 
+						CASE left 
+							w = ( <w> -4 ) 
+						CASE right 
+							w = ( <w> + 4 ) 
+						DEFAULT 
+							RETURN 
+					ENDSWITCH 
+				CASE 3 
+					SWITCH <button> 
+						CASE up 
+							l = ( <l> -4 ) 
+						CASE down 
+							l = ( <l> + 4 ) 
+						DEFAULT 
+							RETURN 
+					ENDSWITCH 
+			ENDSWITCH 
+	ENDSWITCH 
+	IF ( <x> = <old_x> & <z> = <old_z> & <w> = <old_w> & <l> = <old_l> ) 
+		PlayEdBuzzSound 
+		RETURN 
+	ENDIF 
+	IF ( <x> < 1 | <x> > 25 | 
+		( <x> + <w> ) > 57 | ( <x> + <w> ) < 33 | 
+		<z> < 1 | <z> > 25 | 
+		( <z> + <l> ) > 57 | ( <z> + <l> ) < 33 ) 
+		PlayEdBuzzSound 
+		RETURN 
+	ENDIF 
+	IF isNGC 
+		IF ( <w> * <l> > <old_w> * <old_l> ) 
+			IF ( <w> * <l> > 48 * 40 ) 
+				PlayEdBuzzSound 
+				RETURN 
+			ENDIF 
+		ENDIF 
+	ENDIF 
+	IF CanCleanlyResizePark NewBounds = { x = <x> z = <z> w = <w> l = <l> } 
+		ResizePark NewBounds = { x = <x> z = <z> w = <w> l = <l> } 
+		PlayEdPlaceSound 
+	ELSE 
+		PlayEdBuzzSound 
+		cleanup_resize_arrows 
+		IF ObjectExists id = current_menu_anchor 
+			DestroyScreenElement id = current_menu_anchor 
+		ENDIF 
+		create_snazzy_dialog_box { 
+			title = #"Resize" 
+			text = #"Resize and lose pieces?" 
+			pad_back_script = do_not_resize_park 
+			buttons = [ 
+				{ font = small text = #"No" pad_choose_script = do_not_resize_park } 
+				{ font = small text = #"Yes" pad_choose_script = do_resize_park pad_choose_params = { NewBounds = { x = <x> z = <z> w = <w> l = <l> } } } 
+			] 
+		} 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT do_not_resize_park 
+	dialog_box_exit 
+	parked_setup_new_resize_screen 
+ENDSCRIPT
+
+SCRIPT do_resize_park 
+	dialog_box_exit 
+	ResizePark NewBounds = <NewBounds> 
+	parked_setup_new_resize_screen 
+ENDSCRIPT
+
+SCRIPT cycle_side 
+	change park_side_to_move = ( park_side_to_move + 1 ) 
+	IF ( park_side_to_move > 3 ) 
+		change park_side_to_move = 0 
+	ENDIF 
+	IF ( park_side_to_move = 0 | park_side_to_move = 2 ) 
+		create_resize_helper_text lr 
+	ELSE 
+		create_resize_helper_text ud 
+	ENDIF 
+	PlayRotatePieceSound 
+	refresh_parked_resize_arrows 
+ENDSCRIPT
+
+SCRIPT refresh_parked_resize_arrows 
+	IF ScreenElementExists id = resize_arrow_a 
+		DestroyScreenElement id = resize_arrow_a 
+	ENDIF 
+	IF ScreenElementExists id = resize_arrow_b 
+		DestroyScreenElement id = resize_arrow_b 
+	ENDIF 
+	SWITCH park_side_to_move 
+		CASE 0 
+			rot_angle = 0 
+			pos_a = PAIR(20.00000000000, 220.00000000000) 
+			pos_b = PAIR(60.00000000000, 220.00000000000) 
+			SetScreenElementProps { 
+				id = menu_parts_anchor 
+				event_handlers = [ 
+					{ pad_left incremental_resize params = { button = left } } 
+					{ pad_left blink_arrow params = { id = resize_arrow_a } } 
+					{ pad_right incremental_resize params = { button = right } } 
+					{ pad_right blink_arrow params = { id = resize_arrow_b } } 
+					{ pad_up incremental_resize params = { button = up } } 
+					{ pad_down incremental_resize params = { button = down } } 
+				] 
+				replace_handlers 
+			} 
+		CASE 1 
+			rot_angle = 90 
+			pos_a = PAIR(320.00000000000, 10.00000000000) 
+			pos_b = PAIR(320.00000000000, 50.00000000000) 
+			SetScreenElementProps { 
+				id = menu_parts_anchor 
+				event_handlers = [ 
+					{ pad_left incremental_resize params = { button = left } } 
+					{ pad_right incremental_resize params = { button = right } } 
+					{ pad_up incremental_resize params = { button = up } } 
+					{ pad_up blink_arrow params = { id = resize_arrow_a } } 
+					{ pad_down incremental_resize params = { button = down } } 
+					{ pad_down blink_arrow params = { id = resize_arrow_b } } 
+				] 
+				replace_handlers 
+			} 
+		CASE 2 
+			rot_angle = 180 
+			pos_a = PAIR(620.00000000000, 220.00000000000) 
+			pos_b = PAIR(580.00000000000, 220.00000000000) 
+			SetScreenElementProps { 
+				id = menu_parts_anchor 
+				event_handlers = [ 
+					{ pad_left incremental_resize params = { button = left } } 
+					{ pad_left blink_arrow params = { id = resize_arrow_b } } 
+					{ pad_right incremental_resize params = { button = right } } 
+					{ pad_right blink_arrow params = { id = resize_arrow_a } } 
+					{ pad_up incremental_resize params = { button = up } } 
+					{ pad_down incremental_resize params = { button = down } } 
+				] 
+				replace_handlers 
+			} 
+		CASE 3 
+			rot_angle = 270 
+			pos_a = PAIR(320.00000000000, 390.00000000000) 
+			pos_b = PAIR(320.00000000000, 350.00000000000) 
+			SetScreenElementProps { 
+				id = menu_parts_anchor 
+				event_handlers = [ 
+					{ pad_left incremental_resize params = { button = left } } 
+					{ pad_right incremental_resize params = { button = right } } 
+					{ pad_up incremental_resize params = { button = up } } 
+					{ pad_up blink_arrow params = { id = resize_arrow_b } } 
+					{ pad_down incremental_resize params = { button = down } } 
+					{ pad_down blink_arrow params = { id = resize_arrow_a } } 
+				] 
+				replace_handlers 
+			} 
+	ENDSWITCH 
+	SetScreenElementLock id = root_window off 
+	params = { 
+		type = SpriteElement 
+		parent = root_window 
+		alpha = 1 
+		just = [ left middle ] 
+		rgba = [ 118 , 110 , 14 , 128 ] 
+		z_priority = 5 
+		scale = 2 
+	} 
+	CreateScreenElement <params> id = resize_arrow_a texture = left_arrow rot_angle = <rot_angle> pos = <pos_a> 
+	CreateScreenElement <params> id = resize_arrow_b texture = right_arrow rot_angle = <rot_angle> pos = <pos_b> 
+ENDSCRIPT
+
+SCRIPT parked_setup_disk_save_menu 
+	IF ObjectExists id = current_menu_anchor 
+		DestroyScreenElement id = current_menu_anchor 
+	ENDIF 
+	make_new_menu { 
+		menu_id = set_menu_container 
+		type = VScrollingMenu 
+		scrolling_menu_id = disk_save_menu_scrolling 
+		scrolling_menu_offset = PAIR(0.00000000000, 0.00000000000) 
+		just = [ left top ] internal_just = [ center center ] 
+		pos = PAIR(100.00000000000, 100.00000000000) 
+		dims = PAIR(200.00000000000, 200.00000000000) 
+		vmenu_id = pause_vmenu 
+		regular_space_amount = <item_spacing> 
+		internal_scale = 0.50000000000 
+		num_items_to_show = 10 
+	} 
+	SetScreenElementLock id = pause_vmenu off 
+	make_text_sub_menu_item text = "done" scale = 0.75000000000 pad_choose_script = parked_continue_editing 
+	make_text_sub_menu_item text = "slot 1" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 1 } 
+	make_text_sub_menu_item text = "slot 2" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 2 } 
+	make_text_sub_menu_item text = "slot 3" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 3 } 
+	make_text_sub_menu_item text = "slot 4" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 4 } 
+	make_text_sub_menu_item text = "slot 5" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 5 } 
+	make_text_sub_menu_item text = "slot 6" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 6 } 
+	make_text_sub_menu_item text = "slot 7" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 7 } 
+	make_text_sub_menu_item text = "slot 8" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 8 } 
+	make_text_sub_menu_item text = "slot 9" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 9 } 
+	make_text_sub_menu_item text = "slot 10" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 10 } 
+	make_text_sub_menu_item text = "slot 11" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 11 } 
+	make_text_sub_menu_item text = "slot 12" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 12 } 
+	make_text_sub_menu_item text = "slot 13" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 13 } 
+	make_text_sub_menu_item text = "slot 14" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 14 } 
+	make_text_sub_menu_item text = "slot 15" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 15 } 
+	make_text_sub_menu_item text = "slot 16" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 16 } 
+	make_text_sub_menu_item text = "slot 17" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 17 } 
+	make_text_sub_menu_item text = "slot 18" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 18 } 
+	make_text_sub_menu_item text = "slot 19" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 19 } 
+	make_text_sub_menu_item text = "slot 20" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 20 } 
+	make_text_sub_menu_item text = "slot 21" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 21 } 
+	make_text_sub_menu_item text = "slot 22" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 22 } 
+	make_text_sub_menu_item text = "slot 23" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 23 } 
+	make_text_sub_menu_item text = "slot 24" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 24 } 
+	make_text_sub_menu_item text = "slot 25" scale = 0.75000000000 pad_choose_script = parked_save_to_disk pad_choose_params = { slot = 25 } 
+	SetScreenElementLock id = pause_vmenu on 
+	SetScreenElementLock id = disk_save_menu_scrolling on 
+	FireEvent type = focus target = disk_save_menu_scrolling 
+	FireEvent type = focus target = pause_vmenu 
+ENDSCRIPT
+
+SCRIPT parked_save_to_disk 
+	SaveParkToDisk slot = <slot> 
+	parked_continue_editing 
+ENDSCRIPT
+
+SCRIPT parked_confirm_disk_load_park 
+	IF IsParkUnsaved 
+		menu_confirm_quit yes_script = parked_setup_disk_load_menu title = "Replace unsaved park?" text_dims = PAIR(330.00000000000, 0.00000000000) 
+	ELSE 
+		parked_setup_disk_load_menu 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT parked_setup_disk_load_menu 
+	level_select_created_park_list in_park_editor 
+ENDSCRIPT
+
+SCRIPT parked_load_from_disk 
+	parked_continue_editing 
+	spawnscript parked_show_wait_message 
+	SetButtonEventMappings block_menu_input 
+	WaitForEvent type = showed_wait_message 
+	SetButtonEventMappings unblock_menu_input 
+	LoadParkFromDisk slot = <slot> 
+	IF CustomParkMode editing 
+		InitialiseCreatedGoals 
+	ENDIF 
+	FormatText TextName = text "Slot %d" d = <slot> 
+	SetParkName <text> 
+ENDSCRIPT
+
+SCRIPT parked_show_wait_message { 
+		text = "Please Wait" 
+		stay_time = 0.00000000000 
+		} 
+		SetScreenElementLock id = root_window off 
+			IF ObjectExists id = parked_message 
+				FireEvent type = showed_wait_message target = system 
+			RETURN 
+		ENDIF 
+		CreateScreenElement { 
+		type = TextBlockElement 
+		id = parked_message parent = root_window 
+		just = [ center center ] 
+		pos = PAIR(320.00000000000, 200.00000000000) 
+		dims = PAIR(400.00000000000, 100.00000000000) 
+		internal_just = [ center center ] 
+		text = <text> 
+		font = small 
+		scale = PAIR(0.00000000000, 0.00000000000) 
+		alpha = 0.00000000000 
+	} 
+	SetScreenElementLock id = root_window 
+	DoScreenElementMorph id = parked_message scale = PAIR(1.00000000000, 1.00000000000) alpha = 1.00000000000 time = 0.40000000596 
+	wait 0.40000000596 seconds 
+	FireEvent type = showed_wait_message target = system 
+	wait <stay_time> seconds 
+	wait 1 frame 
+	DoScreenElementMorph id = parked_message scale = PAIR(2.00000000000, 2.00000000000) alpha = 0.00000000000 time = 0.40000000596 
+	wait 0.40000000596 seconds 
+	SetScreenElementLock id = root_window off 
+	DestroyScreenElement id = parked_message 
+	SetScreenElementLock id = root_window 
+ENDSCRIPT
+
+SCRIPT parked_kill_wait_message 
+	IF NOT ObjectExists id = parked_message 
+		RETURN 
+	ENDIF 
+	FireEvent type = showed_wait_message target = system 
+	SetScreenElementLock id = root_window off 
+	DestroyScreenElement id = parked_message 
+	SetScreenElementLock id = root_window 
+	KillSpawnedScript name = parked_show_wait_message 
+ENDSCRIPT
+
+SCRIPT parked_show_out_of_memory_message  
+	parked_show_wait_message 
+	spawnscript params = { text = "Not enough memory to resize. Remove some pieces." stay_time = 2.00000000000 } 
+ENDSCRIPT
+
+SCRIPT parked_setup_gap_menu 
+	pause_menu_gradient on 
+	SetParkEditorPauseMode pause 
+	set_theme_icons 
+	FormatText ChecksumName = load_icon "%i_load" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = back_icon "%i_back" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = test_play_icon "%i_test_play" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = nuke_icon "%i_nuke" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = theme_icon "%i_theme" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = resize_icon "%i_resize" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = set_players_icon "%i_set_players" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = continue_icon "%i_continue" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = name_cat_icon "%i_name_cat" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = career_ops_icon "%i_career_ops" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	FormatText ChecksumName = gap_icon "%i_gap" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	make_new_pause_menu { 
+		menu_id = pause_menu 
+		vmenu_id = pause_vmenu 
+		pad_back_script = parked_continue_editing 
+		pos = PAIR(320.00000000000, 240.00000000000) 
+	} 
+	kill_start_key_binding 
+	create_helper_text generic_helper_text 
+	make_sprite_menu_item text = "Continue" id = menu_continue pad_choose_script = parked_continue_editing 
+	make_text_sprite texture = <continue_icon> parent = menu_continue 
+	make_sprite_menu_item text = "Name Gap" id = menu_name_gap pad_choose_script = parked_name_gap 
+	make_text_sprite texture = <name_cat_icon> parent = menu_name_gap 
+	make_sprite_menu_item text = "Set Score" id = menu_set_score pad_choose_script = parked_setup_gap_score_menu 
+	make_text_sprite texture = <career_ops_icon> parent = menu_set_score 
+	make_sprite_menu_item text = "Set Gap Type" id = menu_set_gap_type pad_choose_script = parked_setup_gap_type_menu 
+	make_text_sprite texture = <gap_icon> parent = menu_set_gap_type 
+	RunScriptOnScreenElement id = pause_menu 
+	menu_onscreen 
+	build_pause_menu_parts 
+ENDSCRIPT
+
+SCRIPT parked_name_gap 
+	exit_pause_menu 
+	SetParkEditorPauseMode pause 
+	GetEditedParkGapName 
+	create_onscreen_keyboard { 
+		keyboard_title = "NAME GAP" 
+		keyboard_done_script = parked_gap_is_named 
+		text = <name> 
+		min_length = 1 
+		allow_cancel 
+		allowed_characters = [ "A" "B" "C" "D" "E" "F" "G" "H" "I" 
+		"J" "K" "L" "M" "N" "O" "P" "Q" "R" 
+		"S" "T" "U" "V" "W" "X" "Y" "Z" "a" 
+		"b" "c" "d" "e" "f" "g" "h" "i" "j" 
+		"k" "l" "m" "n" "o" "p" "q" "r" "s" 
+		"t" "u" "v" "w" "x" "y" "z" "0" "1" 
+		"2" "3" "4" "5" "6" "7" "8" "9" "." 
+		"," "-" "!" "?" ":" "+" "\'" "#" "$" 
+		"@" "&" "=" "(" ")" "\xA8" "\xA9" 
+		"\xDF" "\xC4" "\xDC" "\xD6" "\xE0" "\xE2" "\xEA" "\xE8" "\xE9" 
+		"\xEB" "\xEC" "\xEE" "\xEF" "\xF4" "\xF2" "\xF9" "\xFB" "\xE7" 
+		"\x9C" "\xFC" "\xE4" "\xF6" "\\v" " " 
+		] 
+	} 
+ENDSCRIPT
+
+SCRIPT parked_gap_is_named 
+	GetTextElementString id = keyboard_current_string 
+	SetEditedParkGapInfo name = <string> 
+	destroy_onscreen_keyboard 
+	pause_menu_gradient off 
+	SetParkEditorPauseMode unpause 
+ENDSCRIPT
+
+SCRIPT parked_setup_gap_score_menu 
+	IF ObjectExists id = current_menu_anchor 
+		DestroyScreenElement id = current_menu_anchor 
+	ENDIF 
+	FormatText ChecksumName = title_icon "%i_career_ops" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+		make_new_themed_sub_menu title = "SET SCORE" title_icon = <title_icon> 
+		SetScreenElementProps { id = sub_menu event_handlers = [ 
+			{ pad_back generic_menu_pad_back params = { callback = parked_continue_editing } } 
+		] 
+	} 
+	theme_menu_add_item text = "100 pts" id = menu_score1 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 100 } centered = 1 
+	theme_menu_add_item text = "200 pts" id = menu_score2 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 200 } centered = 1 
+	theme_menu_add_item text = "300 pts" id = menu_score3 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 300 } centered = 1 
+	theme_menu_add_item text = "400 pts" id = menu_score4 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 400 } centered = 1 
+	theme_menu_add_item text = "500 pts" id = menu_score5 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 500 } centered = 1 
+	theme_menu_add_item text = "600 pts" id = menu_score6 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 600 } centered = 1 
+	theme_menu_add_item text = "700 pts" id = menu_score7 pad_choose_script = parked_set_gap_score pad_choose_params = { score = 700 } centered = 1 last_menu_item = 1 
+	finish_themed_sub_menu 
+ENDSCRIPT
+
+SCRIPT parked_set_gap_score 
+	SetEditedParkGapInfo score = <score> 
+	parked_continue_editing 
+ENDSCRIPT
+
+SCRIPT parked_setup_gap_type_menu 
+	IF ObjectExists id = current_menu_anchor 
+		DestroyScreenElement id = current_menu_anchor 
+	ENDIF 
+	FormatText ChecksumName = title_icon "%i_gap" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+		make_new_themed_sub_menu title = "GAP TYPE" title_icon = <title_icon> 
+		SetScreenElementProps { id = sub_menu event_handlers = [ 
+			{ pad_back generic_menu_pad_back params = { callback = parked_continue_editing } } 
+		] 
+	} 
+	theme_menu_add_item text = "Default (Skating)" id = menu_default pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { CANCEL_GROUND } } centered = 1 
+	theme_menu_add_item text = "Only Air" id = menu_air pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { PURE_AIR } } centered = 1 
+	theme_menu_add_item text = "Only Rail" id = menu_rail pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { 
+		CANCEL_GROUND CANCEL_WALL CANCEL_LIP CANCEL_WALLPLANT CANCEL_MANUAL CANCEL_HANG CANCEL_LADDER 
+	} } centered = 1 
+	theme_menu_add_item text = "Only Manual" id = menu_manual pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { 
+		CANCEL_GROUND CANCEL_RAIL CANCEL_WALL CANCEL_LIP CANCEL_WALLPLANT CANCEL_HANG CANCEL_LADDER REQUIRE_MANUAL 
+	} } centered = 1 
+	theme_menu_add_item text = "Only Car" id = menu_car pad_choose_script = parked_set_gap_type pad_choose_params = { cancel_flags = { 
+		CANCEL_WALK CANCEL_SKATE 
+	} } centered = 1 last_menu_item = 1 
+	finish_themed_sub_menu 
+ENDSCRIPT
+
+SCRIPT parked_set_gap_type 
+	SetEditedParkGapInfo cancel_flags = <cancel_flags> 
+	parked_continue_editing 
+ENDSCRIPT
+
+SCRIPT parked_setup_area_select_menu 
+	SetParkEditorPauseMode pause 
+	pause_menu_gradient on 
+	set_theme_icons make_new_pause_menu { 
+		menu_id = pause_menu vmenu_id = pause_vmenu 
+		pos = PAIR(320.00000000000, 240.00000000000) 
+	} 
+	kill_start_key_binding 
+	create_helper_text generic_helper_text 
+	SetScreenElementProps id = pause_menu 
+	event_handlers = [ { pad_back generic_menu_pad_back params = { callback = parked_area_select_continue } } ]
+	make_sprite_menu_item text = "Continue" id = menu_continue pad_choose_script = parked_area_select_continue 
+	FormatText ChecksumName = texture "%i_continue" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	make_text_sprite texture = <texture> parent = menu_continue 
+	IF ParkEditorSelectionAreaTooBigToCopy 
+		not_focusable = not_focusable 
+	ENDIF 
+	make_sprite_menu_item text = "Copy" id = menu_name_copy pad_choose_script = parked_copy_to_clipboard not_focusable = <not_focusable> 
+	FormatText ChecksumName = texture "%i_grab" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	make_text_sprite texture = <texture> parent = menu_name_copy 
+	make_sprite_menu_item text = "Cut" id = menu_name_cut pad_choose_script = parked_cut_to_clipboard 
+	FormatText ChecksumName = texture "%i_career_ops" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	make_text_sprite texture = <texture> parent = menu_name_cut 
+	make_sprite_menu_item text = "Delete pieces" id = menu_name_delete pad_choose_script = parked_delete_selected_pieces 
+	FormatText ChecksumName = texture "%i_end" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
+	make_text_sprite texture = <texture> parent = menu_name_delete 
+	RunScriptOnScreenElement id = pause_menu menu_onscreen 
+	build_pause_menu_parts 
+ENDSCRIPT
+
+SCRIPT parked_area_select_continue 
+	ContinueParkEditorAreaSelection 
+	parked_continue_editing 
+ENDSCRIPT
+
+SCRIPT parked_copy_to_clipboard 
+	IF CopyParkEditorSelectionToClipboard 
+		parked_continue_editing 
+		SwitchParkEditorMenuPieceToMostRecentClipboard 
+	ELSE 
+		PlayEdBuzzSound 
+		parked_continue_editing 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT parked_cut_to_clipboard 
+	IF CutParkEditorAreaSelection 
+		parked_continue_editing 
+		SwitchParkEditorMenuPieceToMostRecentClipboard 
+	ELSE 
+		PlayEdBuzzSound 
+		parked_continue_editing 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT parked_delete_selected_pieces 
+	ParkEditorAreaSelectionDeletePieces 
+	parked_continue_editing 
+ENDSCRIPT
+
+SCRIPT parked_defragment_memory 
+	IF isNGC 
+		PauseMusic 1 
+	ENDIF 
+	SetParkEditorPauseMode pause 
+	spawnscript parked_show_wait_message 
+	WaitForEvent type = showed_wait_message 
+	IF isNGC 
+		WriteCompressedMapBuffer 
+	ENDIF 
+	SetParkEditorState state = edit 
+	command = regenerate_from_map 
+	SetParkEditorPauseMode unpause 
+	IF isNGC 
+		PauseMusic 0 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT ReExportParks array = ThemeIndicesA 
+	GetArraySize <array> 
+	i = 0 
+	BEGIN 
+		LoadParkFromDisk slot = ( <array> [ <i> ] ) 
+		SaveParkToDisk slot = ( <array> [ <i> ] ) 
+		i = ( <i> + 1 ) 
+	REPEAT <array_size> 
+ENDSCRIPT
+
+SCRIPT TRG_Flag_BlueScript_Parked 
+	Team_Flag blue 
+ENDSCRIPT
+
+SCRIPT TRG_Flag_GreenScript_Parked 
+	Team_Flag green 
+ENDSCRIPT
+
+SCRIPT TRG_Flag_RedScript_Parked 
+	Team_Flag red 
+ENDSCRIPT
+
+SCRIPT TRG_Flag_YellowScript_Parked 
+	Team_Flag yellow 
+ENDSCRIPT
+
+RailEditorHighlightColourR = 255 
+RailEditorHighlightColourG = 255 
+RailEditorHighlightColourB = 255 
+RailEditorBadAngleHighlightColourR = 255 
+RailEditorBadAngleHighlightColourG = 0 
+RailEditorBadAngleHighlightColourB = 0 
+RailEditorHighlightFlashRate = 20 
+RailEditorRedLineFlashRate = 4 
+RailEditorMinimumPointSeparation = 20 
+RailEditorMaxSlope = 80 
+RailEditorMaxJoinAngle = 120 
+SCRIPT RailEditorEveryFrame 
+	UnHighlightAllRails 
+	GetEditingMode 
+	GetCursorPosition 
+	IF ObjectExists id = RailEditorCursor 
+		RailEditorCursor : Obj_SetPosition position = <pos> 
+		RailEditorCursor : Obj_SetOrientation y = <angle> 
+	ENDIF 
+	SWITCH <mode> 
+		CASE FreeRoaming 
+			IF FindNearestRailPoint pos = <pos> 
+				HighlightRailPoint rail_id = <rail_id> rail_point_index = <rail_point_index> Flash IncludeEndPosts 
+			ENDIF 
+		CASE RailLayout 
+			DrawDottedLine pos = <pos> 
+		CASE Grab 
+			GetTags 
+			UpdateRailPointPosition rail_id = <rail_id> rail_point_index = <rail_point_index> pos = <pos> 
+			HighlightRailPoint rail_id = <rail_id> rail_point_index = <rail_point_index> 
+	ENDSWITCH 
+ENDSCRIPT
+
+SCRIPT rail_editor_destroy_cursor 
+	IF ObjectExists id = RailEditorCursor 
+		RailEditorCursor : Die 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT rail_editor_create_cursor 
+	rail_editor_destroy_cursor 
+	Model = Sk4Ed_Team_Green 
+	RailEditor : GetEditingMode 
+	SWITCH <mode> 
+		CASE FreeRoaming 
+			Model = "ed_cursors\\ed_cursor_freerail\\ed_cursor_freerail.mdl" 
+		CASE RailLayout 
+			Model = "ed_cursors\\ed_cursor_rail\\ed_cursor_rail.mdl" 
+		CASE Grab 
+			Model = "ed_cursors\\ed_cursor_editrail\\ed_cursor_editrail.mdl" 
+	ENDSWITCH 
+	CreateCompositeObject { 
+		Components = 
+		[ 
+			{ component = motion } 
+			{ component = Model Model = <Model> } 
+		] 
+		params = { name = RailEditorCursor } 
+	} 
+	RailEditor : GetCursorPosition 
+	RailEditorCursor : Obj_SetPosition position = <pos> 
+	RailEditorCursor : Obj_SetOrientation y = <angle> 
+ENDSCRIPT
+
+SCRIPT RailEditorX 
+	GetEditingMode 
+	GetCursorPosition 
+	SWITCH <mode> 
+		CASE FreeRoaming 
+			IF NewRail 
+				IF AddNewPosition pos = <pos> AddPost 
+					SetEditingMode mode = RailLayout 
+					rail_editor_create_cursor 
+				ELSE 
+					IF GetEditedRailInfo CurrentRail
+						IF ( <num_points> < 2 ) 
+							DeleteRail rail_id = <rail_id> 
+						ENDIF 
+					ENDIF 
+				ENDIF 
+			ENDIF 
+		CASE RailLayout 
+			IF NOT AddNewPosition pos = <pos> AddPost 
+				IF GetEditedRailInfo CurrentRail 
+					IF ( <num_points> < 2 )
+						DeleteRail rail_id = <rail_id> 
+					ENDIF 
+				ENDIF 
+				DeleteDottedLine 
+				SetEditingMode mode = FreeRoaming 
+				rail_editor_create_cursor 
+			ENDIF 
+		CASE Grab 
+			GetTags 
+			IF NOT UpdateRailPointPosition rail_id = <rail_id> rail_point_index = <rail_point_index> pos = <pos> UpdateSuperSectors 
+			ELSE 
+				SetEditingMode mode = FreeRoaming 
+				rail_editor_create_cursor 
+			ENDIF 
+		DEFAULT 
+			printf "X does nothing in editor mode \'%s\'" s = <mode> 
+	ENDSWITCH 
+ENDSCRIPT
+
+SCRIPT RailEditorCircle 
+	GetEditingMode 
+	GetCursorPosition 
+	SWITCH <mode> 
+		CASE FreeRoaming 
+			IF FindNearestRailPoint pos = <pos> 
+				SetTags rail_id = <rail_id> rail_point_index = <rail_point_index> OriginalPos = <NearestPos> 
+				EditorCam_SetCursorPos position = <NearestPos> 
+				SetEditingMode mode = Grab 
+				rail_editor_create_cursor 
+			ENDIF 
+		DEFAULT 
+			printf "Circle does nothing in editor mode \'%s\'" s = <mode> 
+	ENDSWITCH 
+ENDSCRIPT
+
+SCRIPT RailEditorTriangle 
+	GetEditingMode 
+	GetCursorPosition 
+	SWITCH <mode> 
+		CASE FreeRoaming 
+			IF FindNearestRailPoint pos = <pos> 
+				DeleteRailPoint rail_id = <rail_id> rail_point_index = <rail_point_index> 
+			ENDIF 
+		CASE RailLayout 
+			IF GetEditedRailInfo CurrentRail 
+				IF ( <num_points> < 2 ) 
+					DeleteRail rail_id = <rail_id> 
+				ENDIF 
+			ENDIF 
+			DeleteDottedLine 
+			SetEditingMode mode = FreeRoaming 
+			rail_editor_create_cursor 
+		CASE Grab 
+			GetTags 
+			UpdateRailPointPosition rail_id = <rail_id> rail_point_index = <rail_point_index> pos = <OriginalPos> UpdateSuperSectors 
+			EditorCam_SetCursorPos position = <OriginalPos> 
+			SetEditingMode mode = FreeRoaming 
+			rail_editor_create_cursor 
+		DEFAULT 
+			printf "Triangle does nothing in editor mode \'%s\'" s = <mode> 
+	ENDSWITCH 
+ENDSCRIPT
+
+SCRIPT RailEditorSquare 
+	GetEditingMode 
+	GetCursorPosition 
+	SWITCH <mode> 
+		CASE FreeRoaming 
+		CASE RailLayout 
+			IF FindNearestRailPoint pos = <pos> CheckLevelGeometry 
+				EditorCam_SetCursorPos position = <NearestPos> 
+			ELSE 
+			ENDIF 
+		CASE Grab 
+			GetTags 
+			IF FindNearestRailPoint { 
+					pos = <pos> 
+					CheckLevelGeometry 
+					IgnoreRailId = <rail_id> 
+					IgnoreRailPointIndex = <rail_point_index> 
+				} 
+				EditorCam_SetCursorPos position = <NearestPos> 
+			ELSE 
+			ENDIF 
+		DEFAULT 
+			printf "Square does nothing in editor mode \'%s\'" s = <mode> 
+	ENDSWITCH 
+ENDSCRIPT
 
