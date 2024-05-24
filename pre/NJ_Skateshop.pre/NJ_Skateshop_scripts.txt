@@ -226,17 +226,25 @@ ENDSCRIPT
 
 SCRIPT unlock_sponsor_movies 
 	SetGlobalFlag flag = MOVIE_UNLOCKED_BIRDHOUSE 
-	SetGlobalFlag flag = MOVIE_UNLOCKED_ELEMENT 
+	
+	SetGlobalFlag flag = MOVIE_UNLOCKED_ELEMENT
+	
 	SetGlobalFlag flag = MOVIE_UNLOCKED_FLIP 
+	
 	SetGlobalFlag flag = MOVIE_UNLOCKED_GIRL 
+	
 	SetGlobalFlag flag = MOVIE_UNLOCKED_ZERO 
 ENDSCRIPT
 
 SCRIPT unlock_all_sponsor_decks 
 	SetGlobalFlag flag = BOARDS_UNLOCKED_BIRDHOUSE 
+	
 	SetGlobalFlag flag = BOARDS_UNLOCKED_ELEMENT 
+	
 	SetGlobalFlag flag = BOARDS_UNLOCKED_FLIP 
+	
 	SetGlobalFlag flag = BOARDS_UNLOCKED_GIRL 
+	
 	SetGlobalFlag flag = BOARDS_UNLOCKED_ZERO 
 ENDSCRIPT
 
