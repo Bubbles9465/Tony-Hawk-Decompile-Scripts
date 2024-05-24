@@ -1241,8 +1241,10 @@ ENDSCRIPT
 SCRIPT parked_setup_area_select_menu 
 	SetParkEditorPauseMode pause 
 	pause_menu_gradient on 
-	set_theme_icons make_new_pause_menu { 
-		menu_id = pause_menu vmenu_id = pause_vmenu 
+	set_theme_icons 
+	make_new_pause_menu { 
+		menu_id = pause_menu 
+		vmenu_id = pause_vmenu 
 		pos = PAIR(320.00000000000, 240.00000000000) 
 	} 
 	kill_start_key_binding 
