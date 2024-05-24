@@ -240,7 +240,8 @@ SCRIPT unlock_all_sponsor_decks
 	SetGlobalFlag flag = BOARDS_UNLOCKED_ZERO 
 ENDSCRIPT
 
-boardshop_current_deck_list_index = 0 
+boardshop_current_deck_list_index = 0
+ 
 boardshop_deck_options = [ 
 	{ 
 		group_title = "DECKS" 
