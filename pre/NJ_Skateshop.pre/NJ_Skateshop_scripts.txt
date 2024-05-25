@@ -247,10 +247,9 @@ SCRIPT unlock_all_sponsor_decks
 	
 	SetGlobalFlag flag = BOARDS_UNLOCKED_ZERO 
 ENDSCRIPT
-
 boardshop_current_deck_list_index = 0
- 
-boardshop_deck_options = [ 
+boardshop_deck_options = 
+[ 
 	{ 
 		group_title = "DECKS" 
 		text = #"Peralta 1" 
@@ -314,7 +313,7 @@ boardshop_deck_options = [
 SCRIPT any_decks_unlocked 
 	<i> = <startlist>
 	<is_enabled> = 0 
-		BEGIN 
+	BEGIN 
 		IF ( <i> = ( <endlist> + 1 ) ) 
 			BREAK 
 		ENDIF 
@@ -325,8 +324,8 @@ SCRIPT any_decks_unlocked
 		REPEAT 
 	RETURN is_enabled = <is_enabled> 
 ENDSCRIPT
-
-boardshop_griptape_options = [ 
+boardshop_griptape_options = 
+[ 
 	{ 
 		group_title = "GRIPTAPE" 
 		text = #"Griptape  - Black" 
@@ -395,8 +394,7 @@ SCRIPT boardshop_buy_deck_reject
 	ELSE 
 		create_helper_text generic_helper_text 
 	ENDIF 
-	FireEvent type = focus 
-	target = boardshop_deck_design_menu 
+	FireEvent type = focus target = boardshop_deck_design_menu 
 ENDSCRIPT
 
 SCRIPT boardshop_buy_deck_accept 
