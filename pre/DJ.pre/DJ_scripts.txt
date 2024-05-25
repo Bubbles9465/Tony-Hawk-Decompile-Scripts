@@ -1,12 +1,106 @@
-SCRIPT DJ_Setup IF IsCareerMode ELSE ENDIF ENDSCRIPT
-SCRIPT DJ_startup LoadSound "Shared\\Hits\\HitGlassPane2x" LoadSound "Shared\\Auto\\LA_Skid_11" Vol = 100 Dropoff = 150 LoadSound "Shared\\Auto\\CarBrakeSqueal" Vol = 100 Dropoff = 150 LoadSound "Shared\\Auto\\CarLoop" Vol = 100 Dropoff = 150 PosUpdateWithDoppler LoadSound "Shared\\Auto\\CarHorn_11" Vol = 100 Dropoff = 150 LoadSound "Shared\\Hits\\HitMetalCan" Vol = 100 Dropoff = 150 PosUpdateWithDoppler LoadSound "Shared\\Hits\\BonkBush" Vol = 100 Dropoff = 0 LoadSound "Shared\\Water\\FallWater" Vol = 100 Dropoff = 50 SetTerrainGrindWire SetTerrainWood SetTerrainConcSmooth SetTerrainMetalSmooth ENDSCRIPT
-SCRIPT ALC_Televator { text = "Asshole!" } IF NOT GotParam cut create_panel_message { id = leaving_message text = <text> pos = PAIR(320, 150) rgba = [ 118 , 110 , 14 , 128 ] pulse_blur start = 200 speed = 1 scale = 1.00000000000 } ENDIF IF GotParam sound PlaySound <sound> ENDIF IF GotParam node sk3_teleporttonode nodename = <node> ELSE create_panel_message id = death_message text = "You forgot node=<nodename>!!" pos = PAIR(320.00000000000, 200.00000000000) ENDIF ENDSCRIPT
-SCRIPT DJ_Goals IF InMultiplayerGame Add_MultiPlayer_Mode_Goals ENDIF IF NOT InSplitScreenGame IF NOT GameModeEquals Is_SingleSession ENDIF ENDIF IF NOT InSplitScreenGame IF NOT GameModeEquals Is_SingleSession IF NOT InNetGame ENDIF ENDIF ENDIF ENDSCRIPT
-SCRIPT TOD_Script SWITCH <current_tod> CASE morning CASE day CASE evening CASE night DEFAULT printf "### no tod set ###" ENDSWITCH ENDSCRIPT
-SCRIPT DJ_Hazard_Gap StartGap flags = [ Pure_Air ] EndGap text = "Huge Water Hazard Gap" score = 1000 ENDSCRIPT
-SCRIPT DJ_Co_Gap StartGap flags = [ Cancel_Ground ] EndGap text = "Neversoft Elec. Co. Gap" score = 500 ENDSCRIPT
-SCRIPT DJ_25_Gap StartGap flags = [ Pure_Air ] EndGap text = "25ft" score = 25 ENDSCRIPT
-SCRIPT DJ_50_Gap StartGap flags = [ Pure_Air ] EndGap text = "50ft" score = 150 ENDSCRIPT
-SCRIPT DJ_75_Gap StartGap flags = [ Pure_Air ] EndGap text = "75ft" score = 450 ENDSCRIPT
-SCRIPT DJ_100_Gap StartGap flags = [ Pure_Air ] EndGap text = "100ft" score = 1000 ENDSCRIPT
+SCRIPT DJ_Setup 
+	IF IsCareerMode 
+	ELSE 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT DJ_startup 
+	LoadSound "Shared\\Hits\\HitGlassPane2x" 
+	LoadSound "Shared\\Auto\\LA_Skid_11" Vol = 100 Dropoff = 150 
+	LoadSound "Shared\\Auto\\CarBrakeSqueal" Vol = 100 Dropoff = 150 
+	LoadSound "Shared\\Auto\\CarLoop" Vol = 100 Dropoff = 150 PosUpdateWithDoppler 
+	LoadSound "Shared\\Auto\\CarHorn_11" Vol = 100 Dropoff = 150 
+	LoadSound "Shared\\Hits\\HitMetalCan" Vol = 100 Dropoff = 150 PosUpdateWithDoppler 
+	LoadSound "Shared\\Hits\\BonkBush" Vol = 100 Dropoff = 0 
+	LoadSound "Shared\\Water\\FallWater" Vol = 100 Dropoff = 50 
+	SetTerrainGrindWire 
+	SetTerrainWood 
+	SetTerrainConcSmooth 
+	SetTerrainMetalSmooth 
+ENDSCRIPT
+
+SCRIPT ALC_Televator { text = "Asshole!" } 
+	IF NOT GotParam cut 
+		create_panel_message { 
+			id = leaving_message 
+			text = <text> 
+			pos = PAIR(320, 150) 
+			rgba = [ 118 , 110 , 14 , 128 ] 
+			pulse_blur start = 200 
+			speed = 1 scale = 1.00000000000 
+		} 
+	ENDIF 
+	IF GotParam sound 
+		PlaySound <sound> 
+	ENDIF 
+		IF GotParam node sk3_teleporttonode nodename = <node> 
+	ELSE 
+		create_panel_message id = death_message text = "You forgot node=<nodename>!!" pos = PAIR(320.00000000000, 200.00000000000) 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT DJ_Goals 
+	IF InMultiplayerGame 
+		Add_MultiPlayer_Mode_Goals 
+	ENDIF 
+	IF NOT InSplitScreenGame 
+		IF NOT GameModeEquals 
+			Is_SingleSession 
+		ENDIF 
+	ENDIF 
+	IF NOT InSplitScreenGame 
+		IF NOT GameModeEquals 
+			Is_SingleSession 
+				IF NOT InNetGame 
+			ENDIF 
+		ENDIF 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT TOD_Script 
+	SWITCH <current_tod> 
+		CASE morning 
+		CASE day 
+		CASE evening 
+		CASE night 
+	DEFAULT 
+		printf "### no tod set ###" 
+	ENDSWITCH 
+ENDSCRIPT
+
+SCRIPT DJ_Hazard_Gap 
+	StartGap flags = [ Pure_Air ] 
+	EndGap text = "Huge Water Hazard Gap" 
+	score = 1000 
+ENDSCRIPT
+
+SCRIPT DJ_Co_Gap 
+	StartGap flags = [ Cancel_Ground ] 
+	EndGap text = "Neversoft Elec. Co. Gap" 
+	score = 500 
+ENDSCRIPT
+
+SCRIPT DJ_25_Gap 
+	StartGap flags = [ Pure_Air ] 
+	EndGap text = "25ft" 
+	score = 25 
+ENDSCRIPT
+
+SCRIPT DJ_50_Gap 
+	StartGap flags = [ Pure_Air ] 
+	EndGap text = "50ft" 
+	score = 150 
+ENDSCRIPT
+
+SCRIPT DJ_75_Gap 
+	StartGap flags = [ Pure_Air ] 
+	EndGap text = "75ft" 
+	score = 450 
+ENDSCRIPT
+
+SCRIPT DJ_100_Gap 
+	StartGap flags = [ Pure_Air ] 
+	EndGap text = "100ft" 
+	score = 1000 
+ENDSCRIPT
 
