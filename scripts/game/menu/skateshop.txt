@@ -559,6 +559,14 @@ SCRIPT attract_mode_timer
 	max_time = 30 
 	BEGIN 
 		Wait <max_time> seconds 
+		movie_file = ( attract_mode_movies [ current_attract_movie ] ) 
+		GetArraySize attract_mode_movies 
+		IF NOT ( <array_size> > ( current_attract_movie + 1 ) ) 
+			change current_attract_movie = 0 
+		ELSE 
+			change current_attract_movie = ( current_attract_movie + 1 ) 
+		ENDIF 
+		playmovie_script <movie_file> 
 	REPEAT 
 ENDSCRIPT
 
