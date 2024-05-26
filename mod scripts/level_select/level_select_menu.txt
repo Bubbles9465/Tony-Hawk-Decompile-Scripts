@@ -1,142 +1,204 @@
-
-SCRIPT launch_level_select_menu 
-	change check_for_unplugged_controllers = 0 
-	hide_current_goal 
-	IF ObjectExists id = current_menu_anchor 
-		DestroyScreenElement id = current_menu_anchor 
+THUGPLUS_LEVEL_INDEX = 0 
+THUGPLUS_LEVEL_PAGELIMIT = 7 
+THUGPLUS_LEVELS_UG1 = [ 
+	{ text = "New Jersey" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_nj } 
+	{ text = "Manhattan" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_ny } 
+	{ text = "Tampa" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_fl } 
+	{ text = "San Diego" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sd } 
+	{ text = "Hawaii" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_hi } 
+	{ text = "Vancouver" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_vc } 
+	{ text = "Slam City Jam" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sj } 
+	{ text = "Moscow" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_ru } 
+	{ text = "Hotter Than Hell" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_se } 
+	{ text = "Created Park" level_num = 11 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_HN } 
+] 
+THUGPLUS_LEVELS_TH1 = [ 
+	{ text = "Warehouse" cross_it_out level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_wh } 
+	{ text = "School" cross_it_out level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sch } 
+	{ text = "The Mall" cross_it_out level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_ml } 
+	{ text = "Skatepark" cross_it_out level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sp } 
+	{ text = "Minneapolis" cross_it_out level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_mn } 
+	{ text = "Downhill Jam" cross_it_out level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_dhj } 
+	{ text = "Burnside" cross_it_out level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_bs } 
+	{ text = "Streets" cross_it_out level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_st } 
+	{ text = "Roswell" cross_it_out level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_rsw } 
+] 
+THUGPLUS_LEVELS_TH2 = [ 
+	{ text = "Hangar" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_HN } 
+	{ text = "School II" level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_SC2 } 
+	{ text = "Marseille" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_mar } 
+	{ text = "New York City" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_nyc } 
+	{ text = "Venice" level_num = 17 points_to_unlock = 0 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_VN } 
+	{ text = "Skatestreet" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_ss } 
+	{ text = "Philadelphia" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_phl } 
+	{ text = "Bullring" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_br } 
+	{ text = "Skate Heaven" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sh } 
+	{ text = "Chopper Drop" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_cd } 
+] 
+THUGPLUS_LEVELS_TH3 = [ 
+	{ text = "Foundry" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_fnd } 
+	{ text = "Canada" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_can } 
+	{ text = "Rio" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_rio } 
+	{ text = "Suburbia" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sub } 
+	{ text = "Airport" level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_ap } 
+	{ text = "Skater Island" level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_si } 
+	{ text = "Los Angeles" level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_la } 
+	{ text = "Tokyo" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_tky } 
+	{ text = "Cruise Ship" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_cs } 
+	{ text = "Oil Rig" level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_oi } 
+] 
+THUGPLUS_LEVELS_TH4 = [ 
+	{ text = "College" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_col } 
+	{ text = "San Francisco" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sf } 
+	{ text = "Alcatraz" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_al } 
+	{ text = "Kona" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_kn } 
+	{ text = "London" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_ldn } 
+	{ text = "Shipyard" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_shy } 
+	{ text = "Zoo" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_zoo } 
+	{ text = "Carnival" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_carn } 
+	{ text = "Chicago" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_chi } 
+	{ text = "Practice" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_prac } 
+] 
+THUGPLUS_LEVELS_UG2 = [ 
+	{ text = "Training" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_trn } 
+	{ text = "Boston" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_bos } 
+	{ text = "Barcelona" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_bcn } 
+	{ text = "Berlin" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_bln } 
+	{ text = "Australia" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_aus } 
+	{ text = "New Orleans" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_no } 
+	{ text = "Skatopia" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_skp } 
+	{ text = "Pro Skater" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_ps } 
+	{ text = "The Triangle" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_tri } 
+] 
+THUGPLUS_LEVELS_AW = [ 
+	{ text = "Hollywood" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_hw } 
+	{ text = "Beverly Hills" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_bh } 
+	{ text = "Downtown" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_dt } 
+	{ text = "East LA" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_ela } 
+	{ text = "Santa Monica" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sm } 
+	{ text = "Oil Rig" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_oi } 
+	{ text = "Vans Park" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_vp } 
+	{ text = "Casino" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_csn } 
+	{ text = "Skate Ranch" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sr } 
+	{ text = "The Ruins" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_tr } 
+	{ text = "Santa Cruz" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_scz } 
+	{ text = "Kyoto" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_ky } 
+	{ text = "Atlanta" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_atl } 
+] 
+THUGPLUS_LEVELS_P8 = [ 
+	{ text = "Suburbs" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_sub2 } 
+	{ text = "Downtown" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_dt2 } 
+	{ text = "City Center" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_cc } 
+	{ text = "High School" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_hs } 
+	{ text = "Car Factory" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_fac } 
+	{ text = "Crete Park" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_crtp } 
+	{ text = "Fun Park" level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_fp } 
+	{ text = "Downhill" cross_it_out level_num = 17 points_to_unlock = 8 num_am_goals = 0 num_goals = 0 flag = LEVEL_UNLOCKED_NJ level = load_dh } 
+] 
+last_level_list = THUGPLUS_LEVELS_UG1 
+last_level_list_name = "THUG1" 
+SCRIPT thugplus_levelmenu_remove_hud 
+	IF ScreenElementExists id = thugplus_levelselect_hud 
+		DestroyScreenElement id = thugplus_levelselect_hud 
 	ENDIF 
-	IF ScreenElementExists id = main_menu_bg_anchor 
-		DestroyScreenElement id = main_menu_bg_anchor 
-	ENDIF 
-	IF NOT LevelIs load_skateshop 
-		IF NOT GotParam dont_wait 
-			fadetoblack on id = fade_out_anchor create_script = create_chapter_fade_piece alpha = 1 time = 0.40000000596 
-			wait 0.50000000000 seconds 
-		ENDIF 
-	ENDIF 
-	IF NOT GotParam no_unload 
-		load_level_select_textures_to_main_memory 
-	ENDIF 
-	SetMenuPadMappings [ active 
-		use_as_first 
-	] 
-	create_level_select_menu <...> 
-	change check_for_unplugged_controllers = 1 
 ENDSCRIPT
 
-SCRIPT create_level_select_menu pad_back_script = level_select_menu_exit 
-	printf "create_level_select_menu PARAMETERS = " 
-	IF InNetGame 
-		show_warning = show_warning 
-	ENDIF 
-	SetScreenElementLock id = root_window off 
-	pulse_blur 
-	FormatText ChecksumName = highlight_rgba "%i_HIGHLIGHTED_TEXT_COLOR" i = ( THEME_COLOR_PREFIXES [ current_theme_prefix ] ) 
-	IF ( in_server_options = 1 ) 
-		from_server_options = from_server_options 
-		net_pad_back = 0 
-		pad_back_script = network_level_select_pad_back 
-	ELSE 
-		RemoveParameter from_server_options 
-	ENDIF 
-	IF NOT GotParam no_cam_anim 
+SCRIPT thugplus_levelmenu_create_hud 
+	IF ScreenElementExists id = thugplus_levelselect_hud 
+		DestroyScreenElement id = thugplus_levelselect_hud 
 	ENDIF 
 	CreateScreenElement { 
 		type = ContainerElement 
-		parent = root_window 
-		id = level_select_anchor 
-		dims = PAIR(640.00000000000, 480.00000000000) 
-		pos = PAIR(320.00000000000, 240.00000000000) 
+		id = thugplus_levelselect_hud 
+		parent = current_menu_anchor 
+		dims = PAIR(150, 50) 
+		pos = PAIR(490, 100) 
+		z_priority = 18 
 	} 
-	AssignAlias id = level_select_anchor alias = current_menu_anchor 
-	create_helper_text generic_helper_text 
-	kill_start_key_binding 
-	GoalManager_HidePoints 
-	hide_current_goal 
-	FormatText ChecksumName = title_icon "%i_level" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
-	build_theme_sub_title title = "LEVEL SELECT" title_icon = <title_icon> right_bracket_z = 4 static 
-	FormatText ChecksumName = paused_icon "%i_paused_icon" i = ( THEME_PREFIXES [ current_theme_prefix ] ) 
-	build_theme_box_icons icon_texture = <paused_icon> static 
-	build_top_bar pos = PAIR(-400.00000000000, 62.00000000000) z_priority = 4 static 
-	build_top_and_bottom_blocks top_z = 3 static 
-	build_level_select_map 
-	level_select_create_menu_block pad_back_script = <pad_back_script> <...> 
-	IF NOT GotParam use_level_list 
-		use_level_list = ( last_level_list ) 
-		level_list_name = ( last_level_list_name ) 
-		printf "omg" 
-	ENDIF 
-	IF IsTrue Demo_Build 
-		ForEachIn e3_level_select_menu_level_info do = level_select_menu_add_item params = <...> 
-	ELSE 
-		RemoveParameter text 
-		RemoveParameter name 
-		ForEachIn <use_level_list> do = level_select_menu_add_item params = <...> 
-	ENDIF 
-	DoScreenElementMorph id = level_select_anchor_middle pos = PAIR(320.00000000000, 640.00000000000) 
-	IF GotParam from_server_options 
-		level_select_vmenu : SetTags from_server_options 
-	ENDIF 
-	FireEvent type = focus target = level_select_vmenu 
-	spawnscript chap_moving_bg 
-	SetButtonEventMappings block_menu_input 
-	wait 3 gameframes 
-	SetScreenElementProps id = level_select_scrolling_menu reset_window_top 
-	PlaySound DE_MenuFlyUp vol = 100 
-	PlaySound DE_PauseFlyIn vol = 100 
-	DoScreenElementMorph id = top_bar_anchor time = 0.20000000298 pos = PAIR(0.00000000000, 62.00000000000) 
-	DoScreenElementMorph id = level_select_anchor_middle pos = PAIR(320.00000000000, 240.00000000000) time = 0.20000000298 
-	DoScreenElementMorph id = level_select_map_anchor time = 0.30000001192 alpha = 1.00000000000 
-	IF NOT LevelIs load_skateshop 
-		spawnscript fadetoblack params = { off id = fade_out_anchor } 
-		pause_menu_gradient off 
-	ENDIF 
-	wait 0.20000000298 seconds 
-	SetButtonEventMappings unblock_menu_input 
+	CreateScreenElement { 
+		type = SpriteElement 
+		parent = thugplus_levelselect_hud 
+		texture = left_arrow 
+		rgba = [ 90 90 100 180 ] 
+		pos = PAIR(-20, 0) 
+		scale = PAIR(1.25, 0.8) 
+		alpha = 0.60000002384 
+		z_priority = 8 
+	} 
+	CreateScreenElement { 
+		type = SpriteElement 
+		parent = thugplus_levelselect_hud 
+		texture = right_arrow 
+		rgba = [ 90 90 100 180 ] 
+		pos = PAIR(150.00000000000, 0.00000000000) 
+		scale = PAIR(1.25000000000, 0.80000001192) 
+		alpha = 0.60000002384 
+		z_priority = 8 
+	} 
+	CreateScreenElement { 
+		type = TextElement 
+		parent = thugplus_levelselect_hud 
+		font = small 
+		text = <level_list_name> 
+		scale = 1.10000002384 
+		pos = PAIR(60.00000000000, 0.00000000000) 
+		just = [ center center ] 
+		rgba = [ 90 90 100 180 ] 
+		not_focusable 
+	} 
 ENDSCRIPT
 
-SCRIPT level_select_create_menu_block level_list_name = "THUG1" 
-	IF ObjectExists id = level_select_anchor_middle 
-		DestroyScreenElement id = level_select_anchor_middle 
+SCRIPT thugplus_levelmenu_left 
+	printf "thugplus_levelmenu_left" 
+	change THUGPLUS_LEVEL_INDEX = ( THUGPLUS_LEVEL_INDEX - 1 ) 
+	IF ( THUGPLUS_LEVEL_INDEX < 0 ) 
+		change THUGPLUS_LEVEL_INDEX = THUGPLUS_LEVEL_PAGELIMIT 
 	ENDIF 
-	CreateScreenElement { 
-		type = ContainerElement 
-		parent = level_select_anchor 
-		id = level_select_anchor_middle 
-		dims = PAIR(640.00000000000, 480.00000000000) 
-		pos = PAIR(320.00000000000, 240.00000000000) 
-	} 
-	CreateScreenElement { 
-		type = VScrollingMenu 
-		parent = level_select_anchor_middle 
-		id = level_select_scrolling_menu 
-		pos = PAIR(480.00000000000, 120.00000000000) 
-		just = [ left top ] 
-		dims = PAIR(300.00000000000, 203.00000000000) 
-	} 
-	theme_background parent = level_select_scrolling_menu width = 1.50000000000 pos = PAIR(0.00000000000, -15.00000000000) num_parts = 7.09999990463 z_priority = 1 dark_menu = dark_menu static = static 
-	thugplus_levelmenu_create_hud level_list_name = <level_list_name> 
-	CreateScreenElement { 
-		type = VMenu 
-		parent = level_select_scrolling_menu 
-		id = level_select_vmenu 
-		just = [ left top ] 
-		internal_just = [ left center ] 
-		event_handlers = [ { pad_back generic_menu_pad_back params = { callback = <pad_back_script> <...> } } 
-			{ pad_up generic_menu_up_or_down_sound params = { up } } 
-			{ pad_down generic_menu_up_or_down_sound params = { down } } 
-			{ pad_back generic_menu_pad_back_sound } 
-			{ pad_left thugplus_levelmenu_left } 
-			{ pad_right thugplus_levelmenu_right } 
-		] 
-		padding_scale = 0.89999997616 
-		replace_handlers 
-	} 
-	AssignAlias id = level_select_vmenu alias = current_menu 
-	IF GameModeEquals is_career 
-		goals_title_rgba = [ 88 105 112 128 ] 
-	ELSE 
-		goals_title_rgba = [ 0 0 0 0 ] 
-	ENDIF 
+	thugplus_levelmenu_create 
 ENDSCRIPT
+
+SCRIPT thugplus_levelmenu_right 
+	printf "thugplus_levelmenu_right" 
+	change THUGPLUS_LEVEL_INDEX = ( THUGPLUS_LEVEL_INDEX + 1 ) 
+	IF ( THUGPLUS_LEVEL_INDEX > THUGPLUS_LEVEL_PAGELIMIT ) 
+		change THUGPLUS_LEVEL_INDEX = 0 
+	ENDIF 
+	thugplus_levelmenu_create 
+ENDSCRIPT
+
+SCRIPT thugplus_levelmenu_create 
+	level_list = THUGPLUS_LEVELS_UG1 
+	list_name = "THUG1" 
+	SWITCH THUGPLUS_LEVEL_INDEX 
+		CASE 0 
+			<level_list> = THUGPLUS_LEVELS_UG1 
+			<list_name> = "THUG1" 
+		CASE 1 
+			<level_list> = THUGPLUS_LEVELS_TH1 
+			<list_name> = "THPS1" 
+		CASE 2 
+			<level_list> = THUGPLUS_LEVELS_TH2 
+			<list_name> = "THPS2" 
+		CASE 3 
+			<level_list> = THUGPLUS_LEVELS_TH3 
+			<list_name> = "THPS3" 
+		CASE 4 
+			<level_list> = THUGPLUS_LEVELS_TH4 
+			<list_name> = "THPS4" 
+		CASE 5 
+			<level_list> = THUGPLUS_LEVELS_UG2 
+			<list_name> = "THUG2" 
+		CASE 6 
+			<level_list> = THUGPLUS_LEVELS_AW 
+			<list_name> = "THAW" 
+		CASE 7 
+			<level_list> = THUGPLUS_LEVELS_P8 
+			<list_name> = "THP8" 
+	ENDSWITCH 
+	change last_level_list = <level_list> 
+	change last_level_list_name = <list_name> 
+	level_select_menu_exit no_unload 
+	launch_level_select_menu use_level_list = <level_list> level_list_name = <list_name> dont_wait no_unload 
+ENDSCRIPT
+
 
