@@ -1,0 +1,231 @@
+
+le_models = [ 
+	{ name = "Slope" model = "Ed_Models\\Slope\\Slope.mdl" } 
+	{ name = "Alcatraz Kicker" model = "Ed_Models\\Alc_Kicker\\Alc_Kicker.mdl" } 
+	{ name = "QP" model = "Ed_Models\\QP_Normal\\QP_Normal.mdl" } 
+	{ name = "Mini QP" model = "Ed_Models\\MiniQP\\MiniQP.mdl" } 
+	{ name = "Spine Square" model = "Ed_Models\\Spine_Square\\Spine_Square.mdl" } 
+	{ name = "Kicker 1" model = "Ed_Models\\KickerWood\\KickerWood.mdl" } 
+	{ name = "Wavy Rail" model = "Ed_Models\\CurvyRail\\CurvyRail.mdl" } 
+	{ name = "Round Rail" model = "Ed_Models\\RoundRail\\RoundRail.mdl" } 
+	{ name = "Platform - Small" model = "Ed_Models\\Platform_Small\\Platform_Small.mdl" } 
+	{ name = "Platform - Large" model = "Ed_Models\\Platform_Med\\Platform_Med.mdl" } 
+	{ name = "Log Rail" model = "Ed_Models\\LogRail\\LogRail.mdl" } 
+	{ name = "Funbox 1" model = "Ed_Models\\Funbox1\\Funbox1.mdl" } 
+	{ name = "Funbox 2" model = "Ed_Models\\Funbox2\\Funbox2.mdl" } 
+	{ name = "Funbox 3" model = "Ed_Models\\Funbox3\\Funbox3.mdl" } 
+	{ name = "Funbox 4" model = "Ed_Models\\Funbox4\\Funbox4.mdl" } 
+	{ name = "Funbox QP" model = "Ed_Models\\FunboxQP\\FunboxQP.mdl" } 
+	{ name = "Pool Big" model = "Ed_Models\\PoolBig\\PoolBig.mdl" } 
+	{ name = "Aus HP" model = "Ed_Models\\Aus_HP\\Aus_HP.mdl" } 
+	{ name = "Boston Spine" model = "Ed_Models\\Boston_Spine\\Boston_Spine.mdl" } 
+	{ name = "LA Fountain" model = "Ed_Models\\LA_Fountain\\LA_Fountain.mdl" } 
+	{ name = "HD Plane" model = "Ed_Models\\HD_Plane\\HD_Plane.mdl" } 
+	{ name = "Book Float" model = "levels\\sch\\veh_float_book\\veh_float_book.mdl" } 
+	{ name = "Bowl Float" model = "levels\\sch\\veh_float_bowl\\veh_float_bowl.mdl" } 
+	{ name = "Sea Float" model = "levels\\sch\\veh_float_sea\\veh_float_sea.mdl" } 
+	{ name = "Guitar Float" model = "levels\\sch\\veh_float_guitar\\veh_float_guitar.mdl" } 
+	{ name = "Cone" model = "Ed_Models\\Cone\\Cone.mdl" } 
+	{ name = "Trolley Cart" model = "veh\\veh_trolley\\veh_trolley.mdl" } 
+	{ name = "Alcatraz Bench" model = "Ed_Models\\Alc_Bench\\Alc_Bench.mdl" } 
+	{ name = "Crusty Bench" model = "Ed_Models\\Alc_Bench2\\Alc_Bench2.mdl" } 
+	{ name = "Dumpster" model = "Ed_Models\\Dumpster\\Dumpster.mdl" } 
+	{ name = "Table On Dumpster" model = "Ed_Models\\Table_Dumpster\\Table_Dumpster.mdl" } 
+	{ name = "Rally Car" model = "veh\\veh_custom\\veh_custom.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Rally Type Car" model = "veh\\veh_focus\\veh_focus.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "NY Taxi Cab" model = "Veh\\NY\\Veh_Cab_NY\\Veh_Cab_NY.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "New Jersey Police Car" model = "Veh\\NJ\\Veh_PoliceCar_NJ\\Veh_PoliceCar_NJ.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Florida Police Car" model = "Veh\\FL\\Veh_PoliceCar_FL\\Veh_PoliceCar_FL.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Sixties Type Hearse" model = "veh\\veh_hearse\\veh_hearse.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Chevy Impala" model = "Veh\\Veh_Chevy_Impala\\Veh_Chevy_Impala.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Generic Minivan" model = "veh\\veh_minivan\\veh_minivan.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Old Van" model = "Veh\\Veh_OldVan\\Veh_OldVan.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Police Motorcycle" model = "veh\\Veh_CopperBike\\Veh_CopperBike.mdl" } 
+	{ name = "Flower Cart" model = "veh\\veh_sdkart_gardens\\veh_sdkart_gardens.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Security Cart" model = "Veh\\Veh_SDKart_Security\\Veh_SDKart_Security.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Retro Car" model = "veh\\veh_ptcruiser\\veh_ptcruiser.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Small Sports Car" model = "Veh\\Veh_SmallSportscar\\Veh_SmallSportscar.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Sport Utility" model = "veh\\veh_SUV_THUG\\veh_SUV_THUG.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "SUV DRG" model = "Veh\\veh_SUV_DRG\\veh_SUV_DRG.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "SUV Musk" model = "Veh\\Veh_SUV_MUSK\\Veh_SUV_MUSK.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Pickup Truck" model = "Veh\\Veh_Pickup\\Veh_Pickup.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Taxi UK" model = "veh\\veh_taxiuk\\veh_taxiuk.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Ford Taurus" model = "Veh\\Veh_TaurusType\\Veh_TaurusType.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Limosuine" model = "veh\\Veh_Limo\\Veh_Limo.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "TransAM" model = "Levels\\Lon\\Veh_TransAM_PN\\Veh_TransAM_PN.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "UK Bus" model = "veh\\veh_busuk\\veh_busuk.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "Hawaii Bus" model = "veh\\hi\\Veh_Bus_HI\\Veh_Bus_HI.mdl" skeletonName = car type = Bus fixdisplay = 1 } 
+	{ name = "DC Truck" model = "veh\\Veh_DCShoeTruck\\Veh_DCShoeTruck.mdl" skeletonName = car fixdisplay = 1 } 
+	{ name = "SCJ Truck" model = "veh\\Veh_SlamCityTruck\\Veh_SlamCityTruck.mdl" skeletonName = car fixdisplay = 1 } 
+] 
+selected_model = 0 
+le_model_index = 0 
+le_model_count = 0 
+SCRIPT LevelEditor_Model_Init 
+	leveleditor_cursor : die 
+	CreateCompositeObject { 
+		Components = [ 
+			{ component = model UseModelLights } 
+			{ component = modellightupdate } 
+			{ component = motion } 
+		] 
+		params = { name = leveleditor_cursor } 
+	} 
+	LevelEditor_Model_SetModel model_id = 0 
+	SetScreenElementProps { 
+		id = leveleditor_menu_title 
+		text = "Level Editor" 
+	} 
+	SetScreenElementProps { id = leveleditor_piece_label text = "Object:" } 
+	SetScreenElementProps { id = leveleditor_desc_label text = "" } 
+	SetScreenElementProps { id = leveleditor_desc text = "" } 
+	change le_model_count = 0 
+	BEGIN 
+		MangleChecksums a = leveleditor_placed_obj b = ( le_model_count ) 
+		IF ObjectExists id = <mangled_id> 
+			change le_model_count = ( le_model_count + 1 ) 
+		ELSE 
+			BREAK 
+		ENDIF 
+	REPEAT 
+ENDSCRIPT
+
+SCRIPT LevelEditor_Model_Close 
+	leveleditor_cursor : Obj_Rotate absolute = VECTOR(0, 0, 0) 
+	leveleditor_cursor : hide 
+ENDSCRIPT
+
+SCRIPT LevelEditor_Model_EveryFrame 
+	leveleditor : GetCursorPosition 
+	leveleditor_cursor : Obj_SetPosition position = <Pos> 
+	leveleditor_cursor : Obj_Rotate absolute = ( <Angle> * VECTOR(0, 1, 0) ) 
+ENDSCRIPT
+
+SCRIPT LevelEditor_Model_SetModel model_id = 0 
+	GetArraySize le_models 
+	IF ( <model_id> = <array_size> ) 
+		change selected_model = 0 
+	ELSE 
+		IF ( <model_id> < 1 ) 
+			change selected_model = 0 
+		ELSE 
+			change selected_model = <model_id> 
+		ENDIF 
+	ENDIF 
+	GetElement le_models Index = selected_model 
+	SetScreenElementProps { 
+		id = leveleditor_piece 
+		text = ( <Element> . name ) 
+	} 
+	leveleditor_cursor : Obj_Rotate absolute = VECTOR(0, 0, 0) 
+	IF StructureContains structure = <Element> skeletonName 
+		LevelEditor_Model_SetCursor model = ( <Element> . model ) skeleton = ( <Element> . skeletonName ) type = ( <Element> . type ) 
+	ELSE 
+		LevelEditor_Model_SetCursor model = ( <Element> . model ) type = ( <Element> . type ) 
+	ENDIF 
+	IF StructureContains structure = <Element> fixdisplay 
+		leveleditor_cursor : RotateDisplay StartAngle = 0 EndAngle = -90 x HoldOnLastAngle 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT LevelEditor_Model_SetCursor model = "none" type = Test 
+	leveleditor_cursor : die 
+	leveleditor : GetCursorPosition 
+	IF GotParam skeleton 
+		cursor_components = [ 
+			{ component = skeleton skeleton = <skeleton> } 
+			{ component = model model = <model> UseModelLights } 
+			{ component = modellightupdate } 
+			{ component = motion } 
+		] 
+	ELSE 
+		cursor_components = [ 
+			{ component = model model = <model> UseModelLights } 
+			{ component = modellightupdate } 
+			{ component = motion } 
+		] 
+	ENDIF 
+	CreateCompositeObject { 
+		Components = <cursor_components> 
+		params = { name = leveleditor_cursor type = <type> Pos = <Pos> } 
+	} 
+ENDSCRIPT
+
+SCRIPT LevelEditor_Model_X 
+	leveleditor : GetCursorPosition 
+	leveleditor_cursor : Obj_GetOrientation 
+	GetElement le_models Index = selected_model 
+	IF StructureContains structure = <Element> type 
+		node_type = ( <Element> . type ) 
+	ELSE 
+		node_type = Test 
+	ENDIF 
+	IF StructureContains structure = <Element> skeletonName 
+		skeleton_name = ( <Element> . skeletonName ) 
+	ELSE 
+		skeleton_name = "none" 
+	ENDIF 
+	IF ControllerPressed triangle 
+		fixed_angle = ( <Angle> * 3.14159274101 / 180 ) 
+		final_angle = ( <fixed_angle> * VECTOR(-1.00000000000, 0.00000000000, 0.00000000000) ) 
+	ELSE 
+		fixed_angle = ( <Angle> * 3.14159274101 / 180 ) 
+		final_angle = ( <fixed_angle> * VECTOR(0.00000000000, 1.00000000000, 0.00000000000) ) 
+	ENDIF 
+	MangleChecksums a = leveleditor_placed_obj b = ( le_model_count ) 
+	IF ( <skeleton_name> = "none" ) 
+		CreateCompositeObject { 
+			Components = [ 
+				{ component = model model = ( <Element> . model ) } 
+				{ component = modellightupdate } 
+				{ component = motion } 
+				{ component = collision Class = LevelGeometry CollisionMode = Geometry } 
+				{ component = nodearray model = ( <Element> . model ) } 
+				{ component = RailManager } 
+			] 
+			params = { name = <mangled_id> } 
+		} 
+		<mangled_id> : Obj_SetPosition position = <Pos> 
+		<mangled_id> : Obj_Rotate absolute = ( <Angle> * VECTOR(0.00000000000, 1.00000000000, 0.00000000000) ) 
+	ELSE 
+		le_node_pos = { 
+			Pos = <Pos> 
+			Angles = <final_angle> 
+			name = <mangled_id> 
+			Class = Vehicle 
+			type = <node_type> 
+			model = ( <Element> . model ) 
+			skeletonName = <skeleton_name> 
+			NoSkitch 
+		} 
+		CreateFromStructure <le_node_pos> 
+	ENDIF 
+	change le_model_count = ( le_model_count + 1 ) 
+	Ksk_DebugValue value_name = "Position" value_value = <Pos> 
+	Ksk_DebugValue value_name = "Angles" value_value = <fixed_angle> 
+	ControllerDebounce x time = 0.89999997616 clear = 1 
+ENDSCRIPT
+
+SCRIPT LevelEditor_Model_LoadSavedModel 
+	Ksk_DebugValue value_name = "TESTPosition" value_value = <position> 
+ENDSCRIPT
+
+SCRIPT LevelEditor_Model_Square 
+	increment_model_id = ( selected_model + 1 ) 
+	LevelEditor_Model_SetModel model_id = <increment_model_id> 
+	ControllerDebounce Square time = 0.20000000298 clear = 1 
+ENDIF 
+ENDSCRIPT
+
+SCRIPT LevelEditor_Model_Circle 
+	increment_model_id = ( selected_model - 1 ) 
+	LevelEditor_Model_SetModel model_id = <increment_model_id> 
+	ControllerDebounce Circle time = 0.20000000298 clear = 1 
+ENDSCRIPT
+
+SCRIPT LevelEditor_Model_Triangle 
+	leveleditor : GetCursorPosition 
+	leveleditor_cursor : Obj_Rotate absolute = ( <Angle> * VECTOR(1.00000000000, 0.00000000000, 0.00000000000) ) 
+ENDSCRIPT
+
+
