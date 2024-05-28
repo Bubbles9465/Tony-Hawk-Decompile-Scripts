@@ -1,0 +1,4 @@
+			make_sprite_menu_item text = "Level Editor" id = ksk_menu_le pad_choose_script = leveleditor_menu_launch 
+			make_text_sprite texture = <model_icon> parent = ksk_menu_le 
+			SetScreenElementProps { 
+				id = ksk_menu_le 
