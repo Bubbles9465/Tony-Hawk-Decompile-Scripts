@@ -1,4 +1,0 @@
-
-goal_rewards = { 
-} 
-
