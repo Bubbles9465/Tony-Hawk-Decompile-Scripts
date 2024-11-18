@@ -1,0 +1,646 @@
+
+SCRIPT anteara_cam_test 
+	HideSkaterAndMiscSkaterEffects 
+	CreateCompositeObject { 
+		components = 
+		[ 
+			{ Component = camera } 
+			{ Component = input controller = 0 } 
+			{ Component = editorcamera max_radius = 2000 } 
+			{ Component = GoalEditor } 
+		] 
+		params = { Name = GoalEditor permanent } 
+	} 
+	SetActiveCamera Id = GoalEditor 
+	<object0_name> = "HUD_Arrow\\HUD_Arrow.mdl" 
+	CreateCompositeObject { 
+		components = 
+		[ 
+			{ Component = motion } 
+			{ Component = suspend NeverSuspend } 
+			{ Component = Model Model = <object0_name> } 
+		] 
+		params = { Name = GoalEditorCursor } 
+	} 
+ENDSCRIPT
+
+SCRIPT create_anteara_menu 
+	make_new_roundbar_menu { 
+		title = "Anteara Menu" 
+		menu_id = pause_menu 
+		vmenu_id = pause_vmenu 
+		pad_back_script = create_pause_menu 
+		Pos = PAIR(340, 95) 
+		dims = PAIR(250, 480) 
+		internal_text_just = right 
+		helper_text = <helper> 
+		add_3d_bg1 
+	} 
+	add_roundbar_menu_item { text = "AMMO, TOD, AND THEMES" pad_choose_script = anteara_theme_menu 
+	} 
+	add_roundbar_menu_item { text = "MISCELLANEOUS MENU" pad_choose_script = create_more_menu 
+	} 
+	add_roundbar_menu_item { text = "ANIMATION MENU" pad_choose_script = anims_menu2_middleman 
+	} 
+	add_roundbar_menu_item { text = "VEHICLE MENU" Id = anteara_veh_button pad_choose_script = anteara_vehicle_menu 
+	} 
+	add_roundbar_menu_item { text = "ON/OFF MENU" pad_choose_script = create_onoff_menu 
+	} 
+	add_roundbar_menu_item { text = "SCREEN MENU" pad_choose_script = create_antearascreen_menu 
+	} 
+	add_roundbar_menu_item { text = "DEBUG MENU" pad_choose_script = create_debug_options_menu 
+	} 
+	add_roundbar_menu_item { text = "BODY MENU" pad_choose_script = Create_Parts_menu 
+	} 
+	add_roundbar_menu_item { text = "OBSERVE" pad_choose_script = Observe_middleman 
+	} 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+SCRIPT lolughtestlolhah 
+	Skater : Obj_GetPosition 
+	FormatText TextName = datext "%c" c = <Pos> 
+	SendChatMessage string = <datext> 
+ENDSCRIPT
+
+SCRIPT Start_Tracking 
+	RunScriptOnObject { 
+		Id = Skater 
+		HTOK_set_exceptions 
+		params = { } 
+	} 
+ENDSCRIPT
+
+SCRIPT HTOK_set_exceptions 
+	Obj_ClearExceptions 
+	Obj_SetInnerRadius 8 
+	Obj_SetException { 
+		ex = ObjectInRadius 
+		scr = HTOK_inner_radius_handler 
+		params = { } 
+	} 
+ENDSCRIPT
+
+counter = 0 
+SCRIPT HTOK_inner_radius_handler 
+	Crown_Object : Obj_SetOuterRadius 8 
+	Crown_Object : Obj_SetException ex = ObjectOutofRadius scr = HTOK_get_out 
+	SendChatMessage string = "In radius!" 
+	Crown_Object : Obj_LockToObject OBJECTNAME = Skater VECTOR(5, 7, 5) 
+ENDSCRIPT
+
+SCRIPT HTOK_get_out 
+	ClearException ObjectOutofRadius 
+	SendChatMessage string = "I\'m out!" 
+ENDSCRIPT
+
+SCRIPT Enter_as_passenger 
+	MakeSkaterGoto Switch_OnGroundAi params = { NewScript = Walking_OnGroundAi Restart } 
+	toggle_SwitchOffNoClip 
+	Skater : PlayAnim Anim = PED_SIT_Idle cycle 
+	Skater : Obj_LockToObject OBJECTNAME = ( skaterid ) VECTOR(24, 12, 6.5) 
+ENDSCRIPT
+
+SCRIPT Observe_middleman 
+	exit_pause_menu 
+	anteara_observe_obs 
+ENDSCRIPT
+
+SCRIPT pielolpie 
+	RunScriptOnObject { 
+		Id = OBJECTNAME 
+		vehicle_set_exceptions 
+		params = { } 
+	} 
+ENDSCRIPT
+
+SCRIPT vehicle_set_exceptions 
+	Obj_ClearExceptions 
+	Obj_SetInnerRadius 7 
+	Obj_SetException { 
+		ex = ObjectInRadius 
+		scr = vehicle_inner_radius_handler 
+		params = { client_id = <client_id> } 
+	} 
+ENDSCRIPT
+
+SCRIPT vehicle_inner_radius_handler 
+	IF NOT Skater : IsInBail 
+		OBJECTNAME : Obj_SetOuterRadius 10 
+		OBJECTNAME : SetException ex = SkaterOutOfRadius scr = veh_refuse 
+		FormatText TextName = accept_text "Press \\m5 to hop on!" 
+		create_speech_box { 
+			anchor_id = goal_start_dialog 
+			text = <accept_text> 
+			no_pad_choose 
+			no_pad_start 
+			pad_circle_script = veh_accept 
+			pad_circle_params = { client_id = <client_id> } 
+			bg_rgba = [ 100 100 100 128 ] 
+			text_rgba = [ 128 128 128 128 ] 
+			font = small 
+			z_priority = 5 
+		} 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT veh_accept anchor_id = goal_start_dialog 
+	ClearException SkaterInRadius 
+	speech_box_exit anchor_id = goal_start_dialog 
+	Enter_as_passenger 
+ENDSCRIPT
+
+SCRIPT veh_refuse anchor_id = goal_start_dialog 
+	ClearException SkaterOutOfRadius 
+	speech_box_exit anchor_id = <anchor_id> 
+ENDSCRIPT
+
+SCRIPT testughlol2 
+	destroyscreenelement Id = ped_speech_dialog 
+ENDSCRIPT
+
+my_color = [ 0 , 0 , 0 , 0 ] 
+SCRIPT troll_hi_xD 
+	exit_pause_menu 
+	<tmpArray> = my_color 
+	SetArrayElement ArrayName = tmpArray Index = 0 NewValue = 50 
+	SetArrayElement ArrayName = tmpArray Index = 1 NewValue = 80 
+	SetArrayElement ArrayName = tmpArray Index = 2 NewValue = 128 
+	SetArrayElement ArrayName = tmpArray Index = 3 NewValue = 128 
+	<my_color> = <tmpArray> 
+	create_console_message text = "Global My Color" rgba = <my_color> wait_and_die = wait_and_die time = 5 
+ENDSCRIPT
+
+SCRIPT Anteara_Menu_Lockdown 
+	make_new_roundbar_menu { 
+		title = "eh menu" 
+		menu_id = pause_menu 
+		vmenu_id = pause_vmenu 
+		pad_back_script = create_pause_menu 
+		Pos = PAIR(250, 95) 
+		dims = PAIR(250, 480) 
+		internal_text_just = right 
+		helper_text = <helper> 
+		add_3d_bg1 
+	} 
+	IF NOT <objId> : Obj_FlagSet ANTEARA_FAILSAFE_FLAG 
+		add_roundbar_menu_item { text = "Flag not set" pad_choose_script = anteara_failsafe 
+		} 
+	ELSE 
+		add_roundbar_menu_item { text = "Flag set" pad_choose_script = anteara_failsafe 
+		} 
+	ENDIF 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+SCRIPT anteara_lol_test23 
+	Create Name = PlayerVehicle 
+	PlayerVehicle : Rotate y = 180 
+ENDSCRIPT
+
+SCRIPT create_more_menu 
+	make_new_roundbar_menu title = "Miscellaneous Menu" pad_back_script = generic_menu_pad_back pad_back_params = { callback = create_anteara_menu } 
+	add_roundbar_menu_item { text = "SPECIAL ITEM MENU" pad_choose_script = specialitems_menu 
+	} 
+	add_roundbar_menu_item { text = "LUGE ON/OFF" pad_choose_script = anteara_luge 
+	} 
+	add_roundbar_menu_item { text = "MOVING MENU" pad_choose_script = moving_menu 
+	} 
+	add_roundbar_menu_item { text = "CREATE 3D TEXT" pad_choose_script = anteara_3d_text 
+	} 
+	add_roundbar_menu_item { text = "3D MODEL MENU" pad_choose_script = anteara_model_menu 
+	} 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+SCRIPT create_customrestart_menu 
+	make_new_roundbar_menu title = "Custom Restarts" pad_back_script = generic_menu_pad_back pad_back_params = { callback = create_anteara_menu } 
+	add_roundbar_menu_item { text = "SET CUSTOM RESTART" 
+		Id = menu_set_custom 
+		pad_choose_script = menu_select 
+		pad_choose_params = { menu_select_script = set_custom_restart1 } 
+	} 
+	add_roundbar_menu_item { text = "GOTO CUSTOM RESTART" 
+		Id = menu_skip_to_custom 
+		pad_choose_script = menu_select pad_choose_params = { menu_select_script = skip_to_custom_restart1 } 
+	} 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+SCRIPT anims_menu2_middleman 
+	IF NOT IsObserving 
+		IF ( obs_is_on = 0 ) 
+			IF NOT ( Anteara_Is_In_Story_Vehicle = 0 ) 
+				Change Anteara_Is_In_Story_Vehicle = 0 
+				anteara_perhaps_fix_exitvehicle 
+				Wait 0.30000001192 seconds 
+				anims_menu2 
+			ELSE 
+				IF Skater : Driving 
+					anteara_perhaps_fix_exitvehicle 
+					Wait 0.30000001192 seconds 
+					anims_menu2 
+				ELSE 
+					anims_menu2 
+				ENDIF 
+			ENDIF 
+		ELSE 
+			exit_pause_menu 
+			create_net_panel_message text = "Stop observing if you want to play anims." style = net_team_panel_message 
+		ENDIF 
+	ELSE 
+		exit_pause_menu 
+		create_net_panel_message text = "Stop observing if you want to play anims." style = net_team_panel_message 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT anteara_perhaps_fix_exitvehicle 
+	Vehicle_Model_Create Vehicle_Name = default 
+	Skater : SkaterVehicleOff 
+	Skater : remove_all_anim_subsets 
+	Skater : NoSkaterVehicleSounds 
+	Skater : UnpausePhysics 
+	MakeSkaterGoto Switch_OnGroundAi params = { NewScript = Walking_OnGroundAi } 
+	Skater : UnpausePhysics 
+ENDSCRIPT
+
+SCRIPT anims_menu2 
+	IF NOT Skater : Walking 
+		MakeSkaterGoto Switch_OnGroundAi params = { NewScript = Walking_OnGroundAi } 
+	ENDIF 
+	make_new_themed_scrolling_menu title = "Animation Menu" 
+	SetScreenElementProps { 
+		Id = sub_menu 
+		event_handlers = [ { pad_back generic_menu_pad_back params = { callback = create_anteara_menu } } 
+		] 
+		replace_handlers 
+	} 
+	theme_menu_add_item text = "Blocker" pad_choose_script = kirillgta_blocker no_bg centered = centered 
+	theme_menu_add_item text = "Pissed" pad_choose_script = kirillgta_pissed no_bg centered = centered 
+	theme_menu_add_item text = "Get Attention" pad_choose_script = kirillgta_attent no_bg centered = centered 
+	theme_menu_add_item text = "Disgust" pad_choose_script = kirillgta_disgust no_bg centered = centered 
+	theme_menu_add_item text = "Arcade" pad_choose_script = kirillgta_arcade no_bg centered = centered 
+	theme_menu_add_item text = "Crane Operator" pad_choose_script = kirillgta_crane no_bg centered = centered 
+	theme_menu_add_item text = "Sit Look" pad_choose_script = kirillgta_sitlook no_bg centered = centered 
+	theme_menu_add_item text = "Push" pad_choose_script = kirillgta_push no_bg centered = centered 
+	theme_menu_add_item text = "Sit2Stand" pad_choose_script = kirillgta_sit2stnd no_bg centered = centered 
+	theme_menu_add_item text = "Jump Left" pad_choose_script = kirillgta_jumpleft no_bg centered = centered 
+	theme_menu_add_item text = "Tuba Play" pad_choose_script = kirillgta_tuba no_bg centered = centered 
+	theme_menu_add_item text = "Graffiti" pad_choose_script = kirillgta_graffiti no_bg centered = centered 
+	theme_menu_add_item text = "Griller (Calling)" pad_choose_script = kirillgta_griller_calling no_bg centered = centered 
+	theme_menu_add_item text = "Lay" pad_choose_script = kirillgta_lay no_bg centered = centered 
+	theme_menu_add_item text = "Drunk 1" pad_choose_script = kirillgta_drunk_1 no_bg centered = centered 
+	theme_menu_add_item text = "Drunk 2" pad_choose_script = kirillgta_drunk_2 no_bg centered = centered 
+	theme_menu_add_item text = "Fight" pad_choose_script = kirillgta_fight no_bg centered = centered 
+	theme_menu_add_item text = "Dance" pad_choose_script = kirillgta_dance no_bg centered = centered 
+	theme_menu_add_item text = "StarWars Kid Show" pad_choose_script = kirillgta_starwars no_bg centered = centered 
+	theme_menu_add_item text = "Star Wars Kid Linked" pad_choose_script = anteara_starwars no_bg centered = centered 
+	theme_menu_add_item text = "Playing On Guitar" pad_choose_script = kirillgta_guitar no_bg centered = centered 
+	theme_menu_add_item text = "Mime Wall" pad_choose_script = kirillgta_mime_wall no_bg centered = centered 
+	theme_menu_add_item text = "Mime Pull" pad_choose_script = kirillgta_mime_pull no_bg centered = centered 
+	theme_menu_add_item text = "Mime Linked" pad_choose_script = anteara_pedtest2 no_bg centered = centered 
+	theme_menu_add_item text = "Board Stand" pad_choose_script = kirillgta_holdboard no_bg centered = centered 
+	theme_menu_add_item text = "AirWalk" pad_choose_script = kirillgta_airwalk no_bg centered = centered 
+	theme_menu_add_item text = "Meditation Like Alien" pad_choose_script = kirillgta_alien_med no_bg centered = centered 
+	theme_menu_add_item text = "Sit" pad_choose_script = kirillgta_sit no_bg centered = centered 
+	theme_menu_add_item text = "Scratch Butt" pad_choose_script = kirillgta_ScratchButt no_bg centered = centered 
+	theme_menu_add_item text = "Done" pad_choose_script = create_anteara_menu no_bg centered = centered 
+	finish_themed_scrolling_menu 
+ENDSCRIPT
+
+SCRIPT moving_menu 
+	make_new_roundbar_menu { 
+		Pos = PAIR(235.00000000000, 141.00000000000) 
+		pad_back_script = create_more_menu title = "Moving Menu" 
+	} 
+	add_roundbar_menu_item text = "Move Skater down (1m)" pad_choose_script = fall_underground 
+	add_roundbar_menu_item text = "Move Skater down (0.3m)" pad_choose_script = fall_underground1 
+	add_roundbar_menu_item text = "Move Skater Sideways (1m)" pad_choose_script = fall_sideways 
+	add_roundbar_menu_item text = "Move Skater Up (1m)" pad_choose_script = fall_up 
+	add_roundbar_menu_item text = "Move Skater Up (10m)" pad_choose_script = fall_up1 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+SCRIPT specialitems_menu 
+	make_new_roundbar_menu { 
+		pad_back_script = create_more_menu title = "Special Items Menu" 
+	} 
+	add_roundbar_menu_item text = "Chainsaw" pad_choose_script = kirillgta_chainsaw 
+	add_roundbar_menu_item text = "Busted Board" pad_choose_script = kirillgta_bustedboard 
+	add_roundbar_menu_item text = "Extra Board" pad_choose_script = kirillgta_extraboard 
+	add_roundbar_menu_item text = "Sword" pad_choose_script = kirillgta_sword 
+	add_roundbar_menu_item text = "Flag" pad_choose_script = kirillgta_flag 
+	add_roundbar_menu_item text = "Franklin Kite" pad_choose_script = kirillgta_kite 
+	add_roundbar_menu_item text = "Balls" pad_choose_script = kirillgta_balls 
+	add_roundbar_menu_item text = "Hoagie" pad_choose_script = kirillgta_hoagie 
+	add_roundbar_menu_item text = "Shark" pad_choose_script = kirillgta_shark 
+	add_roundbar_menu_item text = "Add All Items" pad_choose_script = kirillgta_all 
+	add_roundbar_menu_item text = "Delete All Items" pad_choose_script = kirillgta_clear_models 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+SCRIPT anteara_text_help 
+	make_new_roundbar_menu { 
+		title = "Help Menu" 
+		menu_id = anteara_help_menu 
+		pad_back_script = exit_pause_menu 
+		Pos = PAIR(340.00000000000, 88.00000000000) 
+		dims = PAIR(250.00000000000, 480.00000000000) 
+		internal_text_just = right 
+		helper_text = <helper> 
+		add_3d_bg1 
+	} 
+	add_roundbar_menu_item { text = "/hi, /hai, /ohai = Greetings" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/afk = away from keyboard" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/naw = Ask to go to nawlins" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/su = tell them to shut up" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/obs = on/off observe" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/set, /goto = set/goto custom restart" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/noclip = on/off noclip" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/morning, /day = change time of day" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/evening, /night = change time of day" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/lights = turn on lights" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/k = dance" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "/start = start game" not_focusable 
+	} 
+	add_roundbar_menu_item { text = "// = clear the chat" not_focusable 
+	} 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+SCRIPT anteara_model_menu callback_script = create_anteara_menu 
+	make_new_themed_scrolling_menu title = "3D MODEL MENU" 
+	callback_script = create_anteara_menu 
+	SetScreenElementProps { 
+		Id = sub_menu 
+		event_handlers = [ { pad_back generic_menu_pad_back params = { callback = <callback_script> } } ] 
+		replace_handlers 
+	} 
+	theme_menu_add_item text = "THPS4 Logo" pad_choose_script = thps4_logo no_bg centered = centered 
+	theme_menu_add_item text = "Boat" pad_choose_script = anteara_boat no_bg centered = centered 
+	theme_menu_add_item text = "Cone" pad_choose_script = anteara_cone no_bg centered = centered 
+	theme_menu_add_item text = "Crown" pad_choose_script = anteara_crown no_bg centered = centered 
+	theme_menu_add_item text = "Driving Icon" pad_choose_script = anteara_drivingicon no_bg centered = centered 
+	theme_menu_add_item text = "Board" pad_choose_script = anteara_board2 no_bg centered = centered 
+	theme_menu_add_item text = "Tram" pad_choose_script = anteara_tram no_bg centered = centered 
+	theme_menu_add_item text = "Camino" pad_choose_script = anteara_Camino no_bg centered = centered 
+	theme_menu_add_item text = "Forklift" pad_choose_script = Anteara_Forklift no_bg centered = centered 
+	theme_menu_add_item text = "SUV" pad_choose_script = anteara_SUV no_bg centered = centered 
+	theme_menu_add_item text = "Cursor Two" pad_choose_script = anteara_cursor2 no_bg centered = centered 
+	theme_menu_add_item text = "Cursor One" pad_choose_script = anteara_cursor no_bg centered = centered 
+	theme_menu_add_item text = "Green Flag" pad_choose_script = anteara_green no_bg centered = centered 
+	theme_menu_add_item text = "Letter C" pad_choose_script = anteara_letterc no_bg centered = centered 
+	theme_menu_add_item text = "Letter O" pad_choose_script = anteara_lettero no_bg centered = centered 
+	theme_menu_add_item text = "Letter M" pad_choose_script = anteara_letterm no_bg centered = centered 
+	theme_menu_add_item text = "Letter B" pad_choose_script = anteara_letterb no_bg centered = centered 
+	theme_menu_add_item text = "Menu3d" pad_choose_script = anteara_menu3d no_bg centered = centered 
+	theme_menu_add_item text = "Tapas" pad_choose_script = anteara_tapas no_bg centered = centered 
+	theme_menu_add_item text = "Clouds" pad_choose_script = anteara_clouds no_bg centered = centered 
+	theme_menu_add_item text = "Halfpipe" pad_choose_script = anteara_pipe no_bg centered = centered 
+	theme_menu_add_item text = "ATV" pad_choose_script = anteara_ATV no_bg centered = centered 
+	theme_menu_add_item text = "Robot" pad_choose_script = anteara_robot no_bg centered = centered 
+	theme_menu_add_item text = "BE Menu" pad_choose_script = anteara_bemenu no_bg centered = centered 
+	theme_menu_add_item text = "BO Menu" pad_choose_script = anteara_bomenu no_bg centered = centered 
+	theme_menu_add_item text = "SE Menu" pad_choose_script = anteara_semenu no_bg centered = centered 
+	theme_menu_add_item text = "sk5 Menu" pad_choose_script = anteara_sk5 no_bg centered = centered 
+	theme_menu_add_item text = "MainMenu BG" pad_choose_script = anteara_mainmenu no_bg centered = centered 
+	theme_menu_add_item text = "UI BG" pad_choose_script = anteara_UIBG no_bg centered = centered 
+	theme_menu_add_item text = "Done" pad_choose_script = create_anteara_menu last_item last_menu_item = 1 no_bg centered = centered 
+	finish_themed_scrolling_menu 
+ENDSCRIPT
+
+SCRIPT create_antearascreen_menu callback_script = create_anteara_menu 
+	make_new_themed_sub_menu title = "ASPECT RATIO MENU" 
+	callback_script = create_anteara_menu 
+	SetScreenElementProps { 
+		Id = sub_menu 
+		event_handlers = [ { pad_back generic_menu_pad_back params = { callback = <callback_script> } } ] 
+		replace_handlers 
+	} 
+	GetPreferenceChecksum pref_type = network Anteara_Resolution 
+	SWITCH <checksum> 
+		CASE standard 
+			change_screen_mode standard callback = screen_setup_standard set_screen_flags 
+		CASE Widescreen 
+			change_screen_mode wide callback = screen_setup_widescreen set_screen_flags 
+	ENDSWITCH 
+	theme_menu_add_item text = "\\c4Standard" extra_text = "\\cB4:3" pad_choose_script = test_standard 
+	theme_menu_add_item text = "\\cBWidescreen" extra_text = "\\cL16:9" pad_choose_script = test_widescreen 
+	theme_menu_add_item text = "\\c6Done" pad_choose_script = create_anteara_menu last_item last_menu_item = 1 
+	finish_themed_sub_menu 
+ENDSCRIPT
+
+SCRIPT Create_Parts_menu 
+	hide_current_goal 
+	make_new_roundbar_menu title = "HIDE PARTS" Pos = PAIR(130.00000000000, 100.00000000000) spacing = 6 pad_back_script = generic_menu_pad_back pad_back_params = { callback = create_anteara_menu } 
+	pause_menu_gradient 
+	GoalManager_HideGoalPoints 
+	GoalManager_HidePoints 
+	unhide_root_window 
+	SWITCH case_hair 
+		CASE 0 
+			text = "Hair: Invisible" 
+		CASE 1 
+			text = "Hair: Visible" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_TakeAwayHair pad_choose_script = toggle_TakeAwayHair 
+	SWITCH case_head 
+		CASE 0 
+			text = "Head: Invisible" 
+		CASE 1 
+			text = "Head: Visible" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_TakeAwayHead pad_choose_script = toggle_TakeAwayHead 
+	SWITCH case_torso 
+		CASE 0 
+			text = "Torso: Invisible" 
+		CASE 1 
+			text = "Torso: Visible" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_TakeAwayTorso pad_choose_script = toggle_TakeAwayTorso 
+	SWITCH case_legs 
+		CASE 0 
+			text = "Legs: Invisible" 
+		CASE 1 
+			text = "Legs: Visible" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_TakeAwayLegs pad_choose_script = toggle_TakeAwayLegs 
+	SWITCH case_hands 
+		CASE 0 
+			text = "Hands: Invisible" 
+		CASE 1 
+			text = "Hands: Visible" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_TakeAwayHand pad_choose_script = toggle_TakeAwayHands 
+	SWITCH case_shoes 
+		CASE 0 
+			text = "Shoes: Invisible" 
+		CASE 1 
+			text = "Shoes: Visible" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_TakeAwayShoes pad_choose_script = toggle_TakeAwayShoes 
+	add_roundbar_menu_item text = "Done" Id = menu_done_back pad_choose_script = create_anteara_menu 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+SCRIPT create_onoff_menu 
+	hide_current_goal 
+	make_new_roundbar_menu title = "On/Off Menu" Pos = PAIR(130.00000000000, 100.00000000000) spacing = 6 pad_back_script = generic_menu_pad_back pad_back_params = { callback = create_anteara_menu } 
+	pause_menu_gradient 
+	GoalManager_HideGoalPoints 
+	GoalManager_HidePoints 
+	unhide_root_window 
+	SWITCH case_RunOutTimer 
+		CASE 0 
+			text = "Infinite Run Out Timer: On" 
+		CASE 1 
+			text = "Infinite Run Out Timer: Off" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchOffRunOutTimer pad_choose_script = toggle_SwitchOffTimer 
+	SWITCH case_WallJump 
+		CASE 0 
+			text = "Infinite Wall Jumps: On" 
+		CASE 1 
+			text = "Infinite Wall Jumps: Off" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchOffWallJump pad_choose_script = toggle_SwitchOffWallJump 
+	SWITCH case_WallSkate 
+		CASE 0 
+			text = "Skate on Walls: On" 
+		CASE 1 
+			text = "Skate on Walls: Off" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchOffWallSkate pad_choose_script = toggle_SwitchOffWallSkate 
+	SWITCH case_NoClip 
+		CASE 0 
+			text = "No Clip: On" 
+		CASE 1 
+			text = "No Clip: Off" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchOffNoClip pad_choose_script = toggle_SwitchOffNoClip 
+	SWITCH case_Airshuffle 
+		CASE 0 
+			text = "Airshuffle (DownLeft + Flip): On" 
+		CASE 1 
+			text = "Airshuffle (DownLeft + Flip): Off" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchOffAirshuffle pad_choose_script = toggle_SwitchOffAirshuffle 
+	SWITCH case_NO_BOUNDS 
+		CASE 0 
+			text = "No Out Of Bounds: On" 
+		CASE 1 
+			text = "No Out Of Bounds: Off" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchNoBounds pad_choose_script = toggle_SwitchNoBounds 
+	add_roundbar_menu_item text = "Done" Id = menu_done_back pad_choose_script = create_anteara_menu 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+SCRIPT anteara_theme_menu 
+	hide_current_goal 
+	make_new_roundbar_menu title = "Theme Menu" Pos = PAIR(130.00000000000, 100.00000000000) spacing = 6 pad_back_script = generic_menu_pad_back pad_back_params = { callback = create_anteara_menu } 
+	pause_menu_gradient 
+	GoalManager_HideGoalPoints 
+	GoalManager_HidePoints 
+	unhide_root_window 
+	SWITCH case_Color 
+		CASE 5 
+			text = "Balance Bar Colour: Pink" 
+		CASE 6 
+			text = "Balance Bar Colour: Green" 
+		CASE 7 
+			text = "Balance Bar Colour: Red" 
+		CASE 8 
+			text = "Balance Bar Colour: Light Blue" 
+		CASE 9 
+			text = "Balance Bar Colour: Yellow" 
+		CASE 10 
+			text = "Balance Bar Colour: Default Blue" 
+		CASE 11 
+			text = "Balance Bar Colour: White" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchColor pad_choose_script = toggle_SwitchColor 
+	SWITCH case_ColorTwo 
+		CASE 5 
+			text = "Balance Arrow Colour: Pink" 
+		CASE 6 
+			text = "Balance Arrow Colour: Green" 
+		CASE 7 
+			text = "Balance Arrow Colour: Red" 
+		CASE 8 
+			text = "Balance Arrow Colour: Light Blue" 
+		CASE 9 
+			text = "Balance Arrow Colour: Yellow" 
+		CASE 10 
+			text = "Balance Arrow Colour: Default Blue" 
+		CASE 11 
+			text = "Balance Arrow Colour: White" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchColorTwo pad_choose_script = toggle_SwitchColorTwo 
+	theme_menu_add_item text = "       " pad_choose_script = anteara_screen_set_menu no_bg centered = centered not_focusable 
+	SWITCH case_anteara_TOD 
+		CASE 5 
+			text = "Time of Day: Morning" 
+		CASE 6 
+			text = "Time of Day: Day" 
+		CASE 7 
+			text = "Time of Day: Evening" 
+		CASE 8 
+			text = "Time of Day: Night" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchTOD pad_choose_script = toggle_SwitchTOD centered = centered 
+	theme_menu_add_item text = "       " pad_choose_script = anteara_screen_set_menu no_bg centered = centered not_focusable 
+	SWITCH case_Ammo 
+		CASE 5 
+			text = "Ammo Type: Tomato" 
+		CASE 6 
+			text = "Ammo Type: Apple" 
+		CASE 7 
+			text = "Ammo Type: Shrimp" 
+		CASE 8 
+			text = "Ammo Type: Smokebomb" 
+		CASE 9 
+			text = "Ammo Type: Paintcan" 
+		CASE 10 
+			text = "Ammo Type: Skateboard" 
+		CASE 11 
+			text = "Ammo Type: Crystal Ball" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchAmmo pad_choose_script = toggle_SwitchAmmo centered = centered 
+	SWITCH case_give_ammo 
+		CASE 5 
+			text = "Ammo: 0" 
+		CASE 6 
+			text = "Ammo: 500" 
+		CASE 7 
+			text = "Ammo: 1000" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchAmmoNum pad_choose_script = toggle_SwitchAmmoNum centered = centered 
+	theme_menu_add_item text = "       " pad_choose_script = anteara_screen_set_menu no_bg centered = centered not_focusable 
+	SWITCH case_anteara_text_colour 
+		CASE 5 
+			text = "Text Colour: White" 
+		CASE 6 
+			text = "Text Colour: Orange" 
+		CASE 7 
+			text = "Text Colour: Green" 
+		CASE 8 
+			text = "Text Colour: Pink" 
+	ENDSWITCH 
+	add_roundbar_menu_item text = <text> Id = menu_SwitchTextColour pad_choose_script = toggle_SwitchTextColour centered = centered 
+	add_roundbar_menu_item text = "Done" Id = menu_done_back pad_choose_script = create_anteara_menu 
+	roundbar_menu_finish 
+ENDSCRIPT
+
+

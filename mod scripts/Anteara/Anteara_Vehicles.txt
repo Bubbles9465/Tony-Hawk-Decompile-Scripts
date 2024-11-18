@@ -1,0 +1,490 @@
+
+SCRIPT anteara_blinking_arrow 
+	IF ScreenElementExists id = <id> 
+		RunScriptOnScreenElement id = <id> menu_blink_arrow 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT anteara_vehicle_menu 
+	make_new_themed_scrolling_menu title = "ULTIMATE VEHICLE MENU" 
+	callback_script = Create_anteara_menu 
+	SetScreenElementProps { 
+		id = sub_menu 
+		event_handlers = [ { pad_back generic_menu_pad_back Params = { callback = BackFromVehMenu } } ] 
+		replace_handlers 
+	} 
+	toggle_anteara_veh 
+	theme_menu_add_item text = "\\c1Select a car by pressing" pad_choose_script = NullScript no_bg centered = centered not_focusable 
+	theme_menu_add_item text = "\\cbLeft \\c1or \\cbRight" pad_choose_script = NullScript no_bg centered = centered not_focusable 
+	theme_menu_add_item text = "By \\c4Quazz and \\c3 Anteara :D" pad_choose_script = NullScript no_bg centered = centered not_focusable 
+	theme_menu_add_item text = "" pad_choose_script = NullScript no_bg centered = centered not_focusable 
+	theme_menu_add_number_item { 
+		min = 0 
+		max = 21 
+		text = "Vehicle:        " 
+		text_pos = PAIR(75, -5) 
+		id = change_veh_anteara 
+		value = 0 
+		pad_right_script = anteara_right_script 
+		pad_left_script = anteara_left_script 
+		no_bg 
+		centered = centered 
+	} 
+	update_veh_text 
+	theme_menu_add_item text = "Enter Vehicle" pad_choose_script = drive_anteara_veh no_bg centered = centered 
+	theme_menu_add_item text = "Exit Vehicle" pad_choose_script = Anteara_Easy_ExitVehicle no_bg centered = centered 
+	theme_menu_add_item text = "Back" pad_choose_script = BackFromVehMenu last_item last_menu_item = 1 no_bg centered = centered 
+	finish_themed_scrolling_menu 
+ENDSCRIPT
+
+SCRIPT update_veh_text 
+	GetPreferenceString pref_type = network veh_Anteara 
+	SetScreenElementProps { id = { change_veh_anteara child = 3 } text = <ui_string> } 
+	GetStackedScreenElementPos X id = { change_veh_anteara child = 3 } offset = PAIR(3, 2) 
+	SetScreenElementProps { id = { change_veh_anteara child = 5 } pos = <pos> } 
+ENDSCRIPT
+
+SCRIPT anteara_blink_effect 
+	DoScreenElementMorph { 
+		id = { change_veh_anteara child = 4 } 
+		time = 0.30000001192 
+	alpha = 0 } 
+	wait 0.30000001192 seconds 
+	DoScreenElementMorph { 
+		id = { change_veh_anteara child = 4 } 
+		time = 0.30000001192 
+		rgba = [ 35 57 107 128 ] 
+	alpha = 1 } 
+ENDSCRIPT
+
+SCRIPT anteara_blink_effect2 
+	DoScreenElementMorph { 
+		id = { change_veh_anteara child = 5 } 
+		time = 0.30000001192 
+	alpha = 0 } 
+	wait 0.30000001192 seconds 
+	DoScreenElementMorph { 
+		id = { change_veh_anteara child = 5 } 
+		time = 0.30000001192 
+		rgba = [ 35 57 107 128 ] 
+	alpha = 1 } 
+ENDSCRIPT
+
+SCRIPT anteara_left_script 
+	RunScriptOnScreenElement id = change_veh_anteara anteara_blink_effect 
+	update_veh_text 
+	GetPreferenceChecksum pref_type = network veh_Anteara 
+	change case_anteara_veh = ( case_anteara_veh - 1 ) 
+	IF ( case_anteara_veh < 0 ) 
+		change case_anteara_veh = 16 
+	ENDIF 
+	toggle_anteara_veh 
+	update_veh_text 
+ENDSCRIPT
+
+SCRIPT anteara_right_script 
+	RunScriptOnScreenElement id = change_veh_anteara anteara_blink_effect2 
+	update_veh_text 
+	GetPreferenceChecksum pref_type = network veh_Anteara 
+	change case_anteara_veh = ( case_anteara_veh + 1 ) 
+	IF ( case_anteara_veh > 20 ) 
+		change case_anteara_veh = 0 
+	ENDIF 
+	toggle_anteara_veh 
+	update_veh_text 
+ENDSCRIPT
+
+case_anteara_veh = 0 
+SCRIPT toggle_anteara_veh 
+	SWITCH case_anteara_veh 
+		CASE 2 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Muscle Car" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_MuscleCar string = "Muscle Car" 
+		CASE 3 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Jeep" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_Jeep string = "Jeep" 
+		CASE 4 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Mini Baja" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_MiniBaja string = "Mini Baja" 
+		CASE 5 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Police Car" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_PoliceCar string = "Police Car" 
+		CASE 6 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "UK Bus" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_UKBus string = "UK Bus" 
+		CASE 7 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Security Cart" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_SecurityCart string = "Security Cart" 
+		CASE 8 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Forklift" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_Forklift string = "Forklift" 
+		CASE 9 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Taurus" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_Taurus string = "Taurus" 
+		CASE 10 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Old Van" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_Oldvan string = "Old Van" 
+		CASE 11 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Smart Car" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_SmartCar string = "Smart Car" 
+		CASE 12 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Impala" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_Impala string = "Impala" 
+		CASE 13 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Gardners Cart" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_GardenersCart string = "Gardners Cart" 
+		CASE 14 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Limo" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_Limo string = "Limo" 
+		CASE 15 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "RC Car" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_RCCar string = "RC Car" 
+		CASE 16 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Pickup Truck" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_PickupTruck string = "Pickup Truck" 
+		CASE 17 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Segway" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_Segway string = "Segway" 
+		CASE 18 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Tricycle" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_Tricycle string = "Tricycle" 
+		CASE 19 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Wheelchair" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_Wheelchair string = "Wheelchair" 
+		CASE 20 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Mechanical Bull" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_MechBull string = "Mechanical Bull" 
+		CASE 0 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "MiniKart" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_MiniKart string = "MiniKart" 
+		CASE 1 
+			SetScreenElementProps id = { change_veh_anteara child = 3 } text = "Rally Car" 
+			SetPreferencesFromUI prefs = network field = "veh_Anteara" checksum = veh_RallyCar string = "Rally Car" 
+	ENDSWITCH 
+ENDSCRIPT
+
+SCRIPT drive_anteara_veh 
+	IF NOT skater : IsInBail 
+		skater : UnpausePhysics 
+		Anteara_board 
+		exit_pause_menu 
+		GoToCarType 
+		skater : Obj_GetPosition 
+		FormatText TextName = datext "%c" c = <pos> 
+		SendChatMessage string = <datext> 
+		skater : BashOff 
+		skater : NollieOff 
+		skater : PressureOff 
+		skater : LandSkaterTricks 
+		skater : ResetSwitched 
+		skater : ClearTrickQueues 
+		skater : DestroyAllSpecialItems 
+		skater : SparksOff 
+		skater : VibrateOff 
+		skater : StopBalanceTrick 
+		skater : KillExtraTricks 
+		change case_whore_yes = 0 
+	ELSE 
+		exit_pause_menu 
+		create_net_panel_message text = "You can\'t enter a vehicle if you\'re bailing! Try again." style = net_team_panel_message 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT GoToCarType 
+	IF ( case_anteara_veh = 1 ) 
+		SetTags control_type = <control_type> restart_node = <restart_node> exit_node = <exit_node> destroy_car = <destroy_car> 
+		GetTags 
+		goal_initialize_skater control_type = Rallycar 
+	ENDIF 
+	IF ( case_anteara_veh = 2 ) 
+		goal_initialize_skater control_type = JunkerCar 
+	ENDIF 
+	IF ( case_anteara_veh = 3 ) 
+		goal_initialize_skater control_type = WranglerCar 
+	ENDIF 
+	IF ( case_anteara_veh = 4 ) 
+		goal_initialize_skater control_type = MiniBajaCar 
+	ENDIF 
+	IF ( case_anteara_veh = 5 ) 
+		goal_initialize_skater control_type = PoliceCar 
+	ENDIF 
+	IF ( case_anteara_veh = 6 ) 
+		goal_initialize_skater control_type = BusUK 
+	ENDIF 
+	IF ( case_anteara_veh = 7 ) 
+		goal_initialize_skater control_type = SecurityCart 
+	ENDIF 
+	IF ( case_anteara_veh = 8 ) 
+		goal_initialize_skater control_type = ForkLift 
+	ENDIF 
+	IF ( case_anteara_veh = 9 ) 
+		goal_initialize_skater control_type = TaurusCar 
+	ENDIF 
+	IF ( case_anteara_veh = 10 ) 
+		goal_initialize_skater control_type = OldVan 
+	ENDIF 
+	IF ( case_anteara_veh = 11 ) 
+		goal_initialize_skater control_type = SmartCar 
+	ENDIF 
+	IF ( case_anteara_veh = 12 ) 
+		goal_initialize_skater control_type = ImpalaCar 
+	ENDIF 
+	IF ( case_anteara_veh = 13 ) 
+		goal_initialize_skater control_type = GardnersCart 
+	ENDIF 
+	IF ( case_anteara_veh = 14 ) 
+		goal_initialize_skater control_type = LimoCar 
+	ENDIF 
+	IF ( case_anteara_veh = 15 ) 
+		goal_initialize_skater control_type = RCCar 
+	ENDIF 
+	IF ( case_anteara_veh = 16 ) 
+		goal_initialize_skater control_type = PickupTruck 
+	ENDIF 
+	IF ( case_anteara_veh = 17 ) 
+		goal_initialize_skater control_type = Segway 
+	ENDIF 
+	IF ( case_anteara_veh = 18 ) 
+		goal_initialize_skater control_type = Tricycle 
+	ENDIF 
+	IF ( case_anteara_veh = 19 ) 
+		goal_initialize_skater control_type = Wheelchair 
+	ENDIF 
+	IF ( case_anteara_veh = 20 ) 
+		goal_initialize_skater control_type = mechbull 
+	ENDIF 
+	IF ( case_anteara_veh = 0 ) 
+		Anteara_board 
+		goal_initialize_skater control_type = mini_kart 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT BackFromVehMenu 
+	Create_anteara_menu 
+ENDSCRIPT
+
+SCRIPT Anteara_ExitVehicle_Working2 
+	skater : GetCameraId 
+	IF NOT GameIsPaused 
+		<CameraId> : unpause 
+	ENDIF 
+	SetActiveCamera id = <CameraId> 
+	PlayerVehicle : die 
+	PlayerVehicleCamera : die 
+	skater : UnsetDriving 
+	skater : ReturnBoardToSkater 
+	skater : Obj_ShadowOn ShadowType = Detailed 
+	skater : ResetRigidBodyCollisionRadiusBoost 
+	GoalManager_HideAllGoalPeds 0 
+	change driving_parked_car = 0 
+ENDSCRIPT
+
+SCRIPT Vehicle_Model_Create 
+	GetCurrentSkaterProfileIndex 
+	EditPlayerAppearance { 
+		profile = <currentSkaterProfileIndex> 
+		target = SetPart targetParams = { part = board desc_id = <Vehicle_Name> } 
+	} 
+	test_number_id 
+ENDSCRIPT
+
+SCRIPT anteara_tricycle 
+	Anteara_ExitVehicle_Working2 
+	MakeSkaterGoto SkaterInit 
+	skater : SwitchToSkatingPhysics 
+	skater : MotoSkateboardOff 
+	skater : SkaterVehicleOff 
+	skater : NoSkaterVehicleSounds 
+	skater : SkaterLoopingSound_TurnOff 
+	Vehicle_Model_Create Vehicle_Name = Tricycle 
+	Vehicle_Start Params = tricycle_params 
+	skater : remove_all_anim_subsets 
+	exit_pause_menu 
+ENDSCRIPT
+
+SCRIPT anteara_scooter 
+	Anteara_ExitVehicle_Working2 
+	MakeSkaterGoto SkaterInit 
+	skater : SwitchToSkatingPhysics 
+	skater : MotoSkateboardOff 
+	skater : SkaterVehicleOff 
+	skater : NoSkaterVehicleSounds 
+	skater : SkaterLoopingSound_TurnOff 
+	Vehicle_Model_Create Vehicle_Name = Segway 
+	Vehicle_Start Params = segway_params 
+	skater : remove_all_anim_subsets 
+	MakeSkaterGoto SkaterInit 
+	exit_pause_menu 
+ENDSCRIPT
+
+SCRIPT anteara_minikart 
+	Anteara_ExitVehicle_Working2 
+	MakeSkaterGoto SkaterInit 
+	skater : SwitchToSkatingPhysics 
+	skater : MotoSkateboardOff 
+	skater : SkaterVehicleOff 
+	skater : NoSkaterVehicleSounds 
+	skater : SkaterLoopingSound_TurnOff 
+	Vehicle_Model_Create Vehicle_Name = minikart 
+	Vehicle_Start Params = minikart_params 
+	skater : remove_all_anim_subsets 
+ENDSCRIPT
+
+SCRIPT anteara_bull 
+	Anteara_ExitVehicle_Working2 
+	MakeSkaterGoto SkaterInit 
+	skater : SwitchToSkatingPhysics 
+	skater : MotoSkateboardOff 
+	skater : SkaterVehicleOff 
+	skater : NoSkaterVehicleSounds 
+	skater : SkaterLoopingSound_TurnOff 
+	Vehicle_Model_Create Vehicle_Name = mechbull 
+	Vehicle_Start Params = mechbull_params 
+	skater : remove_all_anim_subsets 
+	exit_pause_menu 
+ENDSCRIPT
+
+SCRIPT anteara_chair 
+	Anteara_ExitVehicle_Working2 
+	MakeSkaterGoto SkaterInit 
+	skater : SwitchToSkatingPhysics 
+	skater : MotoSkateboardOff 
+	skater : SkaterVehicleOff 
+	skater : NoSkaterVehicleSounds 
+	skater : SkaterLoopingSound_TurnOff 
+	Vehicle_Model_Create Vehicle_Name = Wheelchair 
+	Vehicle_Start Params = wheelchair_params 
+	skater : remove_all_anim_subsets 
+	exit_pause_menu 
+ENDSCRIPT
+
+LugeCheck = 0 
+SCRIPT anteara_luge 
+	IF ( LugeCheck = 0 ) 
+		change LugeCheck = 1 
+		skater : MotoSkateboardOff 
+		skater : SkaterVehicleOff 
+		skater : NoSkaterVehicleSounds 
+		skater : SwitchToWalkingPhysics 
+		skater : remove_all_anim_subsets 
+		skater : SwitchToSkatingPhysics 
+		skater : MotoSkateboardOff 
+		Vehicle_Start Params = luge_params 
+		exit_pause_menu 
+		skater : remove_all_anim_subsets 
+		skater : SkaterLoopingSound_TurnOn 
+	ELSE 
+		change LugeCheck = 0 
+		skater : PlayAnim Anim = CoffinGrind_Out 
+		skater : WaitAnimFinished 
+		anteara_key_exit_luge 
+	ENDIF 
+ENDSCRIPT
+
+SCRIPT Anteara_board 
+	Anteara_ExitVehicle_Working2 
+	MakeSkaterGoto SkaterInit 
+	skater : MotoSkateboardOff 
+	skater : SkaterVehicleOff 
+	skater : NoSkaterVehicleSounds 
+	skater : remove_all_anim_subsets 
+	skater : SkaterLoopingSound_TurnOn 
+	Vehicle_Model_Create Vehicle_Name = default 
+ENDSCRIPT
+
+SCRIPT anteara_wings 
+	wait 1 gameframe 
+	MakeSkaterGoto SkaterInit 
+	wait 1 gameframe 
+	skater : remove_all_anim_subsets 
+	wait 1 gameframe 
+	Anteara_ExitVehicle_Working2 
+	skater : SwitchToSkatingPhysics 
+	skater : MotoSkateboardOff 
+	skater : SkaterVehicleOff 
+	skater : NoSkaterVehicleSounds 
+	skater : SkaterLoopingSound_TurnOff 
+	wait 1 gameframe 
+	Vehicle_Start Params = wings_params 
+	skater : remove_all_anim_subsets 
+	MakeSkaterGoto SkaterInit 
+	exit_pause_menu 
+ENDSCRIPT
+
+SCRIPT anteara_gurney 
+	wait 1 gameframe 
+	MakeSkaterGoto SkaterInit 
+	wait 1 gameframe 
+	skater : remove_all_anim_subsets 
+	wait 1 gameframe 
+	Anteara_ExitVehicle_Working2 
+	skater : SwitchToSkatingPhysics 
+	skater : MotoSkateboardOff 
+	skater : SkaterVehicleOff 
+	skater : NoSkaterVehicleSounds 
+	skater : SkaterLoopingSound_TurnOff 
+	wait 1 gameframe 
+	Vehicle_Start Params = gurney_params 
+	Vehicle_Model_Create Vehicle_Name = Gurney 
+	skater : remove_all_anim_subsets 
+	MakeSkaterGoto SkaterInit 
+	exit_pause_menu 
+ENDSCRIPT
+
+my_skater_index = 0 
+SCRIPT test_number_id 
+	<SkaterNum> = 0 
+	BEGIN 
+		IF SkaterExists skater = <SkaterNum> 
+			IF <objId> : IsLocalSkater 
+				my_skater_index = <SkaterNum> 
+				IF ( <my_skater_index> = 0 ) 
+					RefreshSkaterModel profile = <currentSkaterProfileIndex> skater = 0 
+				ENDIF 
+				IF ( <my_skater_index> = 1 ) 
+					RefreshSkaterModel profile = <currentSkaterProfileIndex> skater = 1 
+				ENDIF 
+				IF ( <my_skater_index> = 2 ) 
+					RefreshSkaterModel profile = <currentSkaterProfileIndex> skater = 2 
+				ENDIF 
+				IF ( <my_skater_index> = 3 ) 
+					RefreshSkaterModel profile = <currentSkaterProfileIndex> skater = 3 
+				ENDIF 
+				IF ( <my_skater_index> = 4 ) 
+					RefreshSkaterModel profile = <currentSkaterProfileIndex> skater = 4 
+				ENDIF 
+				IF ( <my_skater_index> = 5 ) 
+					RefreshSkaterModel profile = <currentSkaterProfileIndex> skater = 5 
+				ENDIF 
+				IF ( <my_skater_index> = 6 ) 
+					RefreshSkaterModel profile = <currentSkaterProfileIndex> skater = 6 
+				ENDIF 
+				IF ( <my_skater_index> = 7 ) 
+					RefreshSkaterModel profile = <currentSkaterProfileIndex> skater = 7 
+				ENDIF 
+			ENDIF 
+		ENDIF 
+		<SkaterNum> = ( <SkaterNum> + 1 ) 
+	REPEAT 8 
+ENDSCRIPT
+
+SCRIPT Anteara_Easy_ExitVehicle 
+	Anteara_board 
+	skater : UnpausePhysics 
+	skater : AddSkaterToWorld 
+	MakeSkaterGoto Switch_OnGroundAi Params = { NewScript = Walking_OnGroundAi Restart } 
+	exit_pause_menu 
+ENDSCRIPT
+
+SCRIPT LoadExtraVehicleSounds 
+	LoadSound "Vehicles\\Vehicle_Tire_Loop" vol = 100 
+	LoadSound "Vehicles\\VC_LeafBlowerEngineLoop" vol = 100 
+	LoadSound "SD\\SD_CartLoop" vol = 100 
+	LoadSound "Shared\\auto\\UKBusEngineLoop" vol = 100 
+	LoadSound "nj\\nj_nasalracer04" vol = 100 
+	LoadSound "shared\\auto\\zootramengineloop" vol = 100 
+	LoadSound "shared\\auto\\lowriderloop" vol = 100 
+	LoadSound "shared\\auto\\ElectricBusEngineLoop" vol = 100 
+ENDSCRIPT
+
+

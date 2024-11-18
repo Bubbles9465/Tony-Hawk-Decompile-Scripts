@@ -1,0 +1,256 @@
+
+case_anteara_TOD = 6 
+SCRIPT toggle_SwitchTOD 
+	printf "Select TOD" 
+	SWITCH case_anteara_TOD 
+		CASE 5 
+			change case_anteara_TOD = 6 
+			SetScreenElementProps id = { menu_SwitchTOD child = 0 } text = "Time of Day: Day" 
+			day_shadows 
+			anteara_nightOFF 
+		CASE 6 
+			change case_anteara_TOD = 7 
+			SetScreenElementProps id = { menu_SwitchTOD child = 0 } text = "Time of Day: Evening" 
+			Evening_shadows 
+			anteara_nightON 
+		CASE 7 
+			change case_anteara_TOD = 8 
+			SetScreenElementProps id = { menu_SwitchTOD child = 0 } text = "Time of Day: Night" 
+			night_shadows 
+			anteara_nightON 
+		CASE 8 
+			change case_anteara_TOD = 5 
+			SetScreenElementProps id = { menu_SwitchTOD child = 0 } text = "Time of Day: Morning" 
+			morning_shadows 
+			anteara_nightON 
+	ENDSWITCH 
+ENDSCRIPT
+
+SCRIPT night_shadows 
+	change state_length = 140000 
+	change sun_theta = 0.00000000000 
+	change sun_phi = 200.00000000000 
+	change sun_red = 0.00000000000 
+	change sun_green = 0.00000000000 
+	change sun_blue = 0.00000000000 
+	change lev_red = 50 
+	change lev_green = 65 
+	change lev_blue = 75 
+	change sky_red = 18 
+	change sky_green = 22 
+	change sky_blue = 24 
+	change fog_red = 5 
+	change fog_green = 16 
+	change fog_blue = 22 
+	change fog_alpha = 63 
+	change fog_dist = 8000 
+	change ambient_red = 26 
+	change ambient_green = 36 
+	change ambient_blue = 40 
+	change ambient_mod_factor_lo = 0.30000001192 
+	change ambient_mod_factor_hi = 0.00000000000 
+	change heading_0 = 330 
+	change pitch_0 = 330 
+	change red_0 = 70 
+	change green_0 = 100 
+	change blue_0 = 106 
+	change mod_factor_0_lo = 0.80000001192 
+	change mod_factor_0_hi = 0.80000001192 
+	change heading_1 = 151 
+	change pitch_1 = 330 
+	change red_1 = 15 
+	change green_1 = 30 
+	change blue_1 = 30 
+	change mod_factor_1_lo = 0.10000000149 
+	change mod_factor_1_hi = 0.00000000000 
+	change headlights_on = 1 
+	change bloom_on = 1 
+	change bloom_color = [ 150 100 200 ] 
+	change bloom1 = 30 
+	change bloom2 = 100 
+	change bloom_strength = [ 48 64 76 ] 
+	entry_script = nullscript 
+	<bla_um> = ( lev_red + ( lev_green * 256 ) + ( lev_blue * 65536 ) ) 
+	SetSceneColor color = <bla_um> level = <bla_dois> lightgroup = outdoor 
+	<bla_dois> = ( sky_red + ( sky_green * 256 ) + ( sky_blue * 65536 ) ) 
+	SetSceneColor color = <bla_um> sky = <bla_dois> lightgroup = outdoor 
+	kirillgta_nightON 
+ENDSCRIPT
+
+SCRIPT morning_shadows 
+	change state_length = 90000 
+	change sun_theta = 0.00000000000 
+	change sun_phi = -10.00000000000 
+	change sun_red = 255.00000000000 
+	change sun_green = 210.00000000000 
+	change sun_blue = 172.00000000000 
+	change lev_red = 64 
+	change lev_green = 77 
+	change lev_blue = 81 
+	change sky_red = 128 
+	change sky_green = 128 
+	change sky_blue = 128 
+	change fog_on = 1 
+	change fog_red = 85 
+	change fog_green = 100 
+	change fog_blue = 105 
+	change fog_alpha = 108 
+	change fog_dist = 2500 
+	change ambient_red = 41 
+	change ambient_green = 42 
+	change ambient_blue = 45 
+	change ambient_mod_factor_lo = 0.18000000715 
+	change ambient_mod_factor_hi = 0.00000000000 
+	change heading_0 = 188 
+	change pitch_0 = 351 
+	change red_0 = 16 
+	change green_0 = 19 
+	change blue_0 = 29 
+	change mod_factor_0_lo = 0.11999999732 
+	change mod_factor_0_hi = 0.00000000000 
+	change heading_1 = 0 
+	change pitch_1 = 0 
+	change red_1 = 34 
+	change green_1 = 42 
+	change blue_1 = 49 
+	change mod_factor_1_lo = 0.10000000149 
+	change mod_factor_1_hi = 0.00000000000 
+	change headlights_on = 0 
+	change bloom_on = 1 
+	change bloom_color = [ 150 100 200 ] 
+	change bloom1 = 30 
+	change bloom2 = 100 
+	change bloom_strength = [ 48 64 76 ] 
+	change entry_script = nullscript 
+	<bla_um> = ( lev_red + ( lev_green * 256 ) + ( lev_blue * 65536 ) ) 
+	SetSceneColor color = <bla_um> level = <bla_dois> lightgroup = outdoor 
+	<bla_dois> = ( sky_red + ( sky_green * 256 ) + ( sky_blue * 65536 ) ) 
+	SetSceneColor color = <bla_um> sky = <bla_dois> lightgroup = outdoor 
+	kirillgta_nightON 
+ENDSCRIPT
+
+SCRIPT day_shadows 
+	change state_length = 400000 
+	change sun_theta = 0.00000000000 
+	change sun_phi = 20.00000000000 
+	change sun_red = 255.00000000000 
+	change sun_green = 255.00000000000 
+	change sun_blue = 255.00000000000 
+	change lev_red = 128 
+	change lev_green = 128 
+	change lev_blue = 128 
+	change sky_red = 128 
+	change sky_green = 128 
+	change sky_blue = 128 
+	change fog_red = 128 
+	change fog_green = 128 
+	change fog_blue = 128 
+	change fog_alpha = 0 
+	change fog_dist = 200000 
+	change ambient_red = 50 
+	change ambient_green = 50 
+	change ambient_blue = 50 
+	change ambient_mod_factor_lo = 0.30000001192 
+	change ambient_mod_factor_hi = 0.00000000000 
+	change heading_0 = 60 
+	change pitch_0 = 330 
+	change red_0 = 136 
+	change green_0 = 120 
+	change blue_0 = 110 
+	change mod_factor_0_lo = 0.75000000000 
+	change mod_factor_0_hi = 0.00000000000 
+	change heading_1 = 245 
+	change pitch_1 = 330 
+	change red_1 = 72 
+	change green_1 = 70 
+	change blue_1 = 66 
+	change mod_factor_1_lo = 0.75000000000 
+	change mod_factor_1_hi = 0.00000000000 
+	change headlights_on = 0 
+	change bloom_on = 1 
+	change bloom_color = [ 120 120 120 ] 
+	change bloom1 = 20 
+	change bloom2 = 80 
+	change bloom_strength = [ 35 35 35 ] 
+	change entry_script = nullscript 
+	<bla_um> = ( lev_red + ( lev_green * 256 ) + ( lev_blue * 65536 ) ) 
+	SetSceneColor color = <bla_um> level = <bla_dois> lightgroup = outdoor 
+	<bla_dois> = ( sky_red + ( sky_green * 256 ) + ( sky_blue * 65536 ) ) 
+	SetSceneColor color = <bla_um> sky = <bla_dois> lightgroup = outdoor 
+	kirillgta_nightOFF 
+ENDSCRIPT
+
+SCRIPT Evening_shadows 
+	change state_length = 90000 
+	change sun_theta = 0.00000000000 
+	change sun_phi = 180.00000000000 
+	change sun_red = 255.00000000000 
+	change sun_green = 128 
+	change sun_blue = 64 
+	change lev_red = 100 
+	change lev_green = 95 
+	change lev_blue = 74 
+	change sky_red = 76 
+	change sky_green = 66 
+	change sky_blue = 50 
+	change fog_red = 100 
+	change fog_green = 86 
+	change fog_blue = 29 
+	change fog_alpha = 30 
+	change fog_dist = 5000 
+	change ambient_red = 39 
+	change ambient_green = 38 
+	change ambient_blue = 32 
+	change ambient_mod_factor_lo = 0.30000001192 
+	change ambient_mod_factor_hi = 0.00000000000 
+	change heading_0 = 50 
+	change pitch_0 = 330 
+	change red_0 = 104 
+	change green_0 = 101 
+	change blue_0 = 60 
+	change mod_factor_0_lo = 0.75000000000 
+	change mod_factor_0_hi = 0.00000000000 
+	change heading_1 = 240 
+	change pitch_1 = 330 
+	change red_1 = 45 
+	change green_1 = 42 
+	change blue_1 = 38 
+	change mod_factor_1_lo = 0.40000000596 
+	change mod_factor_1_hi = 0.00000000000 
+	change headlights_on = 0 
+	change bloom_on = 1 
+	change bloom_color = [ 120 120 120 ] 
+	change bloom1 = 20 
+	change bloom2 = 80 
+	change bloom_strength = [ 35 35 35 ] 
+	change entry_script = nullscript 
+	<bla_um> = ( lev_red + ( lev_green * 256 ) + ( lev_blue * 65536 ) ) 
+	SetSceneColor color = <bla_um> level = <bla_dois> lightgroup = outdoor 
+	<bla_dois> = ( sky_red + ( sky_green * 256 ) + ( sky_blue * 65536 ) ) 
+	SetSceneColor color = <bla_um> sky = <bla_dois> lightgroup = outdoor 
+	kirillgta_nightON 
+ENDSCRIPT
+
+SCRIPT kirillgta_nightON 
+	TODManager_Create prefix = "MorningOff" NoPrefixWarning 
+	TODManager_Create prefix = "DefaultOff" NoPrefixWarning 
+	TODManager_Create prefix = "EveningOff" NoPrefixWarning 
+	TODManager_Create prefix = "NightOn" NoPrefixWarning 
+	kill prefix = "NightOff" NoPrefixWarning 
+	kill prefix = "DefaultOn" NoPrefixWarning 
+	kill prefix = "MorningOn" NoPrefixWarning 
+	kill prefix = "EveningOn" NoPrefixWarning 
+ENDSCRIPT
+
+SCRIPT kirillgta_nightOFF 
+	TODManager_Create prefix = "MorningOff" NoPrefixWarning 
+	TODManager_Create prefix = "EveningOff" NoPrefixWarning 
+	TODManager_Create prefix = "NightOff" NoPrefixWarning 
+	TODManager_Create prefix = "AfternoonOn" NoPrefixWarning 
+	kill prefix = "AfternoonOff" NoPrefixWarning 
+	kill prefix = "MorningOn" NoPrefixWarning 
+	kill prefix = "EveningOn" NoPrefixWarning 
+	kill prefix = "NightOn" NoPrefixWarning 
+ENDSCRIPT
+
+

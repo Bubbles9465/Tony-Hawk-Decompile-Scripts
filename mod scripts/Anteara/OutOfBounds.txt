@@ -1,0 +1,42 @@
+
+SCRIPT Sk3_Killskater_sand 
+	IF Obj_FlagNotSet FLAG_SKATER_KILLING 
+		Obj_SetFlag FLAG_SKATER_KILLING 
+		IF GotParam DeathSound 
+			PlaySound <DeathSound> 
+		ELSE 
+			PlaySound Smashcake 
+		ENDIF 
+		IF NOT InSplitScreenGame 
+			IF NOT GetGlobalFlag flag = NO_DISPLAY_HUD 
+				IF GotParam Message1 
+					Create_Panel_Message { 
+						style = panel_message_death 
+						id = death_message 
+						text = RANDOM(1, 1, 1, 1) 
+							RANDOMCASE <Message1> 
+							RANDOMCASE <message2> 
+							RANDOMCASE <message3> 
+							RANDOMCASE <message4> 
+						RANDOMEND 
+					} 
+				ELSE 
+					Create_Panel_Message { 
+						style = panel_message_death 
+						id = death_message 
+						text = RANDOM(1, 1, 1, 1, 1, 1) 
+							RANDOMCASE "EEK! Crabs!" 
+							RANDOMCASE "Litter Box Dive!" 
+							RANDOMCASE "Beach Comber!" 
+							RANDOMCASE "Sand In Your Shoes!" 
+							RANDOMCASE "The Seagulls Are Laughing!" 
+							RANDOMCASE "Stop Doing That!" 
+						RANDOMEND 
+					} 
+				ENDIF 
+			ENDIF 
+		ENDIF 
+		SK3_Killskater_Finish sand r = 100 g = 100 b = 200 <...> 
+	ENDIF 
+ENDSCRIPT
+
