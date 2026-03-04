@@ -1,0 +1,109 @@
+**********************************
+**** UNDERGROUND + CHANGE LOG ****
+**********************************
+
+FULL SETUP GUIDE/CHANGE LOG: http://www.tharchive.net/mods/thug_plus.html
+
+----------------------------------
+v1.2 - December 13, 2017
+----------------------------------
+* Added Venice HD+ level
+* Added one-button spine transfer control option, to be used with PS2-style controls
+* Added camera modes that had been replaced with previous releases - default camera is now the original game camera
+* Added 1080p screen resolution option, replaces 640x480.
+* Added a mod launcher application with update notifications
+* Added scene/texture detail setting, which is used with the new Venice HD+ level and future levels
+* Reshade is now bundled with the mod and can be enabled from the launcher
+* Increased skater shadow resolution from 256px to 2048
+* Fixed clipping distance issue with the base game. It was previously set to 32,000 units even when clipping was off, which wasn't enough for all levels. It is now 1,024,000 units
+* Increased maximum skater height from 4800 units to 1,024,000 units. You can now jump off the highest Manhattan skyscraper, or build a custom single-player skydiving level!
+* Increased memory limits further, which should provide more stability for larger levels or adding tons of objects via the level editor
+* Fixed a crash bug on the level select menu for saves without all levels unlocked
+* Fixed a bug on the object placement mode in the level editor - you can now scroll through all objects listed without crashing!
+* Bundled a 100% complete save file for those who don't have one and don't want to play through the story again!
+* Added a toggle option for the 'ditch board' gameplay mechanic, which appears below the control scheme option
+* Changed Powerslide back to its original control mapping, but kept the new control while in a manual
+* Fixed issue where your skater would remain stuck without a board after changing levels
+* Fixed control mapping issues with Xbox-style layout - dropdown is now set to both spin buttons
+* Fixed control issue with PS2-style layout - the camera adjust button was still using the left spin key and made drifting very annoying if you weren't facing forward!
+
+----------------------------------
+v1.1 - September 6, 2017 
+----------------------------------
+* Added an option for switching between PS2-style controls and the original Xbox layout. Default is now Xbox. The desired setting can be saved to your skater file
+* Bundled new executable which fixes issues on Windows 10 and up-to-date Windows 7/8/8.1 systems
+* Increased memory limits across the board, which should improve stability - particularly in the level editor or when merging levels
+* Added Oil Rig level (THPS3 port)
+* Added Skater Island level (THPS3 port, incomplete)
+* Added Marseille level (THAW port, incomplete)
+* Added SCJ park editor theme (made by Biz!)
+* Fixed crashing issue in Paris and School II+
+* Added new multi-page level select menu to account for the large number of levels still to come. Switch pages with the left/right buttons
+* Fixed UV map issue in School II+
+* Dynamic TOD now starts in the middle of the day as opposed to the morning
+    - No longer automatically sets during networked games
+    - Some levels which don't look very good with different TOD do not auto-start with the cycle on
+* Online game host can change TOD for all players - more host options coming soon!
+    
+----------------------------------
+v1.0 - August 20, 2017 (Public release)
+----------------------------------
+* Added Paris level (early version, ported from THPS3)
+* Added widescreen 21:9 support to Screen Mode options
+* Cleaned up Debug/Underground+ menu options - should have fewer useless items
+* Updated level merging and moved to a separate menu, should be more stable now
+* School II+ level should now be complete - added graffiti tags and a new entrance to the pool
+* Added parks to pre-made parks menu: 
+    - Rooftops II
+    - Arena
+    - Burnside
+    - Barker St
+
+----------------------------------
+v0.9.9 - August 17, 2017
+----------------------------------
+* Level editor improvments:
+    - Editing existing level objects is a lot more useful - Grind opens a submenu with options for the highlighted object, and you can drag objects while placing them
+    - Fixed issues with placing models/objects into the level, should reduce crashes
+    - Camera placement icon now updates based on the currently selected radius
+* Level editor now closes correctly when starting a net game
+* Updates for School II+ level
+
+----------------------------------
+v0.9.8 - July 31, 2017
+----------------------------------
+* Level editor has been enhanced: you can now launch it from the pause menu, and it has its own menu 
+    - Level editor HUD has been improved dramatically
+    - Camera placing now has its own 3d icon and allows the placing of multiple cameras
+    - Fixed various bugs and crashes related to the ability to skate with the level editor on
+* Added new enhanced School 2 level, more skateable areas/rails, lights, and proper indoor lighting for the gym
+    - This level, along with all the other enhanced levels, have been moved to separate levels in the level select menu 
+* Removed even more debug output
+
+----------------------------------
+v0.9.6 - July 27, 2017
+----------------------------------
+* Added new objects to the level editor! Includes generic QP/HPs, rails, platforms, and items from other levels
+* Removed more debug output
+
+----------------------------------
+v0.9.5 - July 25, 2017
+----------------------------------
+* Added menu option to enable/disable OB areas, they are now turned on by default
+* Cleaned up some menu options to be more descriptive
+* Removed various debug console messages
+* Added watermark to main menu containing the current version
+
+----------------------------------
+v0.9.1 - October 19, 2015
+----------------------------------
+* Added functional rail stalls! (They were in the previous patch, but just stopped you with no ability to change directions) Hold L2 when starting a grind to stall.
+* Changed additional wallplant animations to be triggered by buttons instead of playing randomly. Hold either L2 or R2 to play an alternate animation.
+* The 'rolling start' switch from walking to skating (hold L2, R2, or both for different animations) now always returns your board, making it an easy way to get back on if you lose your board.
+* Restored grind bails which were accidentally removed during development!
+* Changed the on-ground powerslide control mapping to L1 + L1, matching the manual powerslide control.
+
+----------------------------------
+v0.9 
+----------------------------------
+Initial release.
