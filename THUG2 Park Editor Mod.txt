@@ -1,0 +1,51 @@
+Merge: Allows objects to be placed in the same location as other
+
+No Maximum Height: Allows tall objects to be placed higher than normally allowed
+
+Infinate Restarts: Allows infinite restarts to be placed
+
+Move Height Without Moving Object: Allows the ground to be changed without moving pieces
+
+Skate Under Floating Objects: Allows the player to skate under floating objects/underground
+
+Merge
+-------------------
+Address   Hex
+0019D266 0F 90
+0019D267 84 90
+0019D268 02 90
+0019D269 01 90
+0019D26A 00 90
+0019D26B 00 90
+
+No Maximum Height
+-------------------
+Address   Hex
+0019D290 11 55
+
+Infinate Restarts
+-------------------
+Address   Hex
+0019D35B 0F E9
+0019D35C 85 61
+0019D35D 60 FF
+0019D360 FF 90
+
+Raise Ground With High Object On It
+-------------------
+Address   Hex
+0019DC58 11 55
+
+Move Height Without Moving Object
+-------------------
+Address   Hex
+001977E9 75 EB
+001977EA 42 42
+
+Skate Under Floating Objects
+-------------------
+Address   Hex
+00F8720   0F E9 
+00F8721   84 F7
+00F8722   F6 0
+00F8725   00 90
