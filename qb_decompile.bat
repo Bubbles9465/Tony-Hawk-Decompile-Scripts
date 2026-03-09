@@ -1,0 +1,1 @@
+FOR /F "tokens=*" %%G IN ('dir /b *.qb') DO qb_decompile -input "%%G" -output "%%~nG.txt"

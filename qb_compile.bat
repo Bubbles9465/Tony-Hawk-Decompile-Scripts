@@ -1,0 +1,1 @@
+FOR /F "tokens=*" %%G IN ('dir /b *.txt') DO qb_compile -input "%%G" -output "%%~nG.qb" -target thug1
