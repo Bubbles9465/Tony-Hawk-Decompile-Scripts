@@ -1,0 +1,740 @@
+--------------
+The Header
+--------------
+
+All info is stored in little endian format, least significant byte first.
+
+Byte(s) in hex / Info
+--------------------
+04 bytes - CRC32 checksum 1's complement
+
+-------------Read by savegame browser--------------
+04 bytes - Unknown checksum of name of park and an unknown variable
+02 bytes - Length of name of park string + 32 (this is sharing a byte with something else, something not involving the string itself)
+02 bytes - 0000
+02 bytes - Offset were padding starts
+02 bytes - 0000
+01 bytes - Unknown
+04 bytes - 00000012
+
+04 bytes - 6F60ECE1 (QB key: "num_edited_goals")
+01 byte. - Guessing its num_edited_goals but looks like it isnt used.
+
+04 bytes - 539BE3B7 (QB key: "MaxPlayers")
+01 byte. - Max Players
+01 byte. - Seem to usually be 0x12 but I have a park that has 0x10
+
+04 bytes - D01E12E6 (QB key: "num_gaps")
+01 byte. - Number of Gaps *Optional* will be missing if there are no gaps (0x00 drops)
+01 byte. - Seem to usually be 0x12 but some parks that are different
+
+04 bytes - 35DCF3FF (QB key: "num_pieces")
+?? bytes - Number or peices, little endian trailing zeros drop
+01 byte. - This 0x12 shit again
+
+04 bytes - F7188A68 (QB key: "theme")
+01 byte. - Theme *Optional* will be missing if the theme is antartica (0x00 drops)
+01 byte. - 0x0D may change, see the pattern
+
+04 bytes - 98ED724C (QB key: "tod_script")
+04 bytes - Time of day (tod) script, left over from thug1 - 20FFA11C(qb key for "default")
+
+02 bytes - 90EF (QB key: ????) Think it should be qbkey of height but idk what went wrong
+01 byte. - The height of the park
+01 byte. - Same pattern but with 10
+
+04 bytes - 4D6182FE (QB key: "length")
+01 byte. - The Length of the park
+01 byte. - Same pattern but with 03
+
+04 bytes - 9A16F4C3 (QB key: "Filename")
+String.. - Name of the park, null terminated
+01 byte. - 00
+------------------End of the headers headear---------
+
+01 byte. - 0C
+04 bytes - 89527C33 (QB key: "Park_editor_map")
+01 byte. - 01
+
+Think the next 3 are left over from thug1
+02 bytes - A60E
+04 bytes - Unknown, Not Needed, can be nulled out
+04 bytes - 800D244E
+
+01 byte. - Theme
+03 bytes - 00 00 00 -Maybe used in thug1
+02 bytes - Position in world (Assuming it's xx yy)
+01 byte. - Width of park (Assuming its length for x)
+01 byte. - Height of park (Assuming its length for y)
+02 bytes - Number of park peices
+02 bytes - Number of gaps
+01 byte. - Max players
+07 bytes - 00 00 00 00 00 00 00 - Maybe used in thug1
+String.. - Name of park + null terminator
+
+
+--------------
+Object Format
+--------------
+
+1 byte - object
+1 byte - x value (also used for object, see Object Section)
+1 byte - y value
+1 byte - "00"
+1 byte - height and direction
+
+--------------
+X and Y Values
+--------------
+
+The x,y values incriment every 4.
+4 is one square.
+
+Any other than every forth (or forth + 1 for the x values (see Object Section)) value in the last place value will freeze your game.
+[COLOR="Red"]Edit: See the Objects Section[/COLOR]
+
+0,4,8,C,[COLOR="Red"]1,5,9,D[/COLOR] - Good last place values. [COLOR="red"]Red: X only[/COLOR]
+2,3,6,7,a,b,e,f - Bad last place values.
+
+
+Examples of working values.
+
+71,75,79,7d,81
+
+
+--------------------
+Height and Direction
+--------------------
+
+Height increases every 4, in between is the direction.
+
+EX.
+40 - Normal Ground
+44 - Raised One
+48 - Raised Two
+4c - Raised Three
+50 - Raised Four
+
+40,44,48,4c,50 - First Direction
+41,45,49,4d,51 - Second Direction
+42,46,4a,4e,52 - Third Direction
+43,47,4b,4f,53 - Fourth Direction
+
+-------
+Objects
+-------
+
+Convert your object number to hexadecimal
+
+If you number is FF or lower just put that into the object byte, if the x value end's in 1,5,9 or D subtract one from the x value.
+
+Now if your number is higher than FF ex. 100, 1AB, 1CD then drop the one and put the other 2 digits in the object byte, if the x value ends in 0,4,8 or C add one to the x value.
+
+Example -
+
+Say we want to put the object
+
+260) sk5ed_sand at the x-y values 6C68 and direction height 40
+
+We now convert 260 to hex and we get 104
+
+Drop the one and we get 04 place that in the object byte
+
+Our code should look like this 04 6C 68 00 40
+
+Now since the x value ended in 0,4,8 or C we add one to the x value and get 6D
+
+And our final code is 04 6C 68 00 40
+So just insert that into your park and enjoy.
+
+
+-------
+Gaps
+-------
+
+-------- -------
+Bytes Data Total Length 0x30
+-------- -------
+0x01 First Side X --Note: X and Y values increase by 1 per grid
+0x01 Second Side X --Unlike objects
+0x01 First Side Height --08 defult height
+0x01 Second Side Height --Gaps break if height does not match the ground, if you try to adjust ground it'll freeze
+0x01 First Side Y
+0x01 Second Side Y
+0x01 First Side Length
+0x01 Second Side Length
+0x01 Rotation --2nd Gap Side then the 1st
+-10 2nd Side Rotated
+-01 1st Side Rotated
+0x01 Null
+0x20 String --should be null ternimated, or it will terminate itself in 2 bytes
+0x02 Score
+0x03 Type
+-01 00 00- All
+-FD 01 00- Only Air
+-F9 01 00- Only Rail
+-BD 01 40- Only manual
+0x01 Null
+
+-------
+The Ground
+-------
+
+Data for the ground starts at EE (Origin of the plane, 04,04 in object x,y coordinates)
+
+Each tile is one byte, its height. As the Y value increases the position of this byte increases by one.
+
+Stairs moving from left to right along the Y axis: FE FF 00 01 02
+
+As X value increases the position of the bytes increases by 3A bytes
+
+Stairs moving from bottom to top along the X axis: FE (39 bytes) FF (39 bytes) 00 (39 bytes) 01 (39 bytes) 02
+If the park had no other data than the stairs the 39 bytes would all be 00.
+
+Height:
+---------
+
+Below Ground Height l Ground lvl. l Above Ground
+FC,FD,FE,FF 00 01, 02, 03,04
+Increasing in Height ------->
+
+-------------------------
+Rail Format
+-------------------------
+
+Seems like neversoft like to use magic nuumbers that dont really serve a purpose in this section.
+
+14 bytes - 0A5E82EBD80CD0E1DB38000000000CA65045240A (seems standard if anyone finds anything else let me know)
+1 byte. - Number of rails
+Rail Data (see below)
+8 bytes - Indicates end of rail section - 00 10 53 9B E3 B7 02 00
+
+Rail (one post)
+---------------
+9 bytes - *Optional* Indicates new RAIL - 00 0C D6 71 45 D8 0A 02 00
+5 bytes - Start of post - 06 53 19 26 7f
+4 bytes - X value. (Little-endian)
+4 bytes - Height of rail (Little-endian)
+4 bytes - Y value. (Little-endian)
+1 byte. - 0D - May vary
+9 bytes - End of Post - 00 00 00 00 72 D7 DE DC 00
+----------------
+
+Special Heights:
+00 00 00 00 - Ground
+00 00 A0 41 - Minimum base height
+00 00 E8 00 - One block up
+00 00 88 42 - One block up + min base height
+
+
+-------------------------
+List of Objects for thug2
+-------------------------
+"____" symbolizes a unused save slot, will freeze the game if used.
+
+
+0) Sk3Ed_RS_1p
+1) Sk3Ed_RS_Mp
+2) Sk3Ed_Rs_Ho
+3) Sk3Ed_Rs_KOTH
+4) Sk3Ed_GAP_01
+5) ____
+6) ____
+7) ____
+8) Sk3Ed_PB_Stairs01
+9) ____
+10) ____
+11) ____
+12) ____
+13) ____
+14) ____
+15) ____
+16) Sk3Ed_FB_Tok02
+17) Sk3Ed_FB_Rio01
+18) ____
+19) ____
+20) Sk3Ed_FB_Sub02
+21) Sk3Ed_FB_Sub03
+22) Sk3Ed_FB_30x30x4_01
+23) Sk3Ed_FB_30x30x4_02
+24) Sk3Ed_FB_30x30x4_03
+25) Sk3Ed_FB_30x30x4_04
+26) Sk3Ed_FB_30x30x8_01
+27) Sk3Ed_FB_30x30x8_02
+28) Sk3Ed_FB_30x30x8_03
+29) Sk3Ed_FB_30x30x8_04
+30) Sk3Ed_Bs_01
+31) Sk3Ed_Bs_02
+32) Sk3Ed_Bs_03
+33) Sk3Ed_Bs_04
+34) Sk3Ed_Bs_05
+35) Sk3Ed_Bp_01
+36) Sk3Ed_Bp_02
+37) Sk3Ed_W_10x10x5
+38) Sk3Ed_We_10x10x5
+39) Sk3Ed_W_10x10x2
+40) Sk3Ed_We_10x10x2
+41) Sk3Ed_QPd_10x10x8
+42) ____
+43) Low_Med
+44) ____
+45) Low_Long
+46) ____
+47) Sk3Ed_QPdi_10x10x8
+48) Sk3Ed_QPdo_10x10x8
+49) Sk3Ed_QPd_10x10x12
+50) ____
+51) High_Med
+52) ____
+53) High_Long
+54) ____
+55) Sk3Ed_QPdi_10x10x12
+56) Sk3Ed_QPdo_10x10x12
+57) Sk3Ed_QPdR_10x10x4
+58) Sk3Ed_QPdR_10x10x8
+59) Sk3Ed_QPdR_10x10x12
+60) Sk3Ed_QPdR_10x10x16
+61) Low_QP_Low_rail
+62) Low_QP_Med_rail
+63) Low_QP_High_rail
+64) Low_QP_Low_side_rail
+65) Low_QP_Med_side_rail
+66) Low_QP_High_side_rail
+67) High_QP_Low_rail
+68) High_QP_Med_rail
+69) High_QP_High_rail
+70) High_QP_Low_side_rail
+71) High_QP_Med_side_rail
+72) High_QP_High_side_rail
+73) Sk3Ed_P_10x10x8
+74) Med
+75) Long
+76) Sk3Ed_Pi_10x10x8
+77) Sk3Ed_Pi_20x20x8
+78) Sk3Ed_Po_10x10x8
+79) Sk3Ed_Pdp_01
+80) Sk3Ed_Pdb_01
+81) Sk3Ed_RAi_10x10x4
+82) Sk3Ed_RAi_10x10x8
+83) Sk3Ed_RAi_10x10x12
+84) Sk3Ed_RAi_20x20x4
+85) Sk3Ed_RAi_20x20x8
+86) Sk3Ed_RAi_20x20x12
+87) Sk3Ed_S_10x10x4
+88) Sk3Ed_Si_10x10x4
+89) Sk3Ed_Si2_10x10x4
+90) Sk3Ed_So_10x10x4
+91) Sk3Ed_So2_10x10x4
+92) Sk3Ed_S_10x10x8
+93) Sk3Ed_Si_10x10x8
+94) Sk3Ed_Si2_10x10x8
+95) Sk3Ed_So_10x10x8
+96) Sk3Ed_So2_10x10x8
+97) Sk3Ed_S_10x20x4
+98) Sk3Ed_Si_20x20x4
+99) Sk3Ed_Si2_20x20x4
+100) Sk3Ed_So_20x20x4
+101) Sk3Ed_So2_20x20x4
+102) Sk3Ed_S_10x20x8
+103) Sk3Ed_Si_20x20x8
+104) Sk3Ed_Si2_20x20x8
+105) Sk3Ed_So_20x20x8
+106) Sk3Ed_So2_20x20x8
+107) Sk3Ed_ST_10x10x2
+108) Sk3Ed_STi_10x10x2
+109) Sk3Ed_STi2_10x10x2
+110) Sk3Ed_STo_10x10x2
+111) Sk3Ed_STo2_10x10x2
+112) Sk3Ed_STio_10x10x2
+113) Sk3Ed_ST_10x10x4
+114) Sk3Ed_STi_10x10x4
+115) Sk3Ed_STi2_10x10x4
+116) Sk3Ed_STo_10x10x4
+117) Sk3Ed_STo2_10x10x4
+118) Sk3Ed_STio_10x10x4
+119) Sk3Ed_Gt_20x20
+120) Sk3Ed_Gb_20x10
+121) Sk3Ed_Gb_10x10
+122) Sk4Ed_Fence_10x10
+123) Sk3Ed_Dumpster01
+124) Sk3Ed_Dumpster02
+125) Sk3Ed_MFo_01
+126) Sk3Ed_MPu_20x20x8
+127) Sk3Ed_MLa_20x20
+128) Sk3Ed_MWa_20x20
+129) floor_wall_block
+130) wall_block
+131) floor_block
+132) ____
+133) Sk4Ed_Sch_BigStairs
+134) Sk4Ed_Sch_Spine
+135) ____
+136) Sk4Ed_SF2_Bench
+137) ____
+138) ____
+139) ____
+140) Sk4Ed_SF2_Newsstands
+141) ____
+142) Sk4Ed_SF2_Planter01
+143) Sk4Ed_SF2_Planter02
+144) ____
+145) Sk4Ed_SF2_TnAKicker01
+146) Sk4Ed_SF2_TnAPipe01
+147) ____
+148) Sk4Ed_SF2_TnAPipe03
+149) Sk4Ed_SF2_TrashBox
+150) Sk4Ed_Alc_Kicker
+151) Sk4Ed_Alc_CrustyBench
+152) Sk4Ed_Alc_Bench
+153) Sk4Ed_Team_Blue
+154) Sk4Ed_Team_Red
+155) Sk4Ed_Team_Green
+156) Sk4Ed_Team_Yellow
+157) Sk3Ed_QPi_10x10x8
+158) Sk3Ed_QPo_10x10x8
+159) Sk3Ed_QPo_10x10x12
+160) Sk3Ed_QPi_10x10x12
+161) Sk5Ed_Sel_01
+162) Sk5Ed_HPTunnel_01
+163) Sk5Ed_QPshortMid_01
+164) Sk5Ed_W_10x10x06_01
+165) Sk5Ed_W_10x10x06_02
+166) Sk5Ed_RA_10x10x15_03
+167) Sk5Ed_RA_10x10x15_04
+168) Sk5ED_BoobB_01
+169) Sk5ED_BoobB_02
+170) Sk5ED_BoobB_03
+171) Sk5Ed_SF2_24Stair01
+172) sk5ed_Billboard_big
+173) sk5ed_Billboard_big45
+174) sk5ed_Billboard_Med
+175) sk5ed_Billboard_Med45
+176) sk5ed_Railroad
+177) sk5ed_Railroad90
+178) ____
+179) ____
+180) sk3ed_AP_walkway
+181) Sk5ed_LAcurve
+182) Sk5ed_LAstraight
+183) sk5ed_ShipPool
+184) sk5ed_deal
+185) Sk5Ed_W_Slated_01
+186) ____
+187) ____
+188) sk5ed_Rooftop
+189) Sk5Ed_SideWall
+190) Sk5Ed_BigSideWall
+191) Sk5Ed_90Wall
+192) ____
+193) sk5ed_Swingrail
+194) ____
+195) ____
+196) sk5ed_KickerWall
+197) sk5ed_Tightkicker
+198) sk5ed_Srail
+199) sk5ed_Srailcenter
+200) sk5ed_wavysmall
+201) sk5ed_wavyconcretebig
+202) sk5ed_curveconcrete
+203) sk5ed_upcurve
+204) ____
+205) sk5ed_curvedLedge
+206) sk5ed_curvedLedge01
+207) sk5ed_curvedLedge02
+208) sk5ed_curvedLedge03
+209) sk5ed_shortwall
+210) ____
+211) ____
+212) ____
+213) ____
+214) ____
+215) ____
+216) sk5ed_BigSkyscraper
+217) sk5ed_curvedcurbQuarter
+218) sk5ed_curvedcurbHalf
+219) sk5ed_curvedcurbFull
+220) sk5ed_straightcurb
+221) sk5ed_bigtraffic
+222) sk5ed_smalltraffic
+223) sk5ed_straightcurbShort
+224) ____
+225) ____
+226) sk5ed_hut
+227) ____
+228) sk5ed_Ghetto
+229) ____
+230) ____
+231) ____
+232) sk5ed_street
+233) sk5ed_Grass
+234) sk5ed_Mailbox
+235) Sk5ed_Water1square
+236) Sk5ed_lava1square
+237) sk5ed_45Launch
+238) sk5ed_45LaunchMed
+239) sk5ed_45LaunchLow
+240) sk5ed_45LaunchMed01
+241) sk5ed_SlantedBig
+242) sk5ed_SlantedSmall
+243) sk5ed_SlantedTall01
+244) sk5ed_SlantedTall02
+245) ____
+246) sk5ed_UndergroundRailed
+247) sk5ed_undergroundStraightRailed
+248) sk5ed_undergroundStraight
+249) sk5ed_UndergroundCurved
+250) ____
+251) ____
+252) ____
+253) ____
+254) ____
+255) sk5ed_Shortwall01
+256) sk5ed_Grass1square
+257) sk5ed_SDRail
+258) sk5ed_sdBench
+259) sk5ed_bbhoop
+260) sk5ed_sand
+261) sk5ed_candy
+262) ____
+263) ____
+264) ____
+265) sk5ed_sand01
+266) sk5ed_street_curve
+267) ____
+268) Sk5Ed_RA_10x10x15_02
+269) sk5ed_curvedLedge04
+270) sk5ed_Underground
+271) ____
+272) sk6ed_sign_nono01
+273) sk6ed_sign_nono
+274) sk5ed_treetall
+275) sk5ed_treetall
+276) sk6ed_bushmid
+277) sk6ed_bushsmall
+278) sk6ed_tombstone
+279) sk6ed_sign_nobeyond
+280) sk6ed_lidsquare
+281) sk6ed_lidround
+282) sk6ed_lidsmall
+283) sk6ed_fence
+284) sk6ed_fencefiller
+285) ____
+286) ____
+287) sk6ed_Bouy
+288) sk6ed_church
+289) sk6ed_whitepicketfence
+290) sk6ed_whitepicketfence_edge
+291) sk6ed_pyramidqpbig
+292) sk6ed_Pyramidbig
+293) sk6ed_Pyramidmid
+294) sk6ed_Pyramidsmall
+295) sk6ed_greatwall
+296) sk6ed_greatwallmid
+297) sk6ed_hpcar
+298) Sk5ed_Concrete
+299) Sk5ed_Concretesquare
+300) sk5ed_street_Mid
+301) sk6ed_Bench_BA_long
+302) sk6ed_Bench_BA_med
+303) sk6ed_Bench_BA_short
+304) ____
+305) sk6ed_log_med
+306) ____
+307) sk6ed_electricbox
+308) ____
+309) sk6ed_crypt
+310) sk6ed_pole
+311) sk6ed_BusStop
+312) sk6ed_handicap_AU
+313) sk6ed_house_small
+314) ____
+315) sk6ed_smallhouse
+316) sk6ed_Lamp
+317) ____
+318) sk6ed_lamp_half
+319) ____
+320) ____
+321) ____
+322) ____
+323) ____
+324) ____
+325) ____
+326) Sk3Ed_FB_30x30x8_05
+327) Sk3Ed_FB_30x30x8_06
+328) Sk3Ed_FB_30x30x8_07
+329) Sk3Ed_FB_30x30x8_08
+330) Sk3Ed_RA_10x10x12_8
+331) ____
+332) Sk3Ed_RA_10x10x8_12
+333) ____
+334) Sk3Ed_RA_10x10x4_12
+335) Sk3Ed_RA_10x10x4_8
+336) Sk3Ed_RA_10x10x4
+337) Sk3Ed_RA_10x10x8
+338) Sk3Ed_RA_10x10x12
+339) Sk3Ed_RAsi_10x10x4
+340) Sk3Ed_RAsi_10x10x8
+341) Sk3Ed_RAsi_10x10x12
+342) Sk3Ed_RAsi_20x20x4
+343) Sk3Ed_RAsi_20x20x8
+344) ____
+345) ____
+346) sk6ed_HugePyra
+347) ____
+348) sk6ed_hugedropin
+349) sk6ed_fencefilleredge
+350) sk6ed_fenceedge
+351) sk6ed_hugebench
+352) sk6ed_qppiececornerB
+353) sk6ed_qppiececorner1
+354) sk6ed_qppieceCorner
+355) sk6ed_qppiecemid
+356) sk6ed_hugepoolP01
+357) sk6ed_hugepoolP02
+358) sk6ed_hugepoolP03
+359) sk6ed_hugepoolP04
+360) sk6ed_hugepoolP05
+361) sk6ed_hugepoolP06
+362) sk6ed_hugepoolP07
+363) sk6ed_hugepoolP08
+364) sk6ed_hugepoolP09
+365) sk6ed_hugepoolP10
+366) sk6ed_hugepoolP11
+367) sk6ed_hugepoolP12
+368) sk6ed_ladderSmall
+369) sk6ed_ladderMid
+370) sk6ed_ladderTall
+371) sk6ed_ps2
+372) sk6ed_cashsign
+373) sk5ed_veniceBench
+374) ____
+375) sk6ed_HP_AU
+376) sk6ed_couch
+377) sk6ed_Welcome
+378) sk5ed_dinnertable
+379) sk6ed_PoleBE
+380) ____
+381) sk6ed_Fridge
+382) sk6ed_IndianRug
+383) sk6ed_BOrail
+384) sk6ed_Porta
+385) ____
+386) sk6ed_SubwayRamp
+387) sk6ed_venice_triangle
+388) sk6ed_doubelsidedKick
+389) sk5ed_HP_Skatestreet
+390) sk6ed_fountainLA
+391) sk6ed_GarbageLA
+392) sk6ed_hugeSticker
+393) sk6ed_MarsLamp
+394) sk6ed_Marsqps
+395) sk6ed_NYqpledge
+396) sk6ed_NYsnack
+397) ____
+398) sk6ed_SSbigkicker
+399) sk6ed_SSmidpiece
+400) ____
+401) sk6ed_SSrampmid
+402) sk6ed_SSrampsmall
+403) sk6ed_SSrampwide
+404) sk6ed_SSroundkicker
+405) sk6ed_SSrailbox
+406) ____
+407) ____
+408) sk6ed_tinyqp
+409) sk6ed_hydrant
+410) sk6ed_greatwallCurved
+411) sk6ed_RailSlanted01
+412) sk6ed_RailSlanted02
+413) sk6ed_RailSlanted03
+414) sk6ed_RailSlanted04
+415) sk6ed_RailSlanted05
+416) sk6ed_RailSlanted06
+417) sk6ed_RailSlanted07
+418) sk6ed_RailSlanted08
+419) sk6ed_RailSlanted09
+420) sk6ed_RailSlanted010
+421) sk6ed_RailSlanted011
+422) sk6ed_RailSlanted012
+423) sk6ed_RailStair01
+424) sk6ed_RailStair02
+425) sk6ed_RailStair03
+426) sk6ed_RailStair04
+427) sk6ed_RailStair05
+428) sk6ed_RailStair06
+429) sk5ed_speedboostG
+430) sk5ed_speedboostGS
+431) ____
+432) ____
+433) ____
+434) ____
+435) TRGP_ArcoWindow
+436) sk6ed_crate
+437) sk6ed_BAGlass
+438) ____
+439) BO_Classic_Barrel
+440) sk6ed_HILamp
+441) ____
+442) Sk6ed_Acid
+443) sk6ed_Kick_HighB
+444) sk6ed_Kick_MidB
+445) Sk6ed_qp_cornerB
+446) sk6ed_qp_MidB
+447) sk6ed_WallBoost
+448) sk6ed_LaunchSB
+449) sk6ed_LaunchBB
+450) sk6ed_SSrampmidBooster
+451) Sk5Ed_QPshortMid_01B
+452) sk5ed_Matttest
+453) sk5ed_Matttest01
+454) sk5ed_Matttest02
+455) sk5ed_Matttest03
+456) sk5ed_Matttest04
+457) sk5ed_Matttest05
+458) sk5ed_Matttest06
+459) sk5ed_Matttest07
+460) sk5ed_Matttest08
+461) sk5ed_Matttest09
+462) sk5ed_Matttest10
+463) sk5ed_Matttest11
+464) sk5ed_Matttest12
+465) sk5ed_Matttest13
+466) sk5ed_Matttest14
+467) sk5ed_Matttest15
+468) sk6ed_jeep
+469) ____
+470) ____
+471) ____
+472) ____
+473) sk5ed_curvedcurb
+474) Sk3Ed_P_10x10x09
+475) Huge_Med_Pool
+476) Huge_Long_Pool
+477) Sk3Ed_QPd_10x10x13
+478) Huge_Mid
+479) Huge_Long
+480) Sk3Ed_S_10x10x09
+481) Sk3Ed_Si_10x10x09
+482) Sk3Ed_Si2_10x10x09
+483) Sk3Ed_So_10x10x11
+484) Sk3Ed_So2_10x10x09
+485) Sk3Ed_S_10x10x11
+486) Sk3Ed_Si_10x10x10
+487) Sk3Ed_Si2_10x10x10
+488) Sk3Ed_So_10x10x10
+489) Sk3Ed_So2_10x10x10
+490) Sk3Ed_S_10x20x09
+491) Sk3Ed_Si_20x20x09
+492) Sk3Ed_Si2_20x20x10
+493) Sk3Ed_So_20x20x09
+494) Sk3Ed_So2_20x20x09
+495) Sk3Ed_S_10x20x10
+496) Sk3Ed_Si_20x20x10
+497) Sk3Ed_Si2_20x20x09
+498) Sk3Ed_So_20x20x10
+499) Sk3Ed_So2_20x20x10
+500) sk6ed_Graffiti_Ammo
+501) Sk3Ed_QPd_10x10x09
+502) Low_Med_Huge
+503) Low_Long_Huge
+504) ____
